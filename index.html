@@ -38,6 +38,15 @@
       color: var(--text-dark);
     }
 
+    @keyframes floatSpatial {
+      0%, 100% { transform: translateY(0px) rotateX(2deg); }
+      50% { transform: translateY(-5px) rotateX(-2deg); }
+    }
+    @keyframes pulseDepth {
+      0%, 100% { filter: drop-shadow(0 8px 14px rgba(37, 99, 235, 0.28)); }
+      50% { filter: drop-shadow(0 14px 22px rgba(99, 102, 241, 0.42)); }
+    }
+
     .login-wrapper {
       min-height: 100vh;
       display: flex;
@@ -85,6 +94,7 @@
       padding: 12px;
       margin-bottom: 18px;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.25);
+      animation: floatSpatial 4.5s ease-in-out infinite;
     }
     .login-form-pane { padding: 36px 32px; background: #ffffff; }
     .auth-switch {
@@ -135,20 +145,22 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
+      perspective: 600px;
+      transition: transform 0.16s ease, box-shadow 0.18s ease, background 0.15s ease;
     }
-    .btn:active { transform: translateY(1px); }
-    .btn-blue { background: var(--primary); color: #ffffff; box-shadow: 0 6px 14px rgba(37, 99, 235, 0.28); }
+    .btn:hover { transform: translateY(-2px) scale(1.01); }
+    .btn:active { transform: translateY(1px) scale(0.99); }
+    .btn-blue { background: var(--primary); color: #ffffff; box-shadow: 0 7px 16px rgba(37, 99, 235, 0.32), 0 2px 0 #1e40af; }
     .btn-blue:hover { background: var(--primary-hover); }
-    .btn-emerald { background: var(--emerald); color: #ffffff; box-shadow: 0 6px 14px rgba(5, 150, 105, 0.28); }
+    .btn-emerald { background: var(--emerald); color: #ffffff; box-shadow: 0 7px 16px rgba(5, 150, 105, 0.32), 0 2px 0 #065f46; }
     .btn-emerald:hover { background: var(--emerald-hover); }
-    .btn-violet { background: var(--violet); color: #ffffff; box-shadow: 0 6px 14px rgba(109, 40, 217, 0.28); }
+    .btn-violet { background: var(--violet); color: #ffffff; box-shadow: 0 7px 16px rgba(109, 40, 217, 0.32), 0 2px 0 #4c1d95; }
     .btn-violet:hover { background: var(--violet-hover); }
-    .btn-amber { background: var(--amber); color: #0f172a; box-shadow: 0 6px 14px rgba(245, 158, 11, 0.28); }
+    .btn-amber { background: var(--amber); color: #0f172a; box-shadow: 0 7px 16px rgba(245, 158, 11, 0.32), 0 2px 0 #b45309; }
     .btn-amber:hover { background: var(--amber-hover); }
-    .btn-rose { background: var(--rose); color: #ffffff; box-shadow: 0 6px 14px rgba(225, 29, 72, 0.28); }
+    .btn-rose { background: var(--rose); color: #ffffff; box-shadow: 0 7px 16px rgba(225, 29, 72, 0.32), 0 2px 0 #9f1239; }
     .btn-rose:hover { background: var(--rose-hover); }
-    .btn-dark { background: #1e293b; color: #ffffff; border: 1px solid #334155; }
+    .btn-dark { background: #1e293b; color: #ffffff; border: 1px solid #334155; box-shadow: 0 6px 14px rgba(15, 23, 42, 0.35); }
     .btn-dark:hover { background: #334155; }
     .btn-sm { padding: 6px 11px; font-size: 11.5px; }
     .full-w { width: 100%; }
@@ -178,7 +190,8 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.4);
+      animation: pulseDepth 3.6s ease-in-out infinite;
     }
     .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
     .company-head-title { display: flex; align-items: center; gap: 8px; color: #ffffff; font-weight: 800; font-size: 15px; }
@@ -212,13 +225,14 @@
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      transition: transform 0.15s ease, background 0.15s ease;
     }
-    .tab-pill:hover { background: rgba(51, 65, 85, 0.85); color: #ffffff; }
+    .tab-pill:hover { background: rgba(51, 65, 85, 0.85); color: #ffffff; transform: translateY(-1px); }
     .tab-pill.active {
       background: var(--primary);
       color: #ffffff;
       border-color: #3b82f6;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 5px 14px rgba(37, 99, 235, 0.4);
     }
 
     .workspace { padding: 20px 22px 36px; max-width: 1360px; margin: 0 auto; width: 100%; }
@@ -236,7 +250,8 @@
       gap: 24px;
       margin-bottom: 18px;
       border: 1px solid rgba(147, 197, 253, 0.25);
-      box-shadow: 0 18px 36px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(2, 6, 23, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      perspective: 1000px;
     }
     .hero-kicker {
       display: inline-block;
@@ -259,7 +274,8 @@
       border: 1px solid rgba(147, 197, 253, 0.22);
       border-radius: 14px;
       padding: 12px 14px 8px;
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      animation: floatSpatial 4.2s ease-in-out infinite;
     }
     .iso-caption {
       text-align: center;
@@ -276,18 +292,22 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
       margin-bottom: 18px;
+      perspective: 900px;
     }
     .kpi-card {
       background: var(--card-bg);
       border-radius: 12px;
       padding: 16px 18px;
       border: 1px solid var(--border-soft);
-      box-shadow: 0 10px 22px rgba(2, 6, 23, 0.28), 0 2px 0 rgba(255, 255, 255, 0.8) inset;
+      box-shadow: 0 12px 24px rgba(2, 6, 23, 0.32), 0 3px 0 #cbd5e1, 0 2px 0 rgba(255, 255, 255, 0.9) inset;
       position: relative;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 14px 26px rgba(2, 6, 23, 0.35); }
+    .kpi-card:hover {
+      transform: translateY(-4px) rotateX(2deg);
+      box-shadow: 0 18px 32px rgba(2, 6, 23, 0.42), 0 4px 0 #94a3b8;
+    }
     .kpi-card h4 { font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
     .kpi-card .kpi-num { font-size: 24px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
     .kpi-card .kpi-sub { font-size: 11px; color: var(--text-muted); }
@@ -303,6 +323,7 @@
       justify-content: center;
       font-size: 12px;
       font-weight: 800;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
     }
 
     .dash-mid-grid {
@@ -316,11 +337,13 @@
       border-radius: 14px;
       padding: 18px 20px;
       border: 1px solid var(--border-soft);
-      box-shadow: 0 12px 26px rgba(2, 6, 23, 0.3);
+      box-shadow: 0 14px 28px rgba(2, 6, 23, 0.34), 0 3px 0 #cbd5e1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: transform 0.2s ease;
     }
+    .breakdown-box:hover { transform: translateY(-2px); }
     .breakdown-chart-area {
       background: #f1f5f9;
       border: 1px solid #e2e8f0;
@@ -333,9 +356,10 @@
       padding: 16px 14px 10px;
       margin-top: 10px;
     }
-    .bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; cursor: pointer; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; cursor: pointer; transition: transform 0.16s ease; }
+    .bar-col:hover { transform: translateY(-3px); }
     .bar-pct { font-size: 10.5px; font-weight: 800; color: #334155; margin-bottom: 4px; }
-    .bar-fill { width: 32px; min-height: 8px; border-radius: 6px 6px 2px 2px; transition: height 0.25s ease; }
+    .bar-fill { width: 32px; min-height: 8px; border-radius: 6px 6px 2px 2px; transition: height 0.25s ease; box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2); }
     .bar-lbl { font-size: 9.5px; font-weight: 800; color: #475569; margin-top: 6px; }
 
     .cat-2x2-grid {
@@ -348,9 +372,11 @@
       border-radius: 12px;
       padding: 15px 16px;
       border: 1px solid var(--border-soft);
-      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25);
+      box-shadow: 0 10px 20px rgba(2, 6, 23, 0.28), 0 3px 0 #cbd5e1;
       cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
+    .cat-box-card:hover { transform: translateY(-3px); box-shadow: 0 15px 26px rgba(2, 6, 23, 0.36); }
     .cat-tag {
       display: inline-block;
       background: #e0e7ff;
@@ -371,7 +397,7 @@
       padding: 18px 20px;
       border: 1px solid var(--border-soft);
       margin-bottom: 18px;
-      box-shadow: 0 12px 26px rgba(2, 6, 23, 0.3);
+      box-shadow: 0 14px 28px rgba(2, 6, 23, 0.34), 0 3px 0 #cbd5e1;
     }
     .surface-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
     .surface-head h3 { font-size: 15px; font-weight: 800; color: var(--text-dark); }
@@ -407,10 +433,10 @@
       flex-wrap: wrap;
       align-items: flex-end;
       gap: 10px;
+      box-shadow: 0 5px 12px rgba(15, 23, 42, 0.08);
     }
     .pdf-control-box .field { margin-bottom: 0; flex: 1; min-width: 135px; }
 
-    /* Multi-line Inward Lot Rows */
     .inward-lines-wrap { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
     .inward-line-row {
       display: grid;
@@ -435,11 +461,13 @@
       border-radius: 14px;
       padding: 18px;
       border: 1px solid var(--border-soft);
-      box-shadow: 0 12px 24px rgba(2, 6, 23, 0.28);
+      box-shadow: 0 12px 24px rgba(2, 6, 23, 0.28), 0 3px 0 #cbd5e1;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      transition: transform 0.18s ease;
     }
+    .sub-feature-card:hover { transform: translateY(-2px); }
     .sub-feature-card h4 { font-size: 14.5px; font-weight: 800; color: var(--text-dark); }
     .sub-feature-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
 
@@ -464,6 +492,20 @@
       border-radius: 6px;
     }
 
+    .st-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+    .st-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .st-yellow { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .st-green { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -477,11 +519,12 @@
     .modal-box {
       background: #ffffff;
       border-radius: 14px;
-      max-width: 560px;
+      max-width: 640px;
       width: 100%;
       padding: 22px;
       border-top: 5px solid var(--rose);
       box-shadow: 0 24px 48px rgba(0,0,0,0.45);
+      animation: floatSpatial 3.5s ease-in-out infinite;
     }
 
     #pdfPrintSheet {
@@ -747,23 +790,23 @@
             <div class="kpi-num" id="kpiTotalVal">₹0.00</div>
             <div class="kpi-sub" id="kpiItemCount">Across 0 store items</div>
           </div>
-          <div class="kpi-card" onclick="setStatusFilter('CRITICAL')">
-            <div class="kpi-dot" style="background:#ffe4e6;color:#e11d48;">●</div>
+          <div class="kpi-card" onclick="selectStatusAndShowList('CRITICAL')">
+            <div class="kpi-dot" style="background:#fee2e2;color:#dc2626;">●</div>
             <h4>CRITICAL / OUT OF STOCK</h4>
             <div class="kpi-num" id="kpiCritCount">0 Items</div>
-            <div class="kpi-sub">Click to filter critical items →</div>
+            <div class="kpi-sub">Click to view critical items →</div>
           </div>
-          <div class="kpi-card" onclick="setStatusFilter('LOW')">
+          <div class="kpi-card" onclick="selectStatusAndShowList('LOW')">
             <div class="kpi-dot" style="background:#fef3c7;color:#d97706;">●</div>
             <h4>LOW / REORDER STOCK</h4>
             <div class="kpi-num" id="kpiLowCount">0 Items</div>
-            <div class="kpi-sub">Click to filter low stock →</div>
+            <div class="kpi-sub">Click to view low / reorder items →</div>
           </div>
-          <div class="kpi-card" onclick="setStatusFilter('HEALTHY')">
-            <div class="kpi-dot" style="background:#d1fae5;color:#059669;">●</div>
+          <div class="kpi-card" onclick="selectStatusAndShowList('HEALTHY')">
+            <div class="kpi-dot" style="background:#dcfce7;color:#16a34a;">●</div>
             <h4>HEALTHY STOCK</h4>
             <div class="kpi-num" id="kpiHealthyCount">0 Items</div>
-            <div class="kpi-sub">Click to filter healthy stock →</div>
+            <div class="kpi-sub">Click to view healthy items →</div>
           </div>
         </div>
 
@@ -837,9 +880,9 @@
               </select>
               <select id="fltStatus" onchange="renderDashboardTable()">
                 <option value="ALL">All Statuses</option>
-                <option value="CRITICAL">Critical / Out of Stock</option>
-                <option value="LOW">Low / Reorder Stock</option>
-                <option value="HEALTHY">Healthy Stock</option>
+                <option value="CRITICAL">Critical / Out of Stock (Red)</option>
+                <option value="LOW">Low / Reorder Stock (Yellow)</option>
+                <option value="HEALTHY">Healthy Stock (Green)</option>
               </select>
               <input type="text" id="fltSearch" placeholder="Search code, item, grade, supplier.." oninput="renderDashboardTable()" />
             </div>
@@ -942,7 +985,7 @@
         </div>
       </div>
 
-      <!-- INWARD GRN TAB (MULTIPLE LOTS + SAME/MULTIPLE ITEMS + NO DUPLICATE GRN+LOT + DELETE) -->
+      <!-- INWARD GRN TAB -->
       <div id="tabInward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -994,7 +1037,7 @@
         </div>
       </div>
 
-      <!-- OUTWARD FIFO TAB (+ DELETE WRONG ENTRY) -->
+      <!-- OUTWARD FIFO TAB -->
       <div id="tabOutward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1052,7 +1095,7 @@
         </div>
       </div>
 
-      <!-- RETURN FROM PRODUCTION TAB (+ DELETE WRONG ENTRY) -->
+      <!-- RETURN FROM PRODUCTION TAB -->
       <div id="tabReturn" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1243,15 +1286,16 @@
     </div>
   </div>
 
-  <!-- LOW STOCK ALERT POPUP -->
+  <!-- STATUS ITEMS / LOW STOCK ALERT POPUP -->
   <div id="lowStockModal" class="modal-overlay">
-    <div class="modal-box">
-      <h3 style="color:#e11d48;font-size:17px;margin-bottom:6px;">Low Inventory Alert</h3>
-      <p style="font-size:12.5px;color:#475569;margin-bottom:12px;">Items at or below minimum stock level in this company:</p>
-      <div style="max-height:220px;overflow-y:auto;margin-bottom:14px;">
+    <div id="statusModalBox" class="modal-box">
+      <h3 id="statusModalTitle" style="color:#e11d48;font-size:17px;margin-bottom:6px;">Stock Status Items</h3>
+      <p id="statusModalDesc" style="font-size:12.5px;color:#475569;margin-bottom:12px;">Items matching selected stock status in this company:</p>
+      <div style="max-height:240px;overflow-y:auto;margin-bottom:14px;">
         <table>
           <thead>
             <tr>
+              <th>Status</th>
               <th>Category</th>
               <th>Item</th>
               <th>Closing Qty</th>
@@ -1261,7 +1305,7 @@
           <tbody id="lowStockPopupRows"></tbody>
         </table>
       </div>
-      <button class="btn btn-rose full-w" onclick="document.getElementById('lowStockModal').style.display='none'">Close Alert</button>
+      <button class="btn btn-dark full-w" onclick="document.getElementById('lowStockModal').style.display='none'">Close Window</button>
     </div>
   </div>
 
@@ -1323,6 +1367,16 @@
     }
     function saveCompStore(compId, store) {
       localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
+    }
+
+    function getStatusBadgeHTML(status) {
+      if (status === "CRITICAL") {
+        return `<span class="st-badge st-red">● CRITICAL (RED)</span>`;
+      }
+      if (status === "LOW") {
+        return `<span class="st-badge st-yellow">● LOW / REORDER (YELLOW)</span>`;
+      }
+      return `<span class="st-badge st-green">● HEALTHY (GREEN)</span>`;
     }
 
     function toggleLoginMode(mode) {
@@ -1549,7 +1603,6 @@
       alert("Item saved.");
     }
 
-    /* MULTI-ROW INWARD GRN WITH DUPLICATE (GRN + LOT) PREVENTION */
     function buildItemOptionsHtml(store) {
       return `<option value="">-- Select Item --</option>` +
         store.items.map(i => `<option value="${i.code}">[${i.category}] ${i.code} - ${i.name}</option>`).join("");
@@ -2009,6 +2062,11 @@
       renderDashboardTable();
     }
 
+    function selectStatusAndShowList(st) {
+      setStatusFilter(st);
+      openStatusItemsModal(st);
+    }
+
     function resetDashFilters() {
       document.getElementById("fltCategory").value = "ALL";
       document.getElementById("fltStatus").value = "ALL";
@@ -2213,10 +2271,9 @@
 
       document.getElementById("dashStockRows").innerHTML = filtered.length
         ? filtered.map(r => {
-            const dotColor = r.status === "CRITICAL" ? "#e11d48" : (r.status === "LOW" ? "#f59e0b" : "#10b981");
             return `
               <tr>
-                <td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColor};margin-right:6px;"></span><strong>${r.status}</strong></td>
+                <td>${getStatusBadgeHTML(r.status)}</td>
                 <td><strong>${r.category}</strong></td>
                 <td><strong>${r.code}</strong> — ${r.name}</td>
                 <td>${r.grade} • ${r.supplier}</td>
@@ -2241,20 +2298,24 @@
 
       const bodyHtml = rows.map(r => {
         grandVal += r.stockValue;
+        const badgeColor = r.status === "CRITICAL" ? "#b91c1c" : (r.status === "LOW" ? "#b45309" : "#15803d");
+        const badgeBg = r.status === "CRITICAL" ? "#fee2e2" : (r.status === "LOW" ? "#fef3c7" : "#dcfce7");
+        const statusLabel = r.status === "CRITICAL" ? "RED (CRITICAL)" : (r.status === "LOW" ? "YELLOW (LOW)" : "GREEN (HEALTHY)");
         return `
           <tr>
-            <td>${r.category}</td>
-            <td>${r.code}</td>
-            <td>${r.name}</td>
-            <td>${r.grade}</td>
-            <td>${r.supplier}</td>
-            <td>₹${r.price.toFixed(2)}</td>
-            <td>${r.opening}</td>
-            <td>${r.inward}</td>
-            <td>${r.prodRet}</td>
-            <td>${r.outward}</td>
-            <td><strong>${r.closingQty}</strong></td>
-            <td>₹${r.stockValue.toFixed(2)}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;background:${badgeBg};color:${badgeColor};font-weight:800;">${statusLabel}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.category}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.code}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.name}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.grade}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.supplier}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.price.toFixed(2)}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.opening}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.inward}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.prodRet}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.outward}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;"><strong>${r.closingQty}</strong></td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.stockValue.toFixed(2)}</td>
           </tr>
         `;
       }).join("");
@@ -2262,10 +2323,11 @@
       const sheet = document.getElementById("pdfPrintSheet");
       sheet.innerHTML = `
         <h2 style="margin-bottom:4px;">${currentComp.name} (${currentComp.id}) — Day Wise Closing Stock Report</h2>
-        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Formula: Opening + Inward + Prod Ret - Outward</p>
+        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Status: RED / YELLOW / GREEN • Formula: Opening + Inward + Prod Ret - Outward</p>
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead>
             <tr>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Status</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Category</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Code</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Item Name</th>
@@ -2281,7 +2343,7 @@
             </tr>
           </thead>
           <tbody>
-            ${bodyHtml || `<tr><td colspan="12" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No stock records found for ${dateVal}.</td></tr>`}
+            ${bodyHtml || `<tr><td colspan="13" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No stock records found for ${dateVal}.</td></tr>`}
           </tbody>
         </table>
         <p style="margin-top:12px;font-weight:800;font-size:13px;">Total Closing Stock Valuation As On ${dateVal}: ₹${grandVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
@@ -2340,17 +2402,64 @@
       window.print();
     }
 
-    function openLowStockModal() {
-      document.getElementById("lowStockPopupRows").innerHTML = cachedLowList.length
-        ? cachedLowList.map(x => `
+    function openStatusItemsModal(statusFilter) {
+      const box = document.getElementById("statusModalBox");
+      const title = document.getElementById("statusModalTitle");
+      const desc = document.getElementById("statusModalDesc");
+      const list = computedStockRows.filter(r => r.status === statusFilter);
+
+      if (statusFilter === "CRITICAL") {
+        box.style.borderTopColor = "#dc2626";
+        title.style.color = "#b91c1c";
+        title.textContent = "Critical / Out of Stock Items (Red)";
+        desc.textContent = "Items with 0 or negative closing stock:";
+      } else if (statusFilter === "LOW") {
+        box.style.borderTopColor = "#d97706";
+        title.style.color = "#b45309";
+        title.textContent = "Low / Reorder Stock Items (Yellow)";
+        desc.textContent = "Items at or below minimum reorder level:";
+      } else {
+        box.style.borderTopColor = "#16a34a";
+        title.style.color = "#15803d";
+        title.textContent = "Healthy Stock Items (Green)";
+        desc.textContent = "Items above minimum reorder level:";
+      }
+
+      document.getElementById("lowStockPopupRows").innerHTML = list.length
+        ? list.map(x => `
             <tr>
+              <td>${getStatusBadgeHTML(x.status)}</td>
               <td>${x.category}</td>
               <td>${x.name} (${x.code})</td>
-              <td style="color:#e11d48;font-weight:700;">${x.closingQty}</td>
+              <td><strong>${x.closingQty}</strong></td>
               <td>${x.min}</td>
             </tr>
           `).join("")
-        : `<tr><td colspan="4" style="text-align:center;color:#64748b;">No low-stock alerts right now.</td></tr>`;
+        : `<tr><td colspan="5" style="text-align:center;color:#64748b;">No items in this status category.</td></tr>`;
+
+      document.getElementById("lowStockModal").style.display = "flex";
+    }
+
+    function openLowStockModal() {
+      const box = document.getElementById("statusModalBox");
+      const title = document.getElementById("statusModalTitle");
+      const desc = document.getElementById("statusModalDesc");
+      box.style.borderTopColor = "#dc2626";
+      title.style.color = "#b91c1c";
+      title.textContent = "Low & Critical Stock Alert";
+      desc.textContent = "Items at or below minimum stock level in this company:";
+
+      document.getElementById("lowStockPopupRows").innerHTML = cachedLowList.length
+        ? cachedLowList.map(x => `
+            <tr>
+              <td>${getStatusBadgeHTML(x.status)}</td>
+              <td>${x.category}</td>
+              <td>${x.name} (${x.code})</td>
+              <td><strong>${x.closingQty}</strong></td>
+              <td>${x.min}</td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="5" style="text-align:center;color:#64748b;">No low-stock alerts right now.</td></tr>`;
       document.getElementById("lowStockModal").style.display = "flex";
     }
 
