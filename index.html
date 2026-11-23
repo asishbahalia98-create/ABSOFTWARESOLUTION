@@ -307,6 +307,66 @@
       font-weight: 800;
     }
 
+    .dash-mid-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .breakdown-box {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 18px 20px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 12px 26px rgba(2, 6, 23, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .breakdown-chart-area {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      height: 168px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: end;
+      gap: 12px;
+      padding: 16px 14px 10px;
+      margin-top: 10px;
+    }
+    .bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; cursor: pointer; }
+    .bar-pct { font-size: 10.5px; font-weight: 800; color: #334155; margin-bottom: 4px; }
+    .bar-fill { width: 32px; min-height: 8px; border-radius: 6px 6px 2px 2px; transition: height 0.25s ease; }
+    .bar-lbl { font-size: 9.5px; font-weight: 800; color: #475569; margin-top: 6px; }
+
+    .cat-2x2-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .cat-box-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 15px 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25);
+      cursor: pointer;
+    }
+    .cat-tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #1e3a8a;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .cat-val { font-size: 20px; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
+    .cat-cnt { font-size: 11px; color: var(--text-muted); }
+
     .surface-card {
       background: var(--card-bg);
       border-radius: 14px;
@@ -318,6 +378,39 @@
     .surface-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
     .surface-head h3 { font-size: 15px; font-weight: 800; color: var(--text-dark); }
     .surface-head span { font-size: 11.5px; color: var(--text-muted); }
+
+    .filter-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .filter-toolbar select, .filter-toolbar input {
+      padding: 8px 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12px;
+      background: #ffffff;
+      color: var(--text-dark);
+    }
+
+    .pdf-bar-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .pdf-control-box {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .pdf-control-box .field { margin-bottom: 0; flex: 1; min-width: 135px; }
 
     .three-col-cards {
       display: grid;
@@ -338,27 +431,6 @@
     .sub-feature-card h4 { font-size: 14.5px; font-weight: 800; color: var(--text-dark); }
     .sub-feature-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
 
-    .cat-mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
-    .cat-mini-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 15px 16px;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25);
-    }
-    .cat-tag {
-      display: inline-block;
-      background: #e0e7ff;
-      color: #1e3a8a;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 5px;
-      margin-bottom: 8px;
-    }
-    .cat-val { font-size: 20px; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
-    .cat-cnt { font-size: 11px; color: var(--text-muted); }
-
     .form-row-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 14px; }
     .subuser-grid {
       display: grid;
@@ -367,9 +439,9 @@
       align-items: end;
       margin-bottom: 16px;
     }
-    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    th, td { padding: 9px 11px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-    th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 9px 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 10.5px; text-transform: uppercase; }
     .role-pill {
       display: inline-block;
       background: #e0e7ff;
@@ -400,20 +472,34 @@
       box-shadow: 0 24px 48px rgba(0,0,0,0.45);
     }
 
-    @media print {
-      body { background: #ffffff !important; }
-      .top-header, .sub-nav, .hero-banner, .no-print { display: none !important; }
-      .app-shell, .view-panel, .surface-card { display: block !important; box-shadow: none !important; }
+    /* PRINTABLE PDF SHEET */
+    #pdfPrintSheet {
+      display: none;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 24px;
     }
+    @media print {
+      body * { visibility: hidden; }
+      #pdfPrintSheet, #pdfPrintSheet * { visibility: visible; }
+      #pdfPrintSheet {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+
     @media (max-width: 980px) {
-      .three-col-cards, .subuser-grid { grid-template-columns: 1fr; }
+      .dash-mid-grid, .three-col-cards, .subuser-grid, .pdf-bar-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 900px) {
       .login-card, .hero-banner { grid-template-columns: 1fr; }
-      .kpi-grid, .cat-mini-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 540px) {
-      .kpi-grid, .cat-mini-grid { grid-template-columns: 1fr; }
+      .kpi-grid, .cat-2x2-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -607,7 +693,7 @@
           <div>
             <span class="hero-kicker">INTERACTIVE ISOMETRIC WAREHOUSE &amp; FIFO TELEMETRY</span>
             <h2 id="heroWelcome">Welcome</h2>
-            <p>Spatial store visibility across <strong>RM, BOP, PACKING, and CONSUMABLE</strong> warehouses with automated GRN and FIFO lot tracking.</p>
+            <p>Live spatial store visibility across <strong>RM, BOP, PACKING, and CONSUMABLE</strong> warehouses with automated GRN/Lot FIFO traceability.</p>
             <div class="hero-cta-row">
               <button class="btn btn-blue" onclick="jumpToTab('tabMaster')">+ Add Store Item</button>
               <button class="btn btn-amber" onclick="jumpToTab('tabOutward')">Issue Material (FIFO)</button>
@@ -639,78 +725,154 @@
                 <text x="32" y="20" text-anchor="middle" fill="#eef2ff" font-size="10" font-weight="800">BOP</text>
               </g>
             </svg>
-            <div class="iso-caption">Spatial Warehouse Flow • RM • BOP • Packing • Consumable</div>
+            <div class="iso-caption">LIVE MULTI-STORE ISOMETRIC FLOW • RM • BOP • PACKING • CONSUMABLE</div>
           </div>
         </div>
 
         <div class="kpi-grid">
-          <div class="kpi-card">
+          <div class="kpi-card" onclick="resetDashFilters()">
             <div class="kpi-dot" style="background:#dbeafe;color:#1d4ed8;">₹</div>
-            <h4>Total Stock Valuation</h4>
+            <h4>TOTAL STOCK VALUATION</h4>
             <div class="kpi-num" id="kpiTotalVal">₹0.00</div>
             <div class="kpi-sub" id="kpiItemCount">Across 0 store items</div>
           </div>
-          <div class="kpi-card" onclick="openLowStockModal()">
+          <div class="kpi-card" onclick="setStatusFilter('CRITICAL')">
             <div class="kpi-dot" style="background:#ffe4e6;color:#e11d48;">●</div>
-            <h4>Critical / Out of Stock</h4>
+            <h4>CRITICAL / OUT OF STOCK</h4>
             <div class="kpi-num" id="kpiCritCount">0 Items</div>
             <div class="kpi-sub">Click to filter critical items →</div>
           </div>
-          <div class="kpi-card" onclick="openLowStockModal()">
+          <div class="kpi-card" onclick="setStatusFilter('LOW')">
             <div class="kpi-dot" style="background:#fef3c7;color:#d97706;">●</div>
-            <h4>Low / Reorder Stock</h4>
+            <h4>LOW / REORDER STOCK</h4>
             <div class="kpi-num" id="kpiLowCount">0 Items</div>
             <div class="kpi-sub">Click to filter low stock →</div>
           </div>
-          <div class="kpi-card">
+          <div class="kpi-card" onclick="setStatusFilter('HEALTHY')">
             <div class="kpi-dot" style="background:#d1fae5;color:#059669;">●</div>
-            <h4>Healthy Stock</h4>
+            <h4>HEALTHY STOCK</h4>
             <div class="kpi-num" id="kpiHealthyCount">0 Items</div>
             <div class="kpi-sub">Click to filter healthy stock →</div>
           </div>
         </div>
 
-        <div class="cat-mini-grid">
-          <div class="cat-mini-card">
-            <span class="cat-tag">RM • RAW MATERIAL</span>
-            <div class="cat-val" id="catValRM">₹0.00</div>
-            <div class="cat-cnt" id="catCntRM">0 items in store</div>
+        <div class="dash-mid-grid">
+          <div class="breakdown-box">
+            <div>
+              <h3 style="font-size:15px;font-weight:800;color:#0f172a;">Category Valuation Breakdown</h3>
+              <p style="font-size:11.5px;color:#64748b;">Click any column to filter Closing Stock below</p>
+            </div>
+            <div class="breakdown-chart-area">
+              <div class="bar-col" onclick="setCategoryFilter('RM')">
+                <div class="bar-pct" id="pctRM">0%</div>
+                <div class="bar-fill" id="barRM" style="height:10%;background:#3b82f6;"></div>
+                <div class="bar-lbl">RM</div>
+              </div>
+              <div class="bar-col" onclick="setCategoryFilter('BOP')">
+                <div class="bar-pct" id="pctBOP">0%</div>
+                <div class="bar-fill" id="barBOP" style="height:10%;background:#6366f1;"></div>
+                <div class="bar-lbl">BOP</div>
+              </div>
+              <div class="bar-col" onclick="setCategoryFilter('PACKING')">
+                <div class="bar-pct" id="pctPACKING">0%</div>
+                <div class="bar-fill" id="barPACKING" style="height:10%;background:#10b981;"></div>
+                <div class="bar-lbl">PACKING</div>
+              </div>
+              <div class="bar-col" onclick="setCategoryFilter('CONSUMABLE')">
+                <div class="bar-pct" id="pctCONSUMABLE">0%</div>
+                <div class="bar-fill" id="barCONSUMABLE" style="height:10%;background:#f59e0b;"></div>
+                <div class="bar-lbl">CONSUMABLE</div>
+              </div>
+            </div>
           </div>
-          <div class="cat-mini-card">
-            <span class="cat-tag">BOP • BOUGHT OUT PART</span>
-            <div class="cat-val" id="catValBOP">₹0.00</div>
-            <div class="cat-cnt" id="catCntBOP">0 items in store</div>
-          </div>
-          <div class="cat-mini-card">
-            <span class="cat-tag">PACKING</span>
-            <div class="cat-val" id="catValPACKING">₹0.00</div>
-            <div class="cat-cnt" id="catCntPACKING">0 items in store</div>
-          </div>
-          <div class="cat-mini-card">
-            <span class="cat-tag">CONSUMABLE</span>
-            <div class="cat-val" id="catValCONSUMABLE">₹0.00</div>
-            <div class="cat-cnt" id="catCntCONSUMABLE">0 items in store</div>
+
+          <div class="cat-2x2-grid">
+            <div class="cat-box-card" onclick="setCategoryFilter('RM')">
+              <span class="cat-tag">RM • RAW MATERIAL</span>
+              <div class="cat-val" id="catValRM">₹0.00</div>
+              <div class="cat-cnt" id="catCntRM">0 items in store</div>
+            </div>
+            <div class="cat-box-card" onclick="setCategoryFilter('BOP')">
+              <span class="cat-tag">BOP • BOUGHT OUT PART</span>
+              <div class="cat-val" id="catValBOP">₹0.00</div>
+              <div class="cat-cnt" id="catCntBOP">0 items in store</div>
+            </div>
+            <div class="cat-box-card" onclick="setCategoryFilter('PACKING')">
+              <span class="cat-tag">PACKING MATERIAL</span>
+              <div class="cat-val" id="catValPACKING">₹0.00</div>
+              <div class="cat-cnt" id="catCntPACKING">0 items in store</div>
+            </div>
+            <div class="cat-box-card" onclick="setCategoryFilter('CONSUMABLE')">
+              <span class="cat-tag">CONSUMABLE STORE</span>
+              <div class="cat-val" id="catValCONSUMABLE">₹0.00</div>
+              <div class="cat-cnt" id="catCntCONSUMABLE">0 items in store</div>
+            </div>
           </div>
         </div>
 
+        <!-- LIVE CLOSING STOCK SUMMARY + DAY WISE & DATE WISE PDF DOWNLOADS -->
         <div class="surface-card">
           <div class="surface-head">
-            <h3>Closing Stock Summary</h3>
-            <button class="btn btn-blue btn-sm no-print" onclick="downloadStockCSV()">Export Closing Stock (CSV)</button>
+            <div>
+              <h3>Live Closing Stock Summary</h3>
+              <span>Formula: Opening + Inward + Return from Prod - Outward</span>
+            </div>
+            <div class="filter-toolbar">
+              <select id="fltCategory" onchange="renderDashboardTable()">
+                <option value="ALL">All Categories</option>
+                <option value="RM">RM</option>
+                <option value="BOP">BOP</option>
+                <option value="PACKING">PACKING</option>
+                <option value="CONSUMABLE">CONSUMABLE</option>
+              </select>
+              <select id="fltStatus" onchange="renderDashboardTable()">
+                <option value="ALL">All Statuses</option>
+                <option value="CRITICAL">Critical / Out of Stock</option>
+                <option value="LOW">Low / Reorder Stock</option>
+                <option value="HEALTHY">Healthy Stock</option>
+              </select>
+              <input type="text" id="fltSearch" placeholder="Search code, item, grade, supplier.." oninput="renderDashboardTable()" />
+            </div>
           </div>
+
+          <!-- ADDED PDF DOWNLOAD CONTROLS (DAY WISE CLOSING STOCK & DATE WISE INWARD/OUTWARD) -->
+          <div class="pdf-bar-grid">
+            <div class="pdf-control-box">
+              <div class="field">
+                <label>Closing Stock Date (As On)</label>
+                <input type="date" id="closingStockDate" />
+              </div>
+              <button type="button" class="btn btn-blue btn-sm" onclick="downloadDayWiseClosingStockPDF()">Download Day Wise Closing Stock PDF</button>
+            </div>
+
+            <div class="pdf-control-box">
+              <div class="field">
+                <label>From Date</label>
+                <input type="date" id="ioFromDate" />
+              </div>
+              <div class="field">
+                <label>To Date</label>
+                <input type="date" id="ioToDate" />
+              </div>
+              <button type="button" class="btn btn-violet btn-sm" onclick="downloadDateWiseInwardOutwardPDF()">Download Date Wise Inward &amp; Outward PDF</button>
+            </div>
+          </div>
+
           <div style="overflow-x:auto;">
             <table>
               <thead>
                 <tr>
-                  <th>Category</th>
-                  <th>Code</th>
-                  <th>Item Name</th>
-                  <th>Grade</th>
-                  <th>Supplier</th>
-                  <th>Unit Price</th>
-                  <th>Closing Qty</th>
-                  <th>Min Level</th>
-                  <th>Valuation</th>
+                  <th>STATUS</th>
+                  <th>CATEGORY</th>
+                  <th>ITEM CODE &amp; NAME</th>
+                  <th>GRADE &amp; SUPPLIER</th>
+                  <th>PRICE</th>
+                  <th>OPENING</th>
+                  <th>INWARD</th>
+                  <th>PROD RET</th>
+                  <th>OUTWARD</th>
+                  <th>CLOSING STOCK</th>
+                  <th>STOCK VALUE</th>
                 </tr>
               </thead>
               <tbody id="dashStockRows"></tbody>
@@ -781,6 +943,10 @@
           <form onsubmit="saveInwardEntry(event)">
             <div class="form-row-grid">
               <div class="field">
+                <label>Entry Date *</label>
+                <input type="date" id="inSelDate" required />
+              </div>
+              <div class="field">
                 <label>Item *</label>
                 <select id="inSelItem" onchange="fillInwardAuto()" required></select>
               </div>
@@ -820,6 +986,10 @@
           <form onsubmit="saveOutwardEntry(event)">
             <div class="form-row-grid">
               <div class="field">
+                <label>Issue Date *</label>
+                <input type="date" id="outSelDate" required />
+              </div>
+              <div class="field">
                 <label>Item *</label>
                 <select id="outSelItem" onchange="showFifoNext()" required></select>
               </div>
@@ -851,6 +1021,10 @@
           <form onsubmit="saveProdReturn(event)">
             <div class="form-row-grid">
               <div class="field">
+                <label>Return Date *</label>
+                <input type="date" id="retSelDate" required />
+              </div>
+              <div class="field">
                 <label>Item *</label>
                 <select id="retSelItem" onchange="fetchLastOutward()" required></select>
               </div>
@@ -881,13 +1055,13 @@
         <div class="surface-card">
           <div class="surface-head">
             <h3>GRN &amp; Lot Movement Ledger</h3>
-            <button class="btn btn-blue btn-sm no-print" onclick="downloadLedgerCSV()">Export Audit Ledger (CSV)</button>
+            <button class="btn btn-blue btn-sm" onclick="downloadLedgerCSV()">Export Audit Ledger (CSV)</button>
           </div>
           <div style="overflow-x:auto;">
             <table>
               <thead>
                 <tr>
-                  <th>Date/Time</th>
+                  <th>Date</th>
                   <th>Type</th>
                   <th>Code</th>
                   <th>Item Name</th>
@@ -907,7 +1081,6 @@
       <!-- REPORTS & ADMIN TAB -->
       <div id="tabReportsAdmin" class="view-panel">
         <div class="three-col-cards">
-          <!-- Export & Print Reports -->
           <div class="sub-feature-card">
             <h4>Export &amp; Print Reports</h4>
             <p>Download CSV reports or print clean statements.</p>
@@ -916,7 +1089,6 @@
             <button type="button" class="btn btn-dark full-w" onclick="window.print()">Print / Save PDF Report</button>
           </div>
 
-          <!-- Instant Share & Alerts -->
           <div class="sub-feature-card">
             <h4>Instant Share &amp; Alerts</h4>
             <p>Dispatch live valuation and low-stock summaries via WhatsApp or Email.</p>
@@ -925,7 +1097,6 @@
             <button type="button" class="btn btn-rose full-w" onclick="openLowStockModal()">Open Low Stock Popup</button>
           </div>
 
-          <!-- Company Logo & Backup -->
           <div class="sub-feature-card">
             <h4>Company Logo &amp; Backup</h4>
             <p>Customize company logo or export/restore isolated company JSON backup.</p>
@@ -941,7 +1112,6 @@
           </div>
         </div>
 
-        <!-- Company Sub-User Management -->
         <div class="surface-card">
           <div class="surface-head">
             <div>
@@ -984,7 +1154,6 @@
           </div>
         </div>
 
-        <!-- Complete Transaction Audit Ledger -->
         <div class="surface-card">
           <div class="surface-head">
             <h3>Complete Transaction Audit Ledger</h3>
@@ -1033,6 +1202,9 @@
     </div>
   </div>
 
+  <!-- DEDICATED PRINTABLE PDF REPORT SHEET -->
+  <div id="pdfPrintSheet"></div>
+
   <script>
     const MASTER_AUTH = {
       portalId: "AB-MASTER",
@@ -1042,6 +1214,29 @@
     const REGISTRY_KEY = "icsbab_abs_companies_v2";
     let currentComp = null;
     let currentSessionUser = null;
+    let cachedLowList = [];
+    let computedStockRows = [];
+
+    function todayISO() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function initDefaultDates() {
+      const t = todayISO();
+      if (document.getElementById("closingStockDate") && !document.getElementById("closingStockDate").value) {
+        document.getElementById("closingStockDate").value = t;
+      }
+      if (document.getElementById("ioFromDate") && !document.getElementById("ioFromDate").value) {
+        document.getElementById("ioFromDate").value = t;
+      }
+      if (document.getElementById("ioToDate") && !document.getElementById("ioToDate").value) {
+        document.getElementById("ioToDate").value = t;
+      }
+      ["inSelDate", "outSelDate", "retSelDate"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.value) el.value = t;
+      });
+    }
 
     function loadRegistry() {
       try { return JSON.parse(localStorage.getItem(REGISTRY_KEY)) || []; }
@@ -1202,6 +1397,7 @@
       document.getElementById("authScreen").style.display = "none";
       document.getElementById("companyView").style.display = "flex";
 
+      initDefaultDates();
       applyCompanyHeader();
       refreshWorkspace(true);
     }
@@ -1261,12 +1457,13 @@
       const price = parseFloat(document.getElementById("mPrice").value) || 0;
       const opening = parseFloat(document.getElementById("mOpening").value) || 0;
       const min = parseFloat(document.getElementById("mMin").value) || 0;
+      const dtISO = todayISO();
 
-      store.items.push({ code, category, name, grade, supplier, price, min });
+      store.items.push({ code, category, name, grade, supplier, price, opening, min, createdDate: dtISO });
       if (opening > 0) {
-        store.lots.push({ code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now() });
+        store.lots.push({ code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now(), dateISO: dtISO });
         store.ledger.unshift({
-          dt: new Date().toLocaleString("en-IN"),
+          dt: dtISO,
           type: "OPENING",
           ref: "OPENING",
           category,
@@ -1301,15 +1498,16 @@
       const item = store.items.find(i => i.code === code);
       if (!item) return;
 
+      const dtISO = document.getElementById("inSelDate").value || todayISO();
       const grn = document.getElementById("inSelGrn").value.trim();
       const lot = document.getElementById("inSelLot").value.trim();
       const rate = parseFloat(document.getElementById("inSelPrice").value) || item.price;
       const qty = parseFloat(document.getElementById("inSelQty").value) || 0;
 
       item.price = rate;
-      store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now() });
+      store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now(), dateISO: dtISO });
       store.ledger.unshift({
-        dt: new Date().toLocaleString("en-IN"),
+        dt: dtISO,
         type: "INWARD",
         ref: grn,
         category: item.category,
@@ -1323,6 +1521,7 @@
       });
       saveCompStore(currentComp.id, store);
       e.target.reset();
+      initDefaultDates();
       refreshWorkspace(false);
       alert("Inward GRN posted.");
     }
@@ -1340,6 +1539,7 @@
       const store = loadCompStore(currentComp.id);
       const code = document.getElementById("outSelItem").value;
       const item = store.items.find(i => i.code === code);
+      const dtISO = document.getElementById("outSelDate").value || todayISO();
       const ref = document.getElementById("outSlipRef").value.trim();
       let need = parseFloat(document.getElementById("outIssueQty").value) || 0;
 
@@ -1356,7 +1556,7 @@
         l.qty -= take;
         need -= take;
         store.ledger.unshift({
-          dt: new Date().toLocaleString("en-IN"),
+          dt: dtISO,
           type: "OUTWARD",
           ref,
           category: item.category,
@@ -1371,6 +1571,7 @@
       }
       saveCompStore(currentComp.id, store);
       e.target.reset();
+      initDefaultDates();
       refreshWorkspace(true);
       alert("FIFO outward issued.");
     }
@@ -1395,6 +1596,7 @@
       const store = loadCompStore(currentComp.id);
       const code = document.getElementById("retSelItem").value;
       const item = store.items.find(i => i.code === code);
+      const dtISO = document.getElementById("retSelDate").value || todayISO();
       const lot = document.getElementById("retAutoLot").value;
       const grn = document.getElementById("retAutoGrn").value;
       const rate = parseFloat(document.getElementById("retAutoPrice").value) || 0;
@@ -1404,10 +1606,10 @@
 
       const existing = store.lots.find(l => l.code === code && l.lot === lot && l.grn === grn);
       if (existing) existing.qty += qty;
-      else store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now() });
+      else store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now(), dateISO: dtISO });
 
       store.ledger.unshift({
-        dt: new Date().toLocaleString("en-IN"),
+        dt: dtISO,
         type: "PROD-RETURN",
         ref: grn,
         category: item.category,
@@ -1421,6 +1623,7 @@
       });
       saveCompStore(currentComp.id, store);
       e.target.reset();
+      initDefaultDates();
       refreshWorkspace(false);
       alert("Return posted to stock.");
     }
@@ -1522,7 +1725,7 @@
 
     function buildSummaryText() {
       const totalTxt = document.getElementById("kpiTotalVal").textContent;
-      const lowNames = cachedLowList.map(x => `${x.name} (${x.qty})`).join(", ") || "None";
+      const lowNames = cachedLowList.map(x => `${x.name} (${x.closingQty})`).join(", ") || "None";
       return `ICSBAB Inventory Control - ${currentComp.name} (${currentComp.id})\nTotal Valuation: ${totalTxt}\nLow Stock Items: ${lowNames}`;
     }
 
@@ -1537,7 +1740,59 @@
       window.location.href = `mailto:?subject=${subj}&body=${body}`;
     }
 
-    let cachedLowList = [];
+    function setCategoryFilter(cat) {
+      document.getElementById("fltCategory").value = cat;
+      renderDashboardTable();
+    }
+
+    function setStatusFilter(st) {
+      document.getElementById("fltStatus").value = st;
+      renderDashboardTable();
+    }
+
+    function resetDashFilters() {
+      document.getElementById("fltCategory").value = "ALL";
+      document.getElementById("fltStatus").value = "ALL";
+      document.getElementById("fltSearch").value = "";
+      renderDashboardTable();
+    }
+
+    function computeStockAsOnDate(store, targetDateISO) {
+      return store.items.map(item => {
+        const created = item.createdDate || "0000-00-00";
+        const opening = created <= targetDateISO ? (parseFloat(item.opening) || 0) : 0;
+
+        let inward = 0;
+        let prodRet = 0;
+        let outward = 0;
+
+        store.ledger.forEach(entry => {
+          if (entry.code !== item.code) return;
+          const entryDate = (entry.dt || "").slice(0, 10);
+          if (entryDate && entryDate > targetDateISO) return;
+          if (entry.type === "INWARD") inward += parseFloat(entry.qty) || 0;
+          else if (entry.type === "PROD-RETURN") prodRet += parseFloat(entry.qty) || 0;
+          else if (entry.type === "OUTWARD") outward += Math.abs(parseFloat(entry.qty) || 0);
+        });
+
+        const closingQty = opening + inward + prodRet - outward;
+        const stockValue = closingQty * item.price;
+        let status = "HEALTHY";
+        if (closingQty <= 0) status = "CRITICAL";
+        else if (closingQty <= item.min) status = "LOW";
+
+        return {
+          ...item,
+          opening,
+          inward,
+          prodRet,
+          outward,
+          closingQty,
+          stockValue,
+          status
+        };
+      });
+    }
 
     function refreshWorkspace(showPopup) {
       const store = loadCompStore(currentComp.id);
@@ -1547,6 +1802,8 @@
       document.getElementById("inSelItem").innerHTML = opts;
       document.getElementById("outSelItem").innerHTML = opts;
       document.getElementById("retSelItem").innerHTML = opts;
+
+      computedStockRows = computeStockAsOnDate(store, "9999-12-31");
 
       let totalVal = 0;
       let crit = 0;
@@ -1561,42 +1818,22 @@
         CONSUMABLE: { val: 0, cnt: 0 }
       };
 
-      const rowsHtml = store.items.map(item => {
-        const qty = store.lots.filter(l => l.code === item.code).reduce((s, l) => s + l.qty, 0);
-        const val = qty * item.price;
-        totalVal += val;
-        if (catTotals[item.category]) {
-          catTotals[item.category].val += val;
-          catTotals[item.category].cnt += 1;
+      computedStockRows.forEach(row => {
+        totalVal += row.stockValue;
+        if (catTotals[row.category]) {
+          catTotals[row.category].val += row.stockValue;
+          catTotals[row.category].cnt += 1;
         }
-
-        if (qty <= 0) {
+        if (row.status === "CRITICAL") {
           crit++;
-          cachedLowList.push({ ...item, qty });
-        } else if (qty <= item.min) {
+          cachedLowList.push(row);
+        } else if (row.status === "LOW") {
           low++;
-          cachedLowList.push({ ...item, qty });
+          cachedLowList.push(row);
         } else {
           ok++;
         }
-
-        return `
-          <tr>
-            <td><strong>${item.category}</strong></td>
-            <td>${item.code}</td>
-            <td>${item.name}</td>
-            <td>${item.grade}</td>
-            <td>${item.supplier}</td>
-            <td>₹${item.price.toFixed(2)}</td>
-            <td><strong>${qty}</strong></td>
-            <td>${item.min}</td>
-            <td>₹${val.toFixed(2)}</td>
-          </tr>
-        `;
-      }).join("");
-
-      document.getElementById("dashStockRows").innerHTML = rowsHtml ||
-        `<tr><td colspan="9" style="text-align:center;color:#64748b;">No store items added yet.</td></tr>`;
+      });
 
       document.getElementById("kpiTotalVal").textContent = "₹" + totalVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       document.getElementById("kpiItemCount").textContent = `Across ${store.items.length} store items`;
@@ -1606,9 +1843,15 @@
       document.getElementById("hdrAlertCount").textContent = cachedLowList.length;
 
       ["RM", "BOP", "PACKING", "CONSUMABLE"].forEach(c => {
-        document.getElementById("catVal" + c).textContent = "₹" + catTotals[c].val.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const v = catTotals[c].val;
+        const pct = totalVal > 0 ? Math.round((v / totalVal) * 100) : 0;
+        document.getElementById("catVal" + c).textContent = "₹" + v.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         document.getElementById("catCnt" + c).textContent = `${catTotals[c].cnt} items in store`;
+        document.getElementById("pct" + c).textContent = `${pct}%`;
+        document.getElementById("bar" + c).style.height = `${Math.max(8, pct)}%`;
       });
+
+      renderDashboardTable();
 
       document.getElementById("ledgerRows").innerHTML = store.ledger.map(l => `
         <tr>
@@ -1619,8 +1862,8 @@
           <td>${l.grn}</td>
           <td>${l.lot}</td>
           <td><strong>${l.qty}</strong></td>
-          <td>₹${l.rate.toFixed(2)}</td>
-          <td>₹${l.amt.toFixed(2)}</td>
+          <td>₹${Number(l.rate).toFixed(2)}</td>
+          <td>₹${Number(l.amt).toFixed(2)}</td>
         </tr>
       `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No ledger entries yet.</td></tr>`;
 
@@ -1633,7 +1876,7 @@
           <td>${l.name} (${l.code})</td>
           <td>GRN: ${l.grn} / Lot: ${l.lot}</td>
           <td><strong>${l.qty}</strong></td>
-          <td>₹${l.amt.toFixed(2)}</td>
+          <td>₹${Number(l.amt).toFixed(2)}</td>
         </tr>
       `).join("") || `<tr><td colspan="8" style="text-align:center;color:#64748b;">No transactions recorded yet.</td></tr>`;
 
@@ -1644,13 +1887,157 @@
       }
     }
 
+    function renderDashboardTable() {
+      const catFlt = document.getElementById("fltCategory").value;
+      const stFlt = document.getElementById("fltStatus").value;
+      const q = (document.getElementById("fltSearch").value || "").trim().toLowerCase();
+
+      const filtered = computedStockRows.filter(r => {
+        if (catFlt !== "ALL" && r.category !== catFlt) return false;
+        if (stFlt !== "ALL" && r.status !== stFlt) return false;
+        if (q) {
+          const hay = `${r.code} ${r.name} ${r.grade} ${r.supplier} ${r.category}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      document.getElementById("dashStockRows").innerHTML = filtered.length
+        ? filtered.map(r => {
+            const dotColor = r.status === "CRITICAL" ? "#e11d48" : (r.status === "LOW" ? "#f59e0b" : "#10b981");
+            return `
+              <tr>
+                <td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColor};margin-right:6px;"></span><strong>${r.status}</strong></td>
+                <td><strong>${r.category}</strong></td>
+                <td><strong>${r.code}</strong> — ${r.name}</td>
+                <td>${r.grade} • ${r.supplier}</td>
+                <td>₹${r.price.toFixed(2)}</td>
+                <td>${r.opening}</td>
+                <td>${r.inward}</td>
+                <td>${r.prodRet}</td>
+                <td>${r.outward}</td>
+                <td><strong>${r.closingQty}</strong></td>
+                <td>₹${r.stockValue.toFixed(2)}</td>
+              </tr>
+            `;
+          }).join("")
+        : `<tr><td colspan="11" style="text-align:center;color:#64748b;padding:18px;">No items match the current filter.</td></tr>`;
+    }
+
+    function downloadDayWiseClosingStockPDF() {
+      const dateVal = document.getElementById("closingStockDate").value || todayISO();
+      const store = loadCompStore(currentComp.id);
+      const rows = computeStockAsOnDate(store, dateVal);
+      let grandVal = 0;
+
+      const bodyHtml = rows.map(r => {
+        grandVal += r.stockValue;
+        return `
+          <tr>
+            <td>${r.category}</td>
+            <td>${r.code}</td>
+            <td>${r.name}</td>
+            <td>${r.grade}</td>
+            <td>${r.supplier}</td>
+            <td>₹${r.price.toFixed(2)}</td>
+            <td>${r.opening}</td>
+            <td>${r.inward}</td>
+            <td>${r.prodRet}</td>
+            <td>${r.outward}</td>
+            <td><strong>${r.closingQty}</strong></td>
+            <td>₹${r.stockValue.toFixed(2)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const sheet = document.getElementById("pdfPrintSheet");
+      sheet.innerHTML = `
+        <h2 style="margin-bottom:4px;">${currentComp.name} (${currentComp.id}) — Day Wise Closing Stock Report</h2>
+        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Formula: Opening + Inward + Prod Ret - Outward</p>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Category</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Code</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Item Name</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Grade</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Supplier</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Rate</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Opening</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Inward</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Prod Ret</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Outward</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Closing</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bodyHtml || `<tr><td colspan="12" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No stock records found for ${dateVal}.</td></tr>`}
+          </tbody>
+        </table>
+        <p style="margin-top:12px;font-weight:800;font-size:13px;">Total Closing Stock Valuation As On ${dateVal}: ₹${grandVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      `;
+      window.print();
+    }
+
+    function downloadDateWiseInwardOutwardPDF() {
+      const fromD = document.getElementById("ioFromDate").value || "0000-00-00";
+      const toD = document.getElementById("ioToDate").value || "9999-12-31";
+      const store = loadCompStore(currentComp.id);
+
+      const ioEntries = store.ledger.filter(l => {
+        if (l.type !== "INWARD" && l.type !== "OUTWARD") return false;
+        const d = (l.dt || "").slice(0, 10);
+        return d >= fromD && d <= toD;
+      });
+
+      const bodyHtml = ioEntries.map(l => `
+        <tr>
+          <td>${l.dt}</td>
+          <td><strong>${l.type}</strong></td>
+          <td>${l.ref || l.grn}</td>
+          <td>${l.category || "-"}</td>
+          <td>${l.code} — ${l.name}</td>
+          <td>GRN: ${l.grn} / Lot: ${l.lot}</td>
+          <td><strong>${Math.abs(parseFloat(l.qty) || 0)}</strong></td>
+          <td>₹${Number(l.rate).toFixed(2)}</td>
+          <td>₹${Number(l.amt).toFixed(2)}</td>
+        </tr>
+      `).join("");
+
+      const sheet = document.getElementById("pdfPrintSheet");
+      sheet.innerHTML = `
+        <h2 style="margin-bottom:4px;">${currentComp.name} (${currentComp.id}) — Date Wise Inward &amp; Outward Report</h2>
+        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Period: <strong>${fromD}</strong> to <strong>${toD}</strong></p>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead>
+            <tr>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Date</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Movement</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Ref / Slip</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Category</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Item</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">GRN &amp; Lot</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Qty</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Rate</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bodyHtml || `<tr><td colspan="9" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No Inward or Outward entries between ${fromD} and ${toD}.</td></tr>`}
+          </tbody>
+        </table>
+      `;
+      window.print();
+    }
+
     function openLowStockModal() {
       document.getElementById("lowStockPopupRows").innerHTML = cachedLowList.length
         ? cachedLowList.map(x => `
             <tr>
               <td>${x.category}</td>
               <td>${x.name} (${x.code})</td>
-              <td style="color:#e11d48;font-weight:700;">${x.qty}</td>
+              <td style="color:#e11d48;font-weight:700;">${x.closingQty}</td>
               <td>${x.min}</td>
             </tr>
           `).join("")
@@ -1659,11 +2046,9 @@
     }
 
     function downloadStockCSV() {
-      const store = loadCompStore(currentComp.id);
-      let csv = "Category,Code,Name,Grade,Supplier,Price,Qty,Min\n";
-      store.items.forEach(i => {
-        const qty = store.lots.filter(l => l.code === i.code).reduce((s, l) => s + l.qty, 0);
-        csv += `"${i.category}","${i.code}","${i.name}","${i.grade}","${i.supplier}",${i.price},${qty},${i.min}\n`;
+      let csv = "Status,Category,Code,Name,Grade,Supplier,Price,Opening,Inward,ProdReturn,Outward,Closing,Value\n";
+      computedStockRows.forEach(r => {
+        csv += `"${r.status}","${r.category}","${r.code}","${r.name}","${r.grade}","${r.supplier}",${r.price},${r.opening},${r.inward},${r.prodRet},${r.outward},${r.closingQty},${r.stockValue}\n`;
       });
       triggerDownload(csv, `${currentComp.id}_Closing_Stock.csv`);
     }
