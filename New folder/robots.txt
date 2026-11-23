@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://icsbab-inventory.netlify.app/sitemap.xml
