@@ -38,7 +38,6 @@
       color: var(--text-dark);
     }
 
-    /* LOGIN SCREEN */
     .login-wrapper {
       min-height: 100vh;
       display: flex;
@@ -151,11 +150,10 @@
     .btn-rose:hover { background: var(--rose-hover); }
     .btn-dark { background: #1e293b; color: #ffffff; border: 1px solid #334155; }
     .btn-dark:hover { background: #334155; }
-    .btn-sm { padding: 7px 12px; font-size: 11.5px; }
+    .btn-sm { padding: 6px 11px; font-size: 11.5px; }
     .full-w { width: 100%; }
     .err-box { color: var(--rose); font-size: 12px; font-weight: 700; margin-top: 8px; display: none; }
 
-    /* APP SHELL */
     .app-shell { display: none; min-height: 100vh; flex-direction: column; }
     .top-header {
       background: #0b142c;
@@ -412,6 +410,20 @@
     }
     .pdf-control-box .field { margin-bottom: 0; flex: 1; min-width: 135px; }
 
+    /* Multi-line Inward Lot Rows */
+    .inward-lines-wrap { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+    .inward-line-row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr 0.9fr auto;
+      gap: 10px;
+      align-items: end;
+      background: #f1f5f9;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+    }
+    .inward-line-row .field { margin-bottom: 0; }
+
     .three-col-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -432,18 +444,6 @@
     .sub-feature-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
 
     .form-row-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 14px; }
-    .inward-lot-row {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 0.85fr 0.85fr auto;
-      gap: 10px;
-      align-items: end;
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 10px;
-    }
-    .inward-lot-row .field { margin-bottom: 0; }
     .subuser-grid {
       display: grid;
       grid-template-columns: 1.2fr 1.2fr 1fr auto;
@@ -484,7 +484,6 @@
       box-shadow: 0 24px 48px rgba(0,0,0,0.45);
     }
 
-    /* PRINTABLE PDF SHEET */
     #pdfPrintSheet {
       display: none;
       background: #ffffff;
@@ -504,7 +503,7 @@
     }
 
     @media (max-width: 980px) {
-      .dash-mid-grid, .three-col-cards, .subuser-grid, .pdf-bar-grid, .inward-lot-row { grid-template-columns: 1fr; }
+      .dash-mid-grid, .three-col-cards, .subuser-grid, .pdf-bar-grid, .inward-line-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 900px) {
       .login-card, .hero-banner { grid-template-columns: 1fr; }
@@ -517,7 +516,7 @@
 </head>
 <body>
 
-  <!-- LOGIN & MASTER PORTAL SCREEN -->
+  <!-- LOGIN & MASTER PORTAL SCREEN (UNCHANGED) -->
   <div id="authScreen" class="login-wrapper">
     <div class="login-card">
       <div class="login-showcase">
@@ -597,7 +596,7 @@
     </div>
   </div>
 
-  <!-- AB SOFTWARE MASTER PORTAL & COMPANY CREATE VIEW -->
+  <!-- AB SOFTWARE MASTER PORTAL & COMPANY CREATE VIEW (UNCHANGED) -->
   <div id="masterView" class="app-shell">
     <header class="top-header">
       <div class="brand-cluster">
@@ -822,7 +821,6 @@
           </div>
         </div>
 
-        <!-- LIVE CLOSING STOCK SUMMARY + DAY WISE & DATE WISE PDF DOWNLOADS -->
         <div class="surface-card">
           <div class="surface-head">
             <div>
@@ -944,31 +942,29 @@
         </div>
       </div>
 
-      <!-- INWARD GRN TAB -->
+      <!-- INWARD GRN TAB (MULTIPLE LOTS + SAME/MULTIPLE ITEMS + NO DUPLICATE GRN+LOT + DELETE) -->
       <div id="tabInward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
-            <div>
-              <h3>Inward GRN Entry</h3>
-              <span>Add multiple Lot Numbers &amp; same material multiple times under one unique GRN Number</span>
-            </div>
-            <button type="button" class="btn btn-emerald btn-sm" onclick="addInwardLineRow()">+ Add Lot / Material Row</button>
+            <h3>Inward GRN Entry (Multiple Lots &amp; Items Allowed Per GRN)</h3>
+            <span>Same GRN + Lot cannot be posted twice</span>
           </div>
-          <form onsubmit="saveInwardEntry(event)">
+          <form onsubmit="saveMultiInwardGRN(event)">
             <div class="form-row-grid">
               <div class="field">
-                <label>Entry Date *</label>
-                <input type="date" id="inSelDate" required />
+                <label>GRN Date *</label>
+                <input type="date" id="inBatchDate" required />
               </div>
               <div class="field">
-                <label>GRN Number (Unique per GRN) *</label>
-                <input type="text" id="inSelGrn" placeholder="Enter Unique GRN No" required />
+                <label>GRN Number *</label>
+                <input type="text" id="inBatchGrn" placeholder="Enter GRN Number" required />
               </div>
             </div>
 
-            <div id="inwardLinesContainer"></div>
+            <div id="inwardLinesContainer" class="inward-lines-wrap"></div>
 
-            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+              <button type="button" class="btn btn-dark btn-sm" onclick="addInwardLineRow()">+ Add Item / Lot Row</button>
               <button type="submit" class="btn btn-blue">Post Inward GRN</button>
             </div>
           </form>
@@ -976,8 +972,8 @@
 
         <div class="surface-card">
           <div class="surface-head">
-            <h3>Recent Inward Entries</h3>
-            <span>Delete wrong Inward entry to automatically adjust stock &amp; lot balance</span>
+            <h3>Posted Inward Entries (Delete Wrong Entry)</h3>
+            <span>Deleting reverses lot stock and removes inward ledger entry</span>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -986,20 +982,19 @@
                   <th>Date</th>
                   <th>GRN No</th>
                   <th>Lot No</th>
-                  <th>Code &amp; Item</th>
-                  <th>Qty</th>
+                  <th>Item</th>
                   <th>Rate</th>
-                  <th>Amount</th>
+                  <th>Qty</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="inwardHistoryRows"></tbody>
+              <tbody id="inwardManageRows"></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- OUTWARD FIFO TAB -->
+      <!-- OUTWARD FIFO TAB (+ DELETE WRONG ENTRY) -->
       <div id="tabOutward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1035,8 +1030,8 @@
 
         <div class="surface-card">
           <div class="surface-head">
-            <h3>Recent Outward Entries</h3>
-            <span>Delete wrong Outward entry to restore stock back to FIFO lot</span>
+            <h3>Posted Outward Entries (Delete Wrong Entry)</h3>
+            <span>Deleting restores issued quantity back to FIFO lots</span>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -1044,22 +1039,20 @@
                 <tr>
                   <th>Date</th>
                   <th>Slip / Ref</th>
+                  <th>Item</th>
                   <th>GRN No</th>
                   <th>Lot No</th>
-                  <th>Code &amp; Item</th>
                   <th>Issued Qty</th>
-                  <th>Rate</th>
-                  <th>Amount</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="outwardHistoryRows"></tbody>
+              <tbody id="outwardManageRows"></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- RETURN FROM PRODUCTION TAB -->
+      <!-- RETURN FROM PRODUCTION TAB (+ DELETE WRONG ENTRY) -->
       <div id="tabReturn" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1099,24 +1092,22 @@
 
         <div class="surface-card">
           <div class="surface-head">
-            <h3>Recent Return from Production Entries</h3>
-            <span>Delete wrong Return entry to automatically revert stock</span>
+            <h3>Posted Return from Production Entries (Delete Wrong Entry)</h3>
+            <span>Deleting deducts returned quantity from stock</span>
           </div>
           <div style="overflow-x:auto;">
             <table>
               <thead>
                 <tr>
                   <th>Date</th>
+                  <th>Item</th>
                   <th>GRN No</th>
                   <th>Lot No</th>
-                  <th>Code &amp; Item</th>
                   <th>Return Qty</th>
-                  <th>Rate</th>
-                  <th>Amount</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="returnHistoryRows"></tbody>
+              <tbody id="returnManageRows"></tbody>
             </table>
           </div>
         </div>
@@ -1127,7 +1118,7 @@
         <div class="surface-card">
           <div class="surface-head">
             <h3>GRN &amp; Lot Movement Ledger</h3>
-            <button class="btn btn-blue btn-sm" onclick="downloadLedgerCSV()">Export Audit Ledger (CSV)</button>
+            <button class="btn btn-blue btn-sm no-print" onclick="downloadLedgerCSV()">Export Audit Ledger (CSV)</button>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -1142,7 +1133,6 @@
                   <th>Qty</th>
                   <th>Rate</th>
                   <th>Amount</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="ledgerRows"></tbody>
@@ -1294,10 +1284,6 @@
       return new Date().toISOString().slice(0, 10);
     }
 
-    function makeUid() {
-      return "TXN_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
-    }
-
     function initDefaultDates() {
       const t = todayISO();
       if (document.getElementById("closingStockDate") && !document.getElementById("closingStockDate").value) {
@@ -1309,7 +1295,7 @@
       if (document.getElementById("ioToDate") && !document.getElementById("ioToDate").value) {
         document.getElementById("ioToDate").value = t;
       }
-      ["inSelDate", "outSelDate", "retSelDate"].forEach(id => {
+      ["inBatchDate", "outSelDate", "retSelDate"].forEach(id => {
         const el = document.getElementById(id);
         if (el && !el.value) el.value = t;
       });
@@ -1328,21 +1314,12 @@
     function loadCompStore(compId) {
       const raw = localStorage.getItem(storeKeyFor(compId));
       const parsed = raw ? JSON.parse(raw) : {};
-      const store = {
+      return {
         items: parsed.items || [],
         lots: parsed.lots || [],
         ledger: parsed.ledger || [],
         subUsers: parsed.subUsers || []
       };
-      let changed = false;
-      store.ledger.forEach((entry, idx) => {
-        if (!entry.id) {
-          entry.id = "LEGACY_" + idx + "_" + (entry.dt || "") + "_" + (entry.code || "");
-          changed = true;
-        }
-      });
-      if (changed) saveCompStore(compId, store);
-      return store;
     }
     function saveCompStore(compId, store) {
       localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
@@ -1484,8 +1461,8 @@
       document.getElementById("companyView").style.display = "flex";
 
       initDefaultDates();
+      resetInwardLines();
       applyCompanyHeader();
-      resetInwardRows();
       refreshWorkspace(true);
     }
 
@@ -1548,9 +1525,11 @@
 
       store.items.push({ code, category, name, grade, supplier, price, opening, min, createdDate: dtISO });
       if (opening > 0) {
-        store.lots.push({ code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now(), dateISO: dtISO });
+        const lid = "LOT-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6);
+        store.lots.push({ lotId: lid, code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now(), dateISO: dtISO });
         store.ledger.unshift({
-          id: makeUid(),
+          entryId: "LED-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+          lotId: lid,
           dt: dtISO,
           type: "OPENING",
           ref: "OPENING",
@@ -1570,31 +1549,31 @@
       alert("Item saved.");
     }
 
-    /* MULTI-LOT & SAME MATERIAL INWARD HELPERS */
-    function buildItemOptionsHTML() {
-      if (!currentComp) return `<option value="">-- Select Item --</option>`;
-      const store = loadCompStore(currentComp.id);
+    /* MULTI-ROW INWARD GRN WITH DUPLICATE (GRN + LOT) PREVENTION */
+    function buildItemOptionsHtml(store) {
       return `<option value="">-- Select Item --</option>` +
         store.items.map(i => `<option value="${i.code}">[${i.category}] ${i.code} - ${i.name}</option>`).join("");
     }
 
-    function resetInwardRows() {
-      const container = document.getElementById("inwardLinesContainer");
-      if (!container) return;
-      container.innerHTML = "";
+    function resetInwardLines() {
+      const wrap = document.getElementById("inwardLinesContainer");
+      if (!wrap) return;
+      wrap.innerHTML = "";
       addInwardLineRow();
     }
 
     function addInwardLineRow() {
-      const container = document.getElementById("inwardLinesContainer");
-      if (!container) return;
-      const row = document.createElement("div");
-      row.className = "inward-lot-row";
-      row.innerHTML = `
+      const store = currentComp ? loadCompStore(currentComp.id) : { items: [] };
+      const wrap = document.getElementById("inwardLinesContainer");
+      const rowId = "inRow_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
+      const div = document.createElement("div");
+      div.className = "inward-line-row";
+      div.id = rowId;
+      div.innerHTML = `
         <div class="field">
-          <label>Item (Same or Different) *</label>
-          <select class="in-row-item" onchange="fillInwardRowAuto(this)" required>
-            ${buildItemOptionsHTML()}
+          <label>Item *</label>
+          <select class="in-row-item" onchange="onInwardRowItemChange('${rowId}')" required>
+            ${buildItemOptionsHtml(store)}
           </select>
         </div>
         <div class="field">
@@ -1602,111 +1581,112 @@
           <input type="text" class="in-row-lot" placeholder="Enter Lot No" required />
         </div>
         <div class="field">
-          <label>Supplier</label>
-          <input type="text" class="in-row-supp" readonly />
-        </div>
-        <div class="field">
-          <label>Unit Price (₹) *</label>
-          <input type="number" step="0.01" class="in-row-price" required />
+          <label>Unit Price ₹ *</label>
+          <input type="number" step="0.01" class="in-row-rate" placeholder="0.00" required />
         </div>
         <div class="field">
           <label>Qty *</label>
-          <input type="number" step="0.01" class="in-row-qty" placeholder="Qty" required />
+          <input type="number" step="0.01" class="in-row-qty" placeholder="0" required />
+        </div>
+        <div class="field">
+          <label>Supplier</label>
+          <input type="text" class="in-row-supp" readonly />
         </div>
         <div>
-          <button type="button" class="btn btn-rose btn-sm" onclick="removeInwardLineRow(this)">Remove</button>
+          <button type="button" class="btn btn-rose btn-sm" onclick="removeInwardLineRow('${rowId}')">Remove</button>
         </div>
       `;
-      container.appendChild(row);
+      wrap.appendChild(div);
     }
 
-    function removeInwardLineRow(btn) {
-      const container = document.getElementById("inwardLinesContainer");
-      if (container.children.length <= 1) {
-        alert("Kam se kam 1 item/lot row zaroori hai.");
+    function removeInwardLineRow(rowId) {
+      const wrap = document.getElementById("inwardLinesContainer");
+      if (wrap.children.length <= 1) {
+        alert("At least one item/lot row is required.");
         return;
       }
-      btn.closest(".inward-lot-row").remove();
+      const el = document.getElementById(rowId);
+      if (el) el.remove();
     }
 
-    function fillInwardRowAuto(selectEl) {
-      const row = selectEl.closest(".inward-lot-row");
-      const code = selectEl.value;
+    function onInwardRowItemChange(rowId) {
+      const row = document.getElementById(rowId);
+      if (!row || !currentComp) return;
+      const code = row.querySelector(".in-row-item").value;
       const item = loadCompStore(currentComp.id).items.find(i => i.code === code);
       if (item) {
         row.querySelector(".in-row-supp").value = item.supplier;
-        row.querySelector(".in-row-price").value = item.price;
-      } else {
-        row.querySelector(".in-row-supp").value = "";
-        row.querySelector(".in-row-price").value = "";
+        row.querySelector(".in-row-rate").value = item.price;
       }
     }
 
-    function saveInwardEntry(e) {
+    function saveMultiInwardGRN(e) {
       e.preventDefault();
       const store = loadCompStore(currentComp.id);
-      const dtISO = document.getElementById("inSelDate").value || todayISO();
-      const grn = document.getElementById("inSelGrn").value.trim();
+      const dtISO = document.getElementById("inBatchDate").value || todayISO();
+      const grnNo = document.getElementById("inBatchGrn").value.trim().toUpperCase();
+      if (!grnNo) return;
 
-      if (!grn) {
-        alert("GRN Number zaroori hai.");
-        return;
-      }
-
-      // Duplicate GRN check: ek bar save hone ke bad dobara same GRN add na ho
-      const grnNorm = grn.toUpperCase();
-      const alreadyExists = store.ledger.some(l => l.type === "INWARD" && (l.grn || "").trim().toUpperCase() === grnNorm);
-      if (alreadyExists) {
-        alert(`GRN Number "${grn}" pehle se save ho chuka hai! New entry mein wahi GRN Number dobara add nahi ho sakta.`);
-        return;
-      }
-
-      const rows = Array.from(document.querySelectorAll("#inwardLinesContainer .inward-lot-row"));
+      const rows = Array.from(document.querySelectorAll("#inwardLinesContainer .inward-line-row"));
       const parsedLines = [];
-      const seenItemLotPairs = new Set();
+      const batchSeenLot = new Set();
 
-      for (let idx = 0; idx < rows.length; idx++) {
-        const r = rows[idx];
+      for (const r of rows) {
         const code = r.querySelector(".in-row-item").value;
-        const lot = r.querySelector(".in-row-lot").value.trim();
-        const rate = parseFloat(r.querySelector(".in-row-price").value);
+        const lotNo = r.querySelector(".in-row-lot").value.trim().toUpperCase();
+        const rate = parseFloat(r.querySelector(".in-row-rate").value);
         const qty = parseFloat(r.querySelector(".in-row-qty").value);
         const item = store.items.find(i => i.code === code);
 
-        if (!item || !lot || isNaN(qty) || qty <= 0) {
-          alert(`Row ${idx + 1}: Item, Lot Number aur valid Qty bharein.`);
+        if (!item || !lotNo || isNaN(rate) || isNaN(qty) || qty <= 0) {
+          alert("Please fill valid Item, Lot Number, Rate, and Qty in all rows.");
           return;
         }
-        const pairKey = `${code}__${lot.toUpperCase()}`;
-        if (seenItemLotPairs.has(pairKey)) {
-          alert(`Row ${idx + 1}: Same item (${code}) ke liye Lot Number "${lot}" do baar repeat ho raha hai. Alag Lot Number daalein.`);
+
+        if (batchSeenLot.has(lotNo)) {
+          alert(`Duplicate Lot Number "${lotNo}" inside the same GRN "${grnNo}" is not allowed.`);
           return;
         }
-        seenItemLotPairs.add(pairKey);
-        parsedLines.push({ item, code, lot, rate: isNaN(rate) ? item.price : rate, qty });
+        batchSeenLot.add(lotNo);
+
+        const alreadyPosted = store.lots.some(
+          l => l.grn.trim().toUpperCase() === grnNo && l.lot.trim().toUpperCase() === lotNo
+        );
+        if (alreadyPosted) {
+          alert(`GRN "${grnNo}" with Lot "${lotNo}" has already been posted. Same GRN and Lot number is not allowed again.`);
+          return;
+        }
+
+        parsedLines.push({ item, code, lotNo, rate, qty });
       }
 
-      parsedLines.forEach((line, i) => {
+      parsedLines.forEach((line, idx) => {
+        const lid = "LOT-" + Date.now() + "-" + idx + "-" + Math.random().toString(36).slice(2, 5);
+        const eid = "LED-" + Date.now() + "-" + idx + "-" + Math.random().toString(36).slice(2, 5);
         line.item.price = line.rate;
+
         store.lots.push({
+          lotId: lid,
           code: line.code,
-          grn,
-          lot: line.lot,
+          grn: grnNo,
+          lot: line.lotNo,
           price: line.rate,
           qty: line.qty,
-          ts: Date.now() + i,
+          ts: Date.now() + idx,
           dateISO: dtISO
         });
+
         store.ledger.unshift({
-          id: makeUid() + "_" + i,
+          entryId: eid,
+          lotId: lid,
           dt: dtISO,
           type: "INWARD",
-          ref: grn,
+          ref: grnNo,
           category: line.item.category,
           code: line.code,
           name: line.item.name,
-          grn,
-          lot: line.lot,
+          grn: grnNo,
+          lot: line.lotNo,
           qty: line.qty,
           rate: line.rate,
           amt: line.qty * line.rate
@@ -1714,11 +1694,30 @@
       });
 
       saveCompStore(currentComp.id, store);
-      e.target.reset();
+      document.getElementById("inBatchGrn").value = "";
+      resetInwardLines();
       initDefaultDates();
-      resetInwardRows();
       refreshWorkspace(false);
-      alert(`Inward GRN "${grn}" (${parsedLines.length} lot entries) successfully posted.`);
+      alert(`Inward GRN "${grnNo}" posted with ${parsedLines.length} lot entry(s).`);
+    }
+
+    function deleteInwardEntry(entryId) {
+      if (!confirm("Delete this Inward entry? Stock will be adjusted accordingly.")) return;
+      const store = loadCompStore(currentComp.id);
+      const idx = store.ledger.findIndex(x => x.entryId === entryId && x.type === "INWARD");
+      if (idx === -1) return;
+      const entry = store.ledger[idx];
+
+      if (entry.lotId) {
+        store.lots = store.lots.filter(l => l.lotId !== entry.lotId);
+      } else {
+        const lIdx = store.lots.findIndex(l => l.code === entry.code && l.grn === entry.grn && l.lot === entry.lot);
+        if (lIdx !== -1) store.lots.splice(lIdx, 1);
+      }
+
+      store.ledger.splice(idx, 1);
+      saveCompStore(currentComp.id, store);
+      refreshWorkspace(false);
     }
 
     function showFifoNext() {
@@ -1745,14 +1744,16 @@
         return;
       }
 
-      let step = 0;
+      const batchId = "OUTB-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6);
       for (const l of lots) {
         if (need <= 0) break;
         const take = Math.min(l.qty, need);
         l.qty -= take;
         need -= take;
         store.ledger.unshift({
-          id: makeUid() + "_" + (step++),
+          entryId: "LED-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+          batchId,
+          lotId: l.lotId || "",
           dt: dtISO,
           type: "OUTWARD",
           ref,
@@ -1771,6 +1772,38 @@
       initDefaultDates();
       refreshWorkspace(true);
       alert("FIFO outward issued.");
+    }
+
+    function deleteOutwardEntry(entryId) {
+      if (!confirm("Delete this Outward entry? Issued quantity will be restored to stock.")) return;
+      const store = loadCompStore(currentComp.id);
+      const idx = store.ledger.findIndex(x => x.entryId === entryId && x.type === "OUTWARD");
+      if (idx === -1) return;
+      const entry = store.ledger[idx];
+      const restoreQty = Math.abs(parseFloat(entry.qty) || 0);
+
+      let targetLot = entry.lotId ? store.lots.find(l => l.lotId === entry.lotId) : null;
+      if (!targetLot) {
+        targetLot = store.lots.find(l => l.code === entry.code && l.grn === entry.grn && l.lot === entry.lot);
+      }
+      if (targetLot) {
+        targetLot.qty += restoreQty;
+      } else {
+        store.lots.push({
+          lotId: "LOT-" + Date.now(),
+          code: entry.code,
+          grn: entry.grn,
+          lot: entry.lot,
+          price: entry.rate || 0,
+          qty: restoreQty,
+          ts: Date.now(),
+          dateISO: entry.dt || todayISO()
+        });
+      }
+
+      store.ledger.splice(idx, 1);
+      saveCompStore(currentComp.id, store);
+      refreshWorkspace(false);
     }
 
     function fetchLastOutward() {
@@ -1801,12 +1834,19 @@
 
       if (!lot || !grn || qty <= 0) return;
 
+      let lotRefId = "";
       const existing = store.lots.find(l => l.code === code && l.lot === lot && l.grn === grn);
-      if (existing) existing.qty += qty;
-      else store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now(), dateISO: dtISO });
+      if (existing) {
+        existing.qty += qty;
+        lotRefId = existing.lotId || "";
+      } else {
+        lotRefId = "LOT-" + Date.now();
+        store.lots.push({ lotId: lotRefId, code, grn, lot, price: rate, qty, ts: Date.now(), dateISO: dtISO });
+      }
 
       store.ledger.unshift({
-        id: makeUid(),
+        entryId: "LED-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+        lotId: lotRefId,
         dt: dtISO,
         type: "PROD-RETURN",
         ref: grn,
@@ -1826,68 +1866,25 @@
       alert("Return posted to stock.");
     }
 
-    /* DELETE WRONG ENTRY HANDLER (INWARD, OUTWARD, RETURN FROM PRODUCTION) */
-    function deleteLedgerEntry(entryId) {
+    function deleteReturnEntry(entryId) {
+      if (!confirm("Delete this Return from Production entry? Returned stock will be deducted.")) return;
       const store = loadCompStore(currentComp.id);
-      const idx = store.ledger.findIndex(l => l.id === entryId);
+      const idx = store.ledger.findIndex(x => x.entryId === entryId && x.type === "PROD-RETURN");
       if (idx === -1) return;
-
       const entry = store.ledger[idx];
-      if (entry.type === "OPENING") {
-        alert("Opening stock entry yahan se delete nahi ki ja sakti.");
-        return;
-      }
+      const retQty = parseFloat(entry.qty) || 0;
 
-      const absQty = Math.abs(parseFloat(entry.qty) || 0);
-      if (!confirm(`Kya aap is galat ${entry.type} entry ko delete karna chahte hain?\nItem: ${entry.name} (${entry.code})\nGRN: ${entry.grn} | Lot: ${entry.lot} | Qty: ${absQty}`)) {
-        return;
+      let targetLot = entry.lotId ? store.lots.find(l => l.lotId === entry.lotId) : null;
+      if (!targetLot) {
+        targetLot = store.lots.find(l => l.code === entry.code && l.grn === entry.grn && l.lot === entry.lot);
       }
-
-      if (entry.type === "INWARD") {
-        const lotObj = store.lots.find(l => l.code === entry.code && l.grn === entry.grn && l.lot === entry.lot);
-        if (lotObj) {
-          if (lotObj.qty < absQty - 0.0001) {
-            alert(`Is GRN/Lot se kuch stock already Outward issue ho chuka hai (Available Lot Qty: ${lotObj.qty}). Pehle us Outward entry ko delete karein.`);
-            return;
-          }
-          lotObj.qty -= absQty;
-          if (lotObj.qty <= 0.0001) {
-            store.lots = store.lots.filter(l => l !== lotObj);
-          }
-        }
-      } else if (entry.type === "OUTWARD") {
-        const lotObj = store.lots.find(l => l.code === entry.code && l.grn === entry.grn && l.lot === entry.lot);
-        if (lotObj) {
-          lotObj.qty += absQty;
-        } else {
-          store.lots.push({
-            code: entry.code,
-            grn: entry.grn,
-            lot: entry.lot,
-            price: entry.rate,
-            qty: absQty,
-            ts: Date.now(),
-            dateISO: entry.dt
-          });
-        }
-      } else if (entry.type === "PROD-RETURN") {
-        const lotObj = store.lots.find(l => l.code === entry.code && l.grn === entry.grn && l.lot === entry.lot);
-        if (lotObj) {
-          if (lotObj.qty < absQty - 0.0001) {
-            alert(`Is returned stock ka hissa already Outward issue ho chuka hai (Available Lot Qty: ${lotObj.qty}). Pehle us Outward entry ko delete karein.`);
-            return;
-          }
-          lotObj.qty -= absQty;
-          if (lotObj.qty <= 0.0001) {
-            store.lots = store.lots.filter(l => l !== lotObj);
-          }
-        }
+      if (targetLot) {
+        targetLot.qty = Math.max(0, targetLot.qty - retQty);
       }
 
       store.ledger.splice(idx, 1);
       saveCompStore(currentComp.id, store);
       refreshWorkspace(false);
-      alert(`${entry.type} entry delete ho gayi aur stock balance update kar diya gaya.`);
     }
 
     function createSubUser(e) {
@@ -2058,19 +2055,15 @@
 
     function refreshWorkspace(showPopup) {
       const store = loadCompStore(currentComp.id);
-      const opts = buildItemOptionsHTML();
+      const opts = buildItemOptionsHtml(store);
 
-      document.getElementById("outSelItem").innerHTML = opts;
-      document.getElementById("retSelItem").innerHTML = opts;
-
-      document.querySelectorAll("#inwardLinesContainer .in-row-item").forEach(sel => {
+      document.querySelectorAll(".in-row-item").forEach(sel => {
         const prev = sel.value;
         sel.innerHTML = opts;
-        sel.value = prev;
+        if (prev) sel.value = prev;
       });
-      if (!document.querySelectorAll("#inwardLinesContainer .inward-lot-row").length) {
-        resetInwardRows();
-      }
+      document.getElementById("outSelItem").innerHTML = opts;
+      document.getElementById("retSelItem").innerHTML = opts;
 
       computedStockRows = computeStockAsOnDate(store, "9999-12-31");
 
@@ -2121,49 +2114,7 @@
       });
 
       renderDashboardTable();
-
-      const inwardEntries = store.ledger.filter(l => l.type === "INWARD");
-      document.getElementById("inwardHistoryRows").innerHTML = inwardEntries.map(l => `
-        <tr>
-          <td>${l.dt}</td>
-          <td><strong>${l.grn}</strong></td>
-          <td>${l.lot}</td>
-          <td><strong>${l.code}</strong> — ${l.name}</td>
-          <td><strong>${l.qty}</strong></td>
-          <td>₹${Number(l.rate).toFixed(2)}</td>
-          <td>₹${Number(l.amt).toFixed(2)}</td>
-          <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteLedgerEntry('${l.id}')">Delete</button></td>
-        </tr>
-      `).join("") || `<tr><td colspan="8" style="text-align:center;color:#64748b;">No Inward entries yet.</td></tr>`;
-
-      const outwardEntries = store.ledger.filter(l => l.type === "OUTWARD");
-      document.getElementById("outwardHistoryRows").innerHTML = outwardEntries.map(l => `
-        <tr>
-          <td>${l.dt}</td>
-          <td><strong>${l.ref || "-"}</strong></td>
-          <td>${l.grn}</td>
-          <td>${l.lot}</td>
-          <td><strong>${l.code}</strong> — ${l.name}</td>
-          <td><strong>${Math.abs(Number(l.qty))}</strong></td>
-          <td>₹${Number(l.rate).toFixed(2)}</td>
-          <td>₹${Number(l.amt).toFixed(2)}</td>
-          <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteLedgerEntry('${l.id}')">Delete</button></td>
-        </tr>
-      `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No Outward entries yet.</td></tr>`;
-
-      const returnEntries = store.ledger.filter(l => l.type === "PROD-RETURN");
-      document.getElementById("returnHistoryRows").innerHTML = returnEntries.map(l => `
-        <tr>
-          <td>${l.dt}</td>
-          <td>${l.grn}</td>
-          <td>${l.lot}</td>
-          <td><strong>${l.code}</strong> — ${l.name}</td>
-          <td><strong>${l.qty}</strong></td>
-          <td>₹${Number(l.rate).toFixed(2)}</td>
-          <td>₹${Number(l.amt).toFixed(2)}</td>
-          <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteLedgerEntry('${l.id}')">Delete</button></td>
-        </tr>
-      `).join("") || `<tr><td colspan="8" style="text-align:center;color:#64748b;">No Return from Production entries yet.</td></tr>`;
+      renderWorkflowDeleteTables(store);
 
       document.getElementById("ledgerRows").innerHTML = store.ledger.map(l => `
         <tr>
@@ -2176,9 +2127,8 @@
           <td><strong>${l.qty}</strong></td>
           <td>₹${Number(l.rate).toFixed(2)}</td>
           <td>₹${Number(l.amt).toFixed(2)}</td>
-          <td>${l.type !== "OPENING" ? `<button type="button" class="btn btn-rose btn-sm" onclick="deleteLedgerEntry('${l.id}')">Delete</button>` : "-"}</td>
         </tr>
-      `).join("") || `<tr><td colspan="10" style="text-align:center;color:#64748b;">No ledger entries yet.</td></tr>`;
+      `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No ledger entries yet.</td></tr>`;
 
       document.getElementById("auditLedgerRows").innerHTML = store.ledger.map(l => `
         <tr>
@@ -2198,6 +2148,52 @@
       if (showPopup && cachedLowList.length > 0) {
         openLowStockModal();
       }
+    }
+
+    function renderWorkflowDeleteTables(store) {
+      const inwardList = store.ledger.filter(x => x.type === "INWARD");
+      document.getElementById("inwardManageRows").innerHTML = inwardList.length
+        ? inwardList.map(x => `
+            <tr>
+              <td>${x.dt}</td>
+              <td><strong>${x.grn}</strong></td>
+              <td><strong>${x.lot}</strong></td>
+              <td>${x.code} — ${x.name}</td>
+              <td>₹${Number(x.rate).toFixed(2)}</td>
+              <td><strong>${x.qty}</strong></td>
+              <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteInwardEntry('${x.entryId}')">Delete</button></td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="7" style="text-align:center;color:#64748b;">No inward entries posted yet.</td></tr>`;
+
+      const outwardList = store.ledger.filter(x => x.type === "OUTWARD");
+      document.getElementById("outwardManageRows").innerHTML = outwardList.length
+        ? outwardList.map(x => `
+            <tr>
+              <td>${x.dt}</td>
+              <td>${x.ref || "-"}</td>
+              <td>${x.code} — ${x.name}</td>
+              <td>${x.grn}</td>
+              <td><strong>${x.lot}</strong></td>
+              <td><strong>${Math.abs(parseFloat(x.qty) || 0)}</strong></td>
+              <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteOutwardEntry('${x.entryId}')">Delete</button></td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="7" style="text-align:center;color:#64748b;">No outward entries posted yet.</td></tr>`;
+
+      const returnList = store.ledger.filter(x => x.type === "PROD-RETURN");
+      document.getElementById("returnManageRows").innerHTML = returnList.length
+        ? returnList.map(x => `
+            <tr>
+              <td>${x.dt}</td>
+              <td>${x.code} — ${x.name}</td>
+              <td>${x.grn}</td>
+              <td><strong>${x.lot}</strong></td>
+              <td><strong>${x.qty}</strong></td>
+              <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteReturnEntry('${x.entryId}')">Delete</button></td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="6" style="text-align:center;color:#64748b;">No return entries posted yet.</td></tr>`;
     }
 
     function renderDashboardTable() {
@@ -2382,6 +2378,8 @@
       a.download = fileName;
       a.click();
     }
+
+    resetInwardLines();
   </script>
 </body>
 </html>
