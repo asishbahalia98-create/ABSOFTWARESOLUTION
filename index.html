@@ -8,7 +8,6 @@
   <style>
     :root {
       --bg-canvas: #091124;
-      --bg-slate: #101c38;
       --indigo-hero: linear-gradient(120deg, #162454 0%, #1d3278 52%, #15224d 100%);
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
@@ -16,7 +15,10 @@
       --amber-hover: #d97706;
       --rose: #e11d48;
       --rose-hover: #be123c;
-      --emerald: #10b981;
+      --emerald: #059669;
+      --emerald-hover: #047857;
+      --violet: #6d28d9;
+      --violet-hover: #5b21b6;
       --card-bg: #f8fafc;
       --text-dark: #0f172a;
       --text-muted: #64748b;
@@ -61,7 +63,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
     }
     .showcase-pill {
       display: inline-block;
@@ -112,7 +113,7 @@
     }
 
     .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 12px; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+    .field label { display: block; font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
     .field input, .field select {
       width: 100%;
       padding: 10px 12px;
@@ -138,11 +139,15 @@
       transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
     .btn:active { transform: translateY(1px); }
-    .btn-blue { background: var(--primary); color: #ffffff; box-shadow: 0 6px 14px rgba(37, 99, 235, 0.32); }
+    .btn-blue { background: var(--primary); color: #ffffff; box-shadow: 0 6px 14px rgba(37, 99, 235, 0.28); }
     .btn-blue:hover { background: var(--primary-hover); }
-    .btn-amber { background: var(--amber); color: #0f172a; box-shadow: 0 6px 14px rgba(245, 158, 11, 0.32); }
+    .btn-emerald { background: var(--emerald); color: #ffffff; box-shadow: 0 6px 14px rgba(5, 150, 105, 0.28); }
+    .btn-emerald:hover { background: var(--emerald-hover); }
+    .btn-violet { background: var(--violet); color: #ffffff; box-shadow: 0 6px 14px rgba(109, 40, 217, 0.28); }
+    .btn-violet:hover { background: var(--violet-hover); }
+    .btn-amber { background: var(--amber); color: #0f172a; box-shadow: 0 6px 14px rgba(245, 158, 11, 0.28); }
     .btn-amber:hover { background: var(--amber-hover); }
-    .btn-rose { background: var(--rose); color: #ffffff; box-shadow: 0 6px 14px rgba(225, 29, 72, 0.32); }
+    .btn-rose { background: var(--rose); color: #ffffff; box-shadow: 0 6px 14px rgba(225, 29, 72, 0.28); }
     .btn-rose:hover { background: var(--rose-hover); }
     .btn-dark { background: #1e293b; color: #ffffff; border: 1px solid #334155; }
     .btn-dark:hover { background: #334155; }
@@ -180,7 +185,7 @@
     .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
     .company-head-title { display: flex; align-items: center; gap: 8px; color: #ffffff; font-weight: 800; font-size: 15px; }
     .code-tag {
-      background: rgba(148, 163, 184, 0.2);
+      background: rgba(148, 163, 184, 0.22);
       color: #e2e8f0;
       font-size: 10.5px;
       padding: 2px 7px;
@@ -222,7 +227,6 @@
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
-    /* HERO BANNER WITH ELEVATED SPATIAL GRAPHICS */
     .hero-banner {
       background: var(--indigo-hero);
       border-radius: 16px;
@@ -269,7 +273,6 @@
       text-transform: uppercase;
     }
 
-    /* ELEVATED STAT CARDS */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -304,7 +307,6 @@
       font-weight: 800;
     }
 
-    /* LOWER ELEVATED CARDS */
     .surface-card {
       background: var(--card-bg);
       border-radius: 14px;
@@ -317,6 +319,25 @@
     .surface-head h3 { font-size: 15px; font-weight: 800; color: var(--text-dark); }
     .surface-head span { font-size: 11.5px; color: var(--text-muted); }
 
+    .three-col-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .sub-feature-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 12px 24px rgba(2, 6, 23, 0.28);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sub-feature-card h4 { font-size: 14.5px; font-weight: 800; color: var(--text-dark); }
+    .sub-feature-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+
     .cat-mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
     .cat-mini-card {
       background: var(--card-bg);
@@ -324,7 +345,6 @@
       padding: 15px 16px;
       border: 1px solid var(--border-soft);
       box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25);
-      cursor: pointer;
     }
     .cat-tag {
       display: inline-block;
@@ -340,11 +360,26 @@
     .cat-cnt { font-size: 11px; color: var(--text-muted); }
 
     .form-row-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .subuser-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1.2fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
     table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
     th, td { padding: 9px 11px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-    th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px; }
+    th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .role-pill {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
 
-    /* MODAL POPUP */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -365,6 +400,14 @@
       box-shadow: 0 24px 48px rgba(0,0,0,0.45);
     }
 
+    @media print {
+      body { background: #ffffff !important; }
+      .top-header, .sub-nav, .hero-banner, .no-print { display: none !important; }
+      .app-shell, .view-panel, .surface-card { display: block !important; box-shadow: none !important; }
+    }
+    @media (max-width: 980px) {
+      .three-col-cards, .subuser-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 900px) {
       .login-card, .hero-banner { grid-template-columns: 1fr; }
       .kpi-grid, .cat-mini-grid { grid-template-columns: repeat(2, 1fr); }
@@ -376,7 +419,7 @@
 </head>
 <body>
 
-  <!-- LOGIN & MASTER PORTAL SCREEN -->
+  <!-- LOGIN & MASTER PORTAL SCREEN (UNCHANGED) -->
   <div id="authScreen" class="login-wrapper">
     <div class="login-card">
       <div class="login-showcase">
@@ -456,7 +499,7 @@
     </div>
   </div>
 
-  <!-- AB SOFTWARE MASTER PORTAL VIEW -->
+  <!-- AB SOFTWARE MASTER PORTAL & COMPANY CREATE VIEW (UNCHANGED) -->
   <div id="masterView" class="app-shell">
     <header class="top-header">
       <div class="brand-cluster">
@@ -528,7 +571,7 @@
     </div>
   </div>
 
-  <!-- ISOLATED COMPANY DASHBOARD VIEW -->
+  <!-- POST-CREATE / POST-LOGIN COMPANY DASHBOARD -->
   <div id="companyView" class="app-shell">
     <header class="top-header">
       <div class="brand-cluster">
@@ -553,7 +596,8 @@
       <button class="tab-pill" onclick="switchTab('tabInward', this)">Inward GRN</button>
       <button class="tab-pill" onclick="switchTab('tabOutward', this)">Outward (FIFO)</button>
       <button class="tab-pill" onclick="switchTab('tabReturn', this)">Return from Prod</button>
-      <button class="tab-pill" onclick="switchTab('tabLedger', this)">GRN &amp; Lot Ledger</button>
+      <button class="tab-pill" onclick="switchTab('tabLedger', this)">GRN &amp; Lot Stock</button>
+      <button class="tab-pill" onclick="switchTab('tabReportsAdmin', this)">Reports &amp; Admin</button>
     </nav>
 
     <div class="workspace">
@@ -576,21 +620,18 @@
               <polygon points="190,14 352,66 190,118 28,66" fill="rgba(37,99,235,0.16)" stroke="rgba(147,197,253,0.5)" stroke-width="1.4"/>
               <line x1="110" y1="40" x2="270" y2="92" stroke="rgba(125,211,252,0.35)" stroke-dasharray="4 4"/>
               <line x1="270" y1="40" x2="110" y2="92" stroke="rgba(125,211,252,0.35)" stroke-dasharray="4 4"/>
-              <!-- Left Rack Block -->
               <g transform="translate(84,38)">
                 <polygon points="32,0 64,16 32,32 0,16" fill="#38bdf8"/>
                 <polygon points="0,16 32,32 32,62 0,46" fill="#0284c7"/>
                 <polygon points="32,32 64,16 64,46 32,62" fill="#0369a1"/>
                 <text x="32" y="20" text-anchor="middle" fill="#082f49" font-size="10" font-weight="800">RM</text>
               </g>
-              <!-- Center FIFO Block -->
               <g transform="translate(158,50)">
                 <polygon points="32,0 64,16 32,32 0,16" fill="#fbbf24"/>
                 <polygon points="0,16 32,32 32,62 0,46" fill="#d97706"/>
                 <polygon points="32,32 64,16 64,46 32,62" fill="#b45309"/>
                 <text x="32" y="20" text-anchor="middle" fill="#451a03" font-size="9.5" font-weight="800">FIFO</text>
               </g>
-              <!-- Right Rack Block -->
               <g transform="translate(232,38)">
                 <polygon points="32,0 64,16 32,32 0,16" fill="#818cf8"/>
                 <polygon points="0,16 32,32 32,62 0,46" fill="#4f46e5"/>
@@ -602,7 +643,6 @@
           </div>
         </div>
 
-        <!-- 4 KPI CARDS -->
         <div class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-dot" style="background:#dbeafe;color:#1d4ed8;">₹</div>
@@ -614,23 +654,22 @@
             <div class="kpi-dot" style="background:#ffe4e6;color:#e11d48;">●</div>
             <h4>Critical / Out of Stock</h4>
             <div class="kpi-num" id="kpiCritCount">0 Items</div>
-            <div class="kpi-sub">Click to view alert details →</div>
+            <div class="kpi-sub">Click to filter critical items →</div>
           </div>
           <div class="kpi-card" onclick="openLowStockModal()">
             <div class="kpi-dot" style="background:#fef3c7;color:#d97706;">●</div>
             <h4>Low / Reorder Stock</h4>
             <div class="kpi-num" id="kpiLowCount">0 Items</div>
-            <div class="kpi-sub">Click to view reorder items →</div>
+            <div class="kpi-sub">Click to filter low stock →</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-dot" style="background:#d1fae5;color:#059669;">●</div>
             <h4>Healthy Stock</h4>
             <div class="kpi-num" id="kpiHealthyCount">0 Items</div>
-            <div class="kpi-sub">Above minimum stock level</div>
+            <div class="kpi-sub">Click to filter healthy stock →</div>
           </div>
         </div>
 
-        <!-- CATEGORY BREAKDOWN -->
         <div class="cat-mini-grid">
           <div class="cat-mini-card">
             <span class="cat-tag">RM • RAW MATERIAL</span>
@@ -654,11 +693,10 @@
           </div>
         </div>
 
-        <!-- CLOSING STOCK TABLE -->
         <div class="surface-card">
           <div class="surface-head">
             <h3>Closing Stock Summary</h3>
-            <button class="btn btn-blue btn-sm" onclick="downloadStockCSV()">Export Stock CSV</button>
+            <button class="btn btn-blue btn-sm no-print" onclick="downloadStockCSV()">Export Closing Stock (CSV)</button>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -838,12 +876,12 @@
         </div>
       </div>
 
-      <!-- LEDGER TAB -->
+      <!-- GRN & LOT STOCK LEDGER TAB -->
       <div id="tabLedger" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
             <h3>GRN &amp; Lot Movement Ledger</h3>
-            <button class="btn btn-blue btn-sm" onclick="downloadLedgerCSV()">Export Ledger CSV</button>
+            <button class="btn btn-blue btn-sm no-print" onclick="downloadLedgerCSV()">Export Audit Ledger (CSV)</button>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -861,6 +899,111 @@
                 </tr>
               </thead>
               <tbody id="ledgerRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTS & ADMIN TAB -->
+      <div id="tabReportsAdmin" class="view-panel">
+        <div class="three-col-cards">
+          <!-- Export & Print Reports -->
+          <div class="sub-feature-card">
+            <h4>Export &amp; Print Reports</h4>
+            <p>Download CSV reports or print clean statements.</p>
+            <button type="button" class="btn btn-emerald full-w" onclick="downloadStockCSV()">↓ Export Closing Stock (CSV)</button>
+            <button type="button" class="btn btn-blue full-w" onclick="downloadLedgerCSV()">↓ Export Audit Ledger (CSV)</button>
+            <button type="button" class="btn btn-dark full-w" onclick="window.print()">Print / Save PDF Report</button>
+          </div>
+
+          <!-- Instant Share & Alerts -->
+          <div class="sub-feature-card">
+            <h4>Instant Share &amp; Alerts</h4>
+            <p>Dispatch live valuation and low-stock summaries via WhatsApp or Email.</p>
+            <button type="button" class="btn btn-emerald full-w" onclick="shareWhatsAppSummary()">Share Summary on WhatsApp</button>
+            <button type="button" class="btn btn-violet full-w" onclick="shareEmailSummary()">Send Email Stock Report</button>
+            <button type="button" class="btn btn-rose full-w" onclick="openLowStockModal()">Open Low Stock Popup</button>
+          </div>
+
+          <!-- Company Logo & Backup -->
+          <div class="sub-feature-card">
+            <h4>Company Logo &amp; Backup</h4>
+            <p>Customize company logo or export/restore isolated company JSON backup.</p>
+            <label class="btn btn-dark full-w" style="cursor:pointer;">
+              Upload Company Logo
+              <input type="file" id="repLogoFile" accept="image/*" style="display:none;" onchange="updateCompanyLogo(this)" />
+            </label>
+            <button type="button" class="btn btn-violet full-w" onclick="downloadJSONBackup()">↓ Download JSON Backup</button>
+            <label class="btn btn-amber full-w" style="cursor:pointer;">
+              ↑ Restore JSON Backup
+              <input type="file" id="repJsonFile" accept=".json,application/json" style="display:none;" onchange="restoreJSONBackup(this)" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Company Sub-User Management -->
+        <div class="surface-card">
+          <div class="surface-head">
+            <div>
+              <h3>Company Sub-User Management</h3>
+              <span id="subUserScopeHint">Create storekeeper or operator logins isolated to this company.</span>
+            </div>
+          </div>
+          <form onsubmit="createSubUser(event)">
+            <div class="subuser-grid">
+              <div class="field" style="margin-bottom:0;">
+                <label>New Username *</label>
+                <input type="text" id="subUsrName" placeholder="Enter sub-user username" required />
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label>Password *</label>
+                <input type="text" id="subUsrPass" placeholder="Enter sub-user password" required />
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label>Role</label>
+                <select id="subUsrRole">
+                  <option value="Storekeeper">Storekeeper</option>
+                  <option value="Operator">Operator</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-blue">+ Add User</button>
+            </div>
+          </form>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="subUserRows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Complete Transaction Audit Ledger -->
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>Complete Transaction Audit Ledger</h3>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Ref / Slip</th>
+                  <th>Category</th>
+                  <th>Item</th>
+                  <th>GRN &amp; Lot Trace</th>
+                  <th>Qty</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody id="auditLedgerRows"></tbody>
             </table>
           </div>
         </div>
@@ -898,6 +1041,7 @@
     };
     const REGISTRY_KEY = "icsbab_abs_companies_v2";
     let currentComp = null;
+    let currentSessionUser = null;
 
     function loadRegistry() {
       try { return JSON.parse(localStorage.getItem(REGISTRY_KEY)) || []; }
@@ -911,7 +1055,13 @@
     }
     function loadCompStore(compId) {
       const raw = localStorage.getItem(storeKeyFor(compId));
-      return raw ? JSON.parse(raw) : { items: [], lots: [], ledger: [] };
+      const parsed = raw ? JSON.parse(raw) : {};
+      return {
+        items: parsed.items || [],
+        lots: parsed.lots || [],
+        ledger: parsed.ledger || [],
+        subUsers: parsed.subUsers || []
+      };
     }
     function saveCompStore(compId, store) {
       localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
@@ -975,7 +1125,7 @@
           created: new Date().toLocaleDateString("en-IN")
         });
         saveRegistry(list);
-        saveCompStore(id, { items: [], lots: [], ledger: [] });
+        saveCompStore(id, { items: [], lots: [], ledger: [], subUsers: [] });
         e.target.reset();
         renderMasterRegistry();
         alert("Company added with separate isolated store.");
@@ -1023,8 +1173,24 @@
       const pwd = document.getElementById("inpCompPass").value;
       const err = document.getElementById("compErr");
 
-      const found = loadRegistry().find(x => x.id === id && x.username === usr && x.password === pwd);
+      const found = loadRegistry().find(x => x.id === id);
       if (!found) {
+        err.textContent = "Invalid Company ID, Username, or Password.";
+        err.style.display = "block";
+        return;
+      }
+
+      const store = loadCompStore(found.id);
+      let loggedRole = null;
+
+      if (found.username === usr && found.password === pwd) {
+        loggedRole = "Admin";
+      } else {
+        const sub = (store.subUsers || []).find(u => u.username === usr && u.password === pwd);
+        if (sub) loggedRole = sub.role;
+      }
+
+      if (!loggedRole) {
         err.textContent = "Invalid Company ID, Username, or Password.";
         err.style.display = "block";
         return;
@@ -1032,26 +1198,35 @@
 
       err.style.display = "none";
       currentComp = found;
+      currentSessionUser = { username: usr, role: loggedRole };
       document.getElementById("authScreen").style.display = "none";
       document.getElementById("companyView").style.display = "flex";
 
-      document.getElementById("hdrCompName").textContent = found.name;
-      document.getElementById("hdrCompId").textContent = found.id;
-      document.getElementById("hdrSubInfo").textContent = `ICSBAB Inventory Control • AB SOFTWARE SOLUTION • User: ${found.username}`;
-      document.getElementById("heroWelcome").textContent = `Welcome back, ${found.name}`;
+      applyCompanyHeader();
+      refreshWorkspace(true);
+    }
+
+    function applyCompanyHeader() {
+      if (!currentComp) return;
+      document.getElementById("hdrCompName").textContent = currentComp.name;
+      document.getElementById("hdrCompId").textContent = currentComp.id;
+      document.getElementById("hdrSubInfo").textContent =
+        `ICSBAB Inventory Control • AB SOFTWARE SOLUTION • User: ${currentSessionUser.username} (${currentSessionUser.role})`;
+      document.getElementById("heroWelcome").textContent = `Welcome back, ${currentComp.name}`;
+      document.getElementById("subUserScopeHint").textContent =
+        `Create storekeeper or operator logins isolated to ${currentComp.id}.`;
 
       const logoEl = document.getElementById("hdrLogo");
-      if (found.logo) {
-        logoEl.innerHTML = `<img src="${found.logo}" alt="Logo" />`;
+      if (currentComp.logo) {
+        logoEl.innerHTML = `<img src="${currentComp.logo}" alt="Logo" />`;
       } else {
-        logoEl.textContent = found.name.slice(0, 2).toUpperCase();
+        logoEl.textContent = currentComp.name.slice(0, 2).toUpperCase();
       }
-
-      refreshWorkspace(true);
     }
 
     function logoutSession() {
       currentComp = null;
+      currentSessionUser = null;
       document.getElementById("companyView").style.display = "none";
       document.getElementById("masterView").style.display = "none";
       document.getElementById("authScreen").style.display = "flex";
@@ -1093,6 +1268,8 @@
         store.ledger.unshift({
           dt: new Date().toLocaleString("en-IN"),
           type: "OPENING",
+          ref: "OPENING",
+          category,
           code,
           name,
           grn: "OPENING",
@@ -1134,6 +1311,8 @@
       store.ledger.unshift({
         dt: new Date().toLocaleString("en-IN"),
         type: "INWARD",
+        ref: grn,
+        category: item.category,
         code,
         name: item.name,
         grn,
@@ -1178,7 +1357,9 @@
         need -= take;
         store.ledger.unshift({
           dt: new Date().toLocaleString("en-IN"),
-          type: `OUTWARD (${ref})`,
+          type: "OUTWARD",
+          ref,
+          category: item.category,
           code,
           name: item.name,
           grn: l.grn,
@@ -1196,7 +1377,7 @@
 
     function fetchLastOutward() {
       const code = document.getElementById("retSelItem").value;
-      const last = loadCompStore(currentComp.id).ledger.find(x => x.code === code && x.type.startsWith("OUTWARD"));
+      const last = loadCompStore(currentComp.id).ledger.find(x => x.code === code && x.type === "OUTWARD");
       if (last) {
         document.getElementById("retAutoLot").value = last.lot;
         document.getElementById("retAutoGrn").value = last.grn;
@@ -1228,6 +1409,8 @@
       store.ledger.unshift({
         dt: new Date().toLocaleString("en-IN"),
         type: "PROD-RETURN",
+        ref: grn,
+        category: item.category,
         code,
         name: item.name,
         grn,
@@ -1240,6 +1423,118 @@
       e.target.reset();
       refreshWorkspace(false);
       alert("Return posted to stock.");
+    }
+
+    function createSubUser(e) {
+      e.preventDefault();
+      const uname = document.getElementById("subUsrName").value.trim();
+      const upass = document.getElementById("subUsrPass").value;
+      const urole = document.getElementById("subUsrRole").value;
+      if (uname === currentComp.username) {
+        alert("Cannot duplicate main admin username.");
+        return;
+      }
+      const store = loadCompStore(currentComp.id);
+      if (store.subUsers.some(u => u.username === uname)) {
+        alert("Username already exists in this company.");
+        return;
+      }
+      store.subUsers.push({ username: uname, password: upass, role: urole });
+      saveCompStore(currentComp.id, store);
+      e.target.reset();
+      renderSubUsersTable(store);
+    }
+
+    function deleteSubUser(uname) {
+      const store = loadCompStore(currentComp.id);
+      store.subUsers = store.subUsers.filter(u => u.username !== uname);
+      saveCompStore(currentComp.id, store);
+      renderSubUsersTable(store);
+    }
+
+    function renderSubUsersTable(store) {
+      const adminRow = `
+        <tr>
+          <td><strong>${currentComp.username}</strong></td>
+          <td><span class="role-pill">Admin</span></td>
+          <td style="color:#64748b;">Active Session</td>
+        </tr>
+      `;
+      const subRows = (store.subUsers || []).map(u => `
+        <tr>
+          <td>${u.username}</td>
+          <td><span class="role-pill">${u.role}</span></td>
+          <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteSubUser('${u.username}')">Remove</button></td>
+        </tr>
+      `).join("");
+      document.getElementById("subUserRows").innerHTML = adminRow + subRows;
+    }
+
+    function updateCompanyLogo(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        currentComp.logo = ev.target.result;
+        const reg = loadRegistry().map(c => c.id === currentComp.id ? { ...c, logo: ev.target.result } : c);
+        saveRegistry(reg);
+        applyCompanyHeader();
+        alert("Company logo updated.");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function downloadJSONBackup() {
+      const payload = {
+        company: { id: currentComp.id, name: currentComp.name, logo: currentComp.logo || "" },
+        store: loadCompStore(currentComp.id),
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${currentComp.id}_Backup.json`;
+      a.click();
+    }
+
+    function restoreJSONBackup(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          const restoredStore = parsed.store || parsed;
+          saveCompStore(currentComp.id, {
+            items: restoredStore.items || [],
+            lots: restoredStore.lots || [],
+            ledger: restoredStore.ledger || [],
+            subUsers: restoredStore.subUsers || []
+          });
+          refreshWorkspace(false);
+          alert("Company JSON backup restored.");
+        } catch {
+          alert("Invalid JSON backup file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function buildSummaryText() {
+      const totalTxt = document.getElementById("kpiTotalVal").textContent;
+      const lowNames = cachedLowList.map(x => `${x.name} (${x.qty})`).join(", ") || "None";
+      return `ICSBAB Inventory Control - ${currentComp.name} (${currentComp.id})\nTotal Valuation: ${totalTxt}\nLow Stock Items: ${lowNames}`;
+    }
+
+    function shareWhatsAppSummary() {
+      const url = "https://wa.me/?text=" + encodeURIComponent(buildSummaryText());
+      window.open(url, "_blank");
+    }
+
+    function shareEmailSummary() {
+      const subj = encodeURIComponent(`Inventory Summary - ${currentComp.name} (${currentComp.id})`);
+      const body = encodeURIComponent(buildSummaryText());
+      window.location.href = `mailto:?subject=${subj}&body=${body}`;
     }
 
     let cachedLowList = [];
@@ -1329,6 +1624,21 @@
         </tr>
       `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No ledger entries yet.</td></tr>`;
 
+      document.getElementById("auditLedgerRows").innerHTML = store.ledger.map(l => `
+        <tr>
+          <td>${l.dt}</td>
+          <td><strong>${l.type}</strong></td>
+          <td>${l.ref || l.grn}</td>
+          <td>${l.category || "-"}</td>
+          <td>${l.name} (${l.code})</td>
+          <td>GRN: ${l.grn} / Lot: ${l.lot}</td>
+          <td><strong>${l.qty}</strong></td>
+          <td>₹${l.amt.toFixed(2)}</td>
+        </tr>
+      `).join("") || `<tr><td colspan="8" style="text-align:center;color:#64748b;">No transactions recorded yet.</td></tr>`;
+
+      renderSubUsersTable(store);
+
       if (showPopup && cachedLowList.length > 0) {
         openLowStockModal();
       }
@@ -1355,16 +1665,16 @@
         const qty = store.lots.filter(l => l.code === i.code).reduce((s, l) => s + l.qty, 0);
         csv += `"${i.category}","${i.code}","${i.name}","${i.grade}","${i.supplier}",${i.price},${qty},${i.min}\n`;
       });
-      triggerDownload(csv, `${currentComp.id}_Stock.csv`);
+      triggerDownload(csv, `${currentComp.id}_Closing_Stock.csv`);
     }
 
     function downloadLedgerCSV() {
       const store = loadCompStore(currentComp.id);
-      let csv = "Date,Type,Code,Name,GRN,Lot,Qty,Rate,Amount\n";
+      let csv = "Date,Type,Ref,Category,Code,Name,GRN,Lot,Qty,Rate,Amount\n";
       store.ledger.forEach(l => {
-        csv += `"${l.dt}","${l.type}","${l.code}","${l.name}","${l.grn}","${l.lot}",${l.qty},${l.rate},${l.amt}\n`;
+        csv += `"${l.dt}","${l.type}","${l.ref || l.grn}","${l.category || ""}","${l.code}","${l.name}","${l.grn}","${l.lot}",${l.qty},${l.rate},${l.amt}\n`;
       });
-      triggerDownload(csv, `${currentComp.id}_Ledger.csv`);
+      triggerDownload(csv, `${currentComp.id}_Audit_Ledger.csv`);
     }
 
     function triggerDownload(csvText, fileName) {
