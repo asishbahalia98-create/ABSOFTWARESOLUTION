@@ -924,6 +924,7 @@
                   <th>PROD RET</th>
                   <th>OUTWARD</th>
                   <th>CLOSING STOCK</th>
+                  <th>STOCK STATUS</th>
                   <th>STOCK VALUE</th>
                 </tr>
               </thead>
@@ -1371,12 +1372,12 @@
 
     function getStatusBadgeHTML(status) {
       if (status === "CRITICAL") {
-        return `<span class="st-badge st-red">● RED (CRITICAL)</span>`;
+        return `<span class="st-badge st-red">● RED</span>`;
       }
       if (status === "LOW") {
-        return `<span class="st-badge st-yellow">● YELLOW (LOW)</span>`;
+        return `<span class="st-badge st-yellow">● YELLOW</span>`;
       }
-      return `<span class="st-badge st-green">● GREEN (HEALTHY)</span>`;
+      return `<span class="st-badge st-green">● GREEN</span>`;
     }
 
     function toggleLoginMode(mode) {
@@ -2283,11 +2284,12 @@
                 <td>${r.prodRet}</td>
                 <td>${r.outward}</td>
                 <td><strong>${r.closingQty}</strong></td>
+                <td>${getStatusBadgeHTML(r.status)}</td>
                 <td>₹${r.stockValue.toFixed(2)}</td>
               </tr>
             `;
           }).join("")
-        : `<tr><td colspan="11" style="text-align:center;color:#64748b;padding:18px;">No items match the current filter.</td></tr>`;
+        : `<tr><td colspan="12" style="text-align:center;color:#64748b;padding:18px;">No items match the current filter.</td></tr>`;
     }
 
     function downloadDayWiseClosingStockPDF() {
@@ -2300,7 +2302,7 @@
         grandVal += r.stockValue;
         const badgeColor = r.status === "CRITICAL" ? "#b91c1c" : (r.status === "LOW" ? "#b45309" : "#15803d");
         const badgeBg = r.status === "CRITICAL" ? "#fee2e2" : (r.status === "LOW" ? "#fef3c7" : "#dcfce7");
-        const statusLabel = r.status === "CRITICAL" ? "RED (CRITICAL)" : (r.status === "LOW" ? "YELLOW (LOW)" : "GREEN (HEALTHY)");
+        const statusLabel = r.status === "CRITICAL" ? "RED" : (r.status === "LOW" ? "YELLOW" : "GREEN");
         return `
           <tr>
             <td style="border:1px solid #cbd5e1;padding:6px;background:${badgeBg};color:${badgeColor};font-weight:800;">${statusLabel}</td>
@@ -2315,6 +2317,7 @@
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.prodRet}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.outward}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;"><strong>${r.closingQty}</strong></td>
+            <td style="border:1px solid #cbd5e1;padding:6px;background:${badgeBg};color:${badgeColor};font-weight:800;">${statusLabel}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.stockValue.toFixed(2)}</td>
           </tr>
         `;
@@ -2323,7 +2326,7 @@
       const sheet = document.getElementById("pdfPrintSheet");
       sheet.innerHTML = `
         <h2 style="margin-bottom:4px;">${currentComp.name} (${currentComp.id}) — Day Wise Closing Stock Report</h2>
-        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Status: RED / YELLOW / GREEN • Formula: Opening + Inward + Prod Ret - Outward</p>
+        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Stock Status: RED / YELLOW / GREEN • Formula: Opening + Inward + Prod Ret - Outward</p>
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead>
             <tr>
@@ -2339,11 +2342,12 @@
               <th style="border:1px solid #cbd5e1;padding:6px;">Prod Ret</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Outward</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Closing</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Stock Status</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Value</th>
             </tr>
           </thead>
           <tbody>
-            ${bodyHtml || `<tr><td colspan="13" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No stock records found for ${dateVal}.</td></tr>`}
+            ${bodyHtml || `<tr><td colspan="14" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No stock records found for ${dateVal}.</td></tr>`}
           </tbody>
         </table>
         <p style="margin-top:12px;font-weight:800;font-size:13px;">Total Closing Stock Valuation As On ${dateVal}: ₹${grandVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
@@ -2464,9 +2468,10 @@
     }
 
     function downloadStockCSV() {
-      let csv = "Status,Category,Code,Name,Grade,Supplier,Price,Opening,Inward,ProdReturn,Outward,Closing,Value\n";
+      let csv = "Status,Category,Code,Name,Grade,Supplier,Price,Opening,Inward,ProdReturn,Outward,Closing,StockStatus,Value\n";
       computedStockRows.forEach(r => {
-        csv += `"${r.status}","${r.category}","${r.code}","${r.name}","${r.grade}","${r.supplier}",${r.price},${r.opening},${r.inward},${r.prodRet},${r.outward},${r.closingQty},${r.stockValue}\n`;
+        const stLabel = r.status === "CRITICAL" ? "RED" : (r.status === "LOW" ? "YELLOW" : "GREEN");
+        csv += `"${r.status}","${r.category}","${r.code}","${r.name}","${r.grade}","${r.supplier}",${r.price},${r.opening},${r.inward},${r.prodRet},${r.outward},${r.closingQty},"${stLabel}",${r.stockValue}\n`;
       });
       triggerDownload(csv, `${currentComp.id}_Closing_Stock.csv`);
     }
