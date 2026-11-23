@@ -1371,12 +1371,12 @@
 
     function getStatusBadgeHTML(status) {
       if (status === "CRITICAL") {
-        return `<span class="st-badge st-red">● CRITICAL (RED)</span>`;
+        return `<span class="st-badge st-red">● RED (CRITICAL)</span>`;
       }
       if (status === "LOW") {
-        return `<span class="st-badge st-yellow">● LOW / REORDER (YELLOW)</span>`;
+        return `<span class="st-badge st-yellow">● YELLOW (LOW)</span>`;
       }
-      return `<span class="st-badge st-green">● HEALTHY (GREEN)</span>`;
+      return `<span class="st-badge st-green">● GREEN (HEALTHY)</span>`;
     }
 
     function toggleLoginMode(mode) {
