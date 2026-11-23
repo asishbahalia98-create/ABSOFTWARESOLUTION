@@ -3,1862 +3,1202 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ICSBAB Inventory Control | RM, BOP, Packing & Consumable Management by AB SOFTWARE SOLUTION</title>
-  <meta name="description" content="ICSBAB Inventory Control by AB SOFTWARE SOLUTION - Industrial RM, BOP, Packing & Consumable Inventory Management with FIFO Lot & GRN Tracking, Production Returns, Low Stock Alerts, and Multi-Company Isolation." />
-  <meta name="keywords" content="ICSBAB Inventory Control, AB SOFTWARE SOLUTION, Inventory Management Software, FIFO GRN Lot Tracking, RM BOP Packing Consumable Stock" />
-  <meta name="robots" content="index, follow" />
+  <title>ICSBAB Inventory Control | AB SOFTWARE SOLUTION</title>
+  <meta name="description" content="ICSBAB Inventory Control by AB SOFTWARE SOLUTION - Enterprise Store & Warehouse Management System for RM, BOP, PACKING & CONSUMABLE items with strict FIFO Lot & GRN automation, Production Returns, and live Low-Stock alerts." />
   <style>
     :root {
-      --bg-deep: #070d1f;
-      --bg-navy: #0e1936;
-      --card-bg: rgba(255, 255, 255, 0.97);
-      --text-main: #0f172a;
-      --text-muted: #475569;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --accent: #06b6d4;
-      --success: #16a34a;
-      --success-bg: #dcfce7;
-      --warning: #d97706;
-      --warning-bg: #fef3c7;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-600: #475569;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
       --danger: #dc2626;
-      --danger-bg: #fee2e2;
-      --border: #cbd5e1;
-      --shadow-lg: 0 20px 45px rgba(2, 6, 23, 0.45);
+      --warning: #d97706;
+      --success: #16a34a;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--slate-100); color: var(--slate-800); min-height: 100vh; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-
-    body {
-      min-height: 100vh;
-      background-color: var(--bg-deep);
-      background-image:
-        radial-gradient(circle at 18% 20%, rgba(6, 182, 212, 0.22), transparent 42%),
-        radial-gradient(circle at 82% 75%, rgba(59, 130, 246, 0.25), transparent 46%),
-        linear-gradient(135deg, #060b19 0%, #0e1a38 50%, #091228 100%);
-      color: var(--text-main);
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Isometric Architectural Grid & Warehouse Visual Layer */
-    .warehouse-backdrop {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .iso-grid {
-      position: absolute;
-      inset: -50%;
-      background-image:
-        linear-gradient(to right, rgba(56, 189, 248, 0.08) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
-      background-size: 56px 56px;
-      transform: perspective(750px) rotateX(62deg) rotateZ(-28deg) translateY(-80px);
-      transform-origin: center center;
-    }
-    .iso-svg-left {
-      position: absolute;
-      left: 2%;
-      bottom: 4%;
-      width: 280px;
-      opacity: 0.42;
-      animation: floatRack 7s ease-in-out infinite;
-    }
-    .iso-svg-right {
-      position: absolute;
-      right: 2%;
-      top: 14%;
-      width: 260px;
-      opacity: 0.38;
-      animation: floatRack 8.5s ease-in-out infinite reverse;
-    }
-    @keyframes floatRack {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-    }
-
-    /* LOGIN SCREEN */
-    #loginScreen {
-      position: relative;
-      z-index: 10;
+    /* Login Screen with Isometric Warehouse Grid */
+    .login-wrapper {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
+      background-color: #0b132b;
+      background-image:
+        linear-gradient(30deg, rgba(79, 70, 229, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(79, 70, 229, 0.08) 87.5%, rgba(79, 70, 229, 0.08)),
+        linear-gradient(150deg, rgba(79, 70, 229, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(79, 70, 229, 0.08) 87.5%, rgba(79, 70, 229, 0.08)),
+        linear-gradient(60deg, rgba(99, 102, 241, 0.05) 25%, transparent 25.5%, transparent 75%, rgba(99, 102, 241, 0.05) 75%, rgba(99, 102, 241, 0.05));
+      background-size: 80px 140px;
     }
-    .login-wrapper {
+    .login-box {
       width: 100%;
-      max-width: 1020px;
+      max-width: 920px;
       display: grid;
-      grid-template-columns: 1.05fr 1fr;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.28);
-      border-radius: 22px;
+      grid-template-columns: 1.1fr 1fr;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: var(--shadow-lg);
-      backdrop-filter: blur(14px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background: #ffffff;
     }
-    .login-visual {
-      padding: 40px 34px;
-      background: linear-gradient(155deg, rgba(14, 116, 144, 0.35), rgba(30, 58, 138, 0.45));
-      color: #f8fafc;
+    .login-brand {
+      background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
+      color: #ffffff;
+      padding: 40px 36px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .brand-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(6, 182, 212, 0.2);
-      border: 1px solid rgba(34, 211, 238, 0.4);
-      color: #67e8f9;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 12px;
+    .brand-badge {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.25);
+      border: 1px solid rgba(129, 140, 248, 0.4);
+      color: #a5b4fc;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.6px;
+      letter-spacing: 1px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 18px;
       width: fit-content;
     }
-    .login-visual h1 {
-      font-size: 30px;
-      line-height: 1.22;
-      margin: 18px 0 12px;
-      font-weight: 800;
-      color: #ffffff;
+    .login-brand h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+    .login-brand p { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; margin-bottom: 24px; }
+    .feature-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
     }
-    .login-visual p {
-      font-size: 14px;
-      color: #cbd5e1;
-      line-height: 1.6;
-    }
-    .feature-badges {
+    .copyright { font-size: 11px; color: #64748b; }
+
+    .login-form-area { padding: 36px 32px; background: #ffffff; }
+    .auth-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 22px;
-    }
-    .f-badge {
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      padding: 10px 12px;
+      background: var(--slate-100);
+      padding: 4px;
       border-radius: 10px;
-      font-size: 12.5px;
-      color: #e2e8f0;
-      font-weight: 600;
-    }
-    .login-form-box {
-      background: #ffffff;
-      padding: 38px 34px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .auth-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      background: #f1f5f9;
-      padding: 5px;
-      border-radius: 10px;
+      margin-bottom: 24px;
     }
     .auth-tab {
-      flex: 1;
-      padding: 9px;
       border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
       background: transparent;
-      color: #475569;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-600);
+      border-radius: 8px;
+      cursor: pointer;
       transition: 0.2s;
     }
     .auth-tab.active {
-      background: #2563eb;
+      background: var(--primary);
       color: #ffffff;
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.28);
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
     }
-
-    /* FORM CONTROLS */
-    .form-group { margin-bottom: 14px; }
-    .form-group label {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #334155;
-      margin-bottom: 5px;
-    }
-    .form-control {
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--slate-800); margin-bottom: 6px; }
+    .form-group input, .form-group select {
       width: 100%;
       padding: 10px 12px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 9px;
-      font-size: 14px;
-      color: #0f172a;
-      background: #ffffff;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .form-control:focus {
+      border: 1px solid var(--slate-300);
+      border-radius: 8px;
+      font-size: 13.5px;
       outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      transition: 0.2s;
     }
-    .form-control[readonly] {
-      background: #f1f5f9;
-      color: #1e293b;
-      font-weight: 600;
-    }
-
-    /* BUTTONS */
+    .form-group input:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      padding: 10px 16px;
+      gap: 6px;
+      padding: 11px 16px;
+      border-radius: 8px;
       border: none;
-      border-radius: 9px;
       font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: #2563eb; color: #fff; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28); }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-success { background: #16a34a; color: #fff; }
-    .btn-success:hover { background: #15803d; }
-    .btn-warning { background: #d97706; color: #fff; }
-    .btn-danger { background: #dc2626; color: #fff; }
-    .btn-dark { background: #0f172a; color: #fff; }
-    .btn-outline { background: #ffffff; color: #1e293b; border: 1.5px solid #cbd5e1; }
-    .btn-outline:hover { background: #f8fafc; }
-    .btn-sm { padding: 6px 11px; font-size: 12px; border-radius: 7px; }
-    .w-full { width: 100%; }
-
-    /* MAIN APP SHELL */
-    #appShell {
-      display: none;
-      position: relative;
-      z-index: 10;
-      min-height: 100vh;
-      flex-direction: column;
-    }
-
-    /* TOP NAVBAR */
-    .topbar {
-      background: rgba(10, 18, 40, 0.94);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
-      backdrop-filter: blur(12px);
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .topbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #ffffff;
-    }
-    .company-logo-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #06b6d4, #2563eb);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 16px;
-      color: #fff;
-      overflow: hidden;
-    }
-    .company-logo-box img { width: 100%; height: 100%; object-fit: cover; }
-    .topbar-title h2 { font-size: 16px; font-weight: 800; color: #f8fafc; }
-    .topbar-title span { font-size: 11.5px; color: #38bdf8; font-weight: 600; }
-
-    .nav-strip {
-      background: rgba(15, 23, 42, 0.9);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-      padding: 10px 24px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .nav-btn {
-      padding: 9px 15px;
-      border-radius: 9px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      background: rgba(30, 41, 59, 0.85);
-      color: #e2e8f0;
-      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
     }
-    .nav-btn:hover { background: rgba(51, 65, 85, 0.95); color: #ffffff; }
-    .nav-btn.active {
-      background: linear-gradient(135deg, #2563eb, #0284c7);
+    .btn-primary { background: var(--primary); color: #ffffff; width: 100%; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-dark { background: var(--slate-900); color: #ffffff; width: 100%; }
+    .btn-dark:hover { background: #1e293b; }
+    .btn-sm { padding: 7px 12px; font-size: 12px; width: auto; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .error-msg { color: var(--danger); font-size: 12px; font-weight: 600; margin-top: 10px; display: none; }
+
+    /* App Layout */
+    .app-container { display: none; min-height: 100vh; flex-direction: column; }
+    .topbar {
+      background: var(--slate-900);
       color: #ffffff;
-      border-color: #38bdf8;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-    }
-
-    /* MAIN CONTAINER */
-    .main-container {
-      max-width: 1340px;
-      width: 100%;
-      margin: 22px auto;
-      padding: 0 20px 40px;
-      flex: 1;
-    }
-
-    /* HERO WAREHOUSE GRAPHICS PANEL */
-    .hero-banner {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 58, 138, 0.88));
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 18px;
-      padding: 22px 26px;
-      color: #ffffff;
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 20px;
-      align-items: center;
-      margin-bottom: 22px;
-      box-shadow: var(--shadow-lg);
-    }
-    .hero-banner h3 { font-size: 21px; font-weight: 800; margin-bottom: 6px; }
-    .hero-banner p { font-size: 13.5px; color: #cbd5e1; line-height: 1.5; }
-    .cat-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-    .cat-pill {
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #7dd3fc;
-    }
-
-    /* KPI CARDS */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-    .kpi-card {
-      background: var(--card-bg);
-      border-radius: 15px;
-      padding: 18px 20px;
-      border-left: 6px solid #2563eb;
-      box-shadow: 0 10px 25px rgba(2, 6, 23, 0.25);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(2, 6, 23, 0.35); }
-    .kpi-card.red { border-left-color: #dc2626; }
-    .kpi-card.yellow { border-left-color: #d97706; }
-    .kpi-card.green { border-left-color: #16a34a; }
-    .kpi-label { font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.4px; }
-    .kpi-val { font-size: 28px; font-weight: 900; color: #0f172a; margin: 6px 0 2px; }
-    .kpi-sub { font-size: 12px; color: #64748b; }
-
-    /* PANEL CARDS */
-    .panel {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 12px 30px rgba(2, 6, 23, 0.28);
-      margin-bottom: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-    }
-    .panel-header {
+      padding: 12px 24px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1.5px solid #e2e8f0;
+      justify-content: space-between;
+      border-bottom: 1px solid #334155;
     }
-    .panel-title { font-size: 17px; font-weight: 800; color: #0f172a; }
-
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 12px; }
-
-    /* TABLES */
-    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #cbd5e1; }
-    table { width: 100%; border-collapse: collapse; background: #ffffff; font-size: 13px; }
-    th {
-      background: #0f172a;
-      color: #f8fafc;
-      text-align: left;
-      padding: 11px 12px;
-      font-weight: 700;
-      white-space: nowrap;
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .company-logo-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      overflow: hidden;
     }
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #e2e8f0;
-      color: #1e293b;
-      vertical-align: middle;
-    }
-    tr:hover td { background: #f8fafc; }
-
-    /* STATUS BADGES */
-    .badge {
-      display: inline-block;
+    .company-logo-box img { width: 100%; height: 100%; object-fit: cover; }
+    .topbar-title h2 { font-size: 16px; font-weight: 800; }
+    .topbar-title span { font-size: 11.5px; color: #94a3b8; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .badge-role {
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid #6366f1;
+      color: #c7d2fe;
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 11.5px;
-      font-weight: 800;
+      font-weight: 700;
     }
-    .badge-red { background: var(--danger-bg); color: var(--danger); }
-    .badge-yellow { background: var(--warning-bg); color: var(--warning); }
-    .badge-green { background: var(--success-bg); color: var(--success); }
-    .badge-blue { background: #dbeafe; color: #1d4ed8; }
 
-    /* LOT INSPECTION BOX */
-    .lot-box {
-      background: #f1f5f9;
-      border: 1.5px solid #94a3b8;
+    .main-body { display: flex; flex: 1; }
+    .sidebar {
+      width: 240px;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .nav-btn:hover { background: rgba(255, 255, 255, 0.08); color: #ffffff; }
+    .nav-btn.active { background: var(--primary); color: #ffffff; }
+
+    .content-area { flex: 1; padding: 24px; max-width: 1320px; margin: 0 auto; width: 100%; }
+    .section-view { display: none; }
+    .section-view.active { display: block; }
+
+    /* Cards & Tables */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 22px; }
+    .stat-card {
+      background: #ffffff;
       border-radius: 12px;
-      padding: 14px;
-      margin-top: 12px;
+      padding: 18px;
+      border: 1px solid var(--slate-200);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-    .lot-box h4 { font-size: 13.5px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+    .stat-card h4 { font-size: 12px; color: var(--slate-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-card .val { font-size: 24px; font-weight: 800; color: var(--slate-900); }
+    .stat-card.red { border-left: 4px solid var(--danger); }
+    .stat-card.yellow { border-left: 4px solid var(--warning); }
+    .stat-card.green { border-left: 4px solid var(--success); }
+    .stat-card.indigo { border-left: 4px solid var(--primary); }
 
-    /* MODAL POPUP (POST-LOGIN LOW STOCK ALERT) */
+    .panel {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--slate-200);
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .panel-header h3 { font-size: 16px; font-weight: 800; color: var(--slate-900); }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 14px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--slate-200); }
+    th { background: var(--slate-50); font-weight: 700; color: var(--slate-600); font-size: 12px; }
+    .tag { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+    .tag-rm { background: #e0e7ff; color: #3730a3; }
+    .tag-bop { background: #fef3c7; color: #92400e; }
+    .tag-packing { background: #dcfce7; color: #166534; }
+    .tag-consumable { background: #f1f5f9; color: #334155; }
+    .tag-low { background: #fee2e2; color: #b91c1c; }
+    .tag-ok { background: #dcfce7; color: #15803d; }
+
+    /* Low Stock Alert Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(2, 6, 23, 0.78);
-      backdrop-filter: blur(6px);
-      z-index: 999;
+      background: rgba(15, 23, 42, 0.7);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      z-index: 999;
+      padding: 16px;
     }
     .modal-card {
       background: #ffffff;
+      border-radius: 14px;
+      max-width: 560px;
       width: 100%;
-      max-width: 680px;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 25px 55px rgba(0, 0, 0, 0.55);
-      animation: popIn 0.25s ease-out;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      border-top: 5px solid var(--danger);
     }
-    @keyframes popIn {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .modal-header {
-      background: linear-gradient(135deg, #b91c1c, #dc2626);
-      color: #ffffff;
-      padding: 16px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .modal-body { padding: 20px 22px; max-height: 65vh; overflow-y: auto; }
-    .modal-footer {
-      padding: 14px 22px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .modal-card h3 { color: var(--danger); font-size: 18px; margin-bottom: 8px; }
+    .modal-card p { font-size: 13px; color: var(--slate-600); margin-bottom: 14px; }
 
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
-
-    .footer-bar {
-      text-align: center;
-      padding: 16px;
-      color: #94a3b8;
-      font-size: 12.5px;
-      border-top: 1px solid rgba(148, 163, 184, 0.15);
-      background: rgba(7, 13, 31, 0.85);
-    }
-
-    @media (max-width: 820px) {
-      .login-wrapper, .hero-banner { grid-template-columns: 1fr; }
+    @media (max-width: 780px) {
+      .login-box { grid-template-columns: 1fr; }
+      .main-body { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Isometric Warehouse Architectural Backdrop -->
-  <div class="warehouse-backdrop" aria-hidden="true">
-    <div class="iso-grid"></div>
-    <svg class="iso-svg-left" viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="130,20 230,75 130,130 30,75" fill="rgba(6,182,212,0.18)" stroke="#38bdf8" stroke-width="2"/>
-      <polygon points="30,75 130,130 130,195 30,140" fill="rgba(37,99,235,0.22)" stroke="#38bdf8" stroke-width="2"/>
-      <polygon points="230,75 130,130 130,195 230,140" fill="rgba(14,165,233,0.14)" stroke="#38bdf8" stroke-width="2"/>
-      <line x1="80" y1="47" x2="180" y2="102" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="4 4"/>
-      <line x1="180" y1="47" x2="80" y2="102" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="4 4"/>
-    </svg>
-    <svg class="iso-svg-right" viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="130,15 215,62 130,109 45,62" fill="rgba(59,130,246,0.22)" stroke="#60a5fa" stroke-width="2"/>
-      <polygon points="45,62 130,109 130,175 45,128" fill="rgba(30,64,175,0.28)" stroke="#60a5fa" stroke-width="2"/>
-      <polygon points="215,62 130,109 130,175 215,128" fill="rgba(37,99,235,0.18)" stroke="#60a5fa" stroke-width="2"/>
-    </svg>
-  </div>
-
-  <!-- LOGIN / COMPANY SETUP SCREEN -->
-  <section id="loginScreen">
-    <div class="login-wrapper">
-      <div class="login-visual">
+  <!-- AUTH / LOGIN SCREEN -->
+  <div id="loginScreen" class="login-wrapper">
+    <div class="login-box">
+      <div class="login-brand">
         <div>
-          <span class="brand-pill">AB SOFTWARE SOLUTION</span>
+          <span class="brand-badge">AB SOFTWARE SOLUTION</span>
           <h1>ICSBAB Inventory Control</h1>
-          <p>Enterprise Store & Warehouse Management System for <strong>RM, BOP, PACKING & CONSUMABLE</strong> items with strict FIFO Lot & GRN automation, Production Returns, and live Low-Stock alerts.</p>
-          <div class="feature-badges">
-            <div class="f-badge">RM / BOP / Packing / Consumable</div>
-            <div class="f-badge">Auto FIFO Lot & GRN Issue</div>
-            <div class="f-badge">Production Return Auto-Fetch</div>
-            <div class="f-badge">Multi-Company Data Isolation</div>
+          <p>Enterprise Store &amp; Warehouse Management System for <strong>RM, BOP, PACKING &amp; CONSUMABLE</strong> items with strict FIFO Lot &amp; GRN automation, Production Returns, and live Low-Stock alerts.</p>
+          <div class="feature-pills">
+            <div class="pill">RM / BOP / Packing / Consumable</div>
+            <div class="pill">Auto FIFO Lot &amp; GRN Issue</div>
+            <div class="pill">Production Return Auto-Fetch</div>
+            <div class="pill">Strict Multi-Company Isolation</div>
           </div>
         </div>
-        <div style="margin-top:26px; font-size:12px; color:#94a3b8;">
-          &copy; 2026 AB SOFTWARE SOLUTION. All Rights Reserved.
-        </div>
+        <div class="copyright">&copy; 2026 AB SOFTWARE SOLUTION. All Rights Reserved.</div>
       </div>
 
-      <div class="login-form-box">
+      <div class="login-form-area">
         <div class="auth-tabs">
-          <button class="auth-tab active" id="tabBtnLogin" onclick="switchAuthTab('login')">Company Login</button>
-          <button class="auth-tab" id="tabBtnRegister" onclick="switchAuthTab('register')">New Company Setup</button>
+          <button type="button" id="tabCompany" class="auth-tab active" onclick="switchAuthTab('company')">Company Login</button>
+          <button type="button" id="tabMaster" class="auth-tab" onclick="switchAuthTab('master')">AB Software Portal</button>
         </div>
 
-        <!-- LOGIN FORM -->
-        <div id="authLoginForm">
+        <!-- COMPANY LOGIN FORM -->
+        <form id="companyLoginForm" onsubmit="handleCompanyLogin(event)">
           <div class="form-group">
             <label>Company ID</label>
-            <input type="text" id="loginCompanyId" class="form-control" value="ICSBAB-01" placeholder="e.g. ICSBAB-01" />
+            <input type="text" id="loginCompanyId" placeholder="Enter assigned Company ID" required autocomplete="off" />
           </div>
           <div class="form-group">
             <label>Username</label>
-            <input type="text" id="loginUsername" class="form-control" value="admin" placeholder="Enter username" />
+            <input type="text" id="loginUsername" placeholder="Enter Username" required autocomplete="off" />
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" id="loginPassword" class="form-control" value="admin123" placeholder="Enter password" />
+            <input type="password" id="loginPassword" placeholder="Enter Password" required />
           </div>
-          <button class="btn btn-primary w-full" style="margin-bottom:10px;" onclick="handleLogin()">Login to Dashboard</button>
-          <button class="btn btn-success w-full" onclick="demoLogin()">1-Click Demo Login (Pre-Loaded Store Data)</button>
-        </div>
+          <button type="submit" class="btn btn-primary">Login to Company Dashboard</button>
+          <div id="companyLoginError" class="error-msg"></div>
+        </form>
 
-        <!-- REGISTER NEW COMPANY -->
-        <div id="authRegisterForm" style="display:none;">
+        <!-- AB SOFTWARE MASTER PORTAL LOGIN FORM -->
+        <form id="masterLoginForm" style="display:none;" onsubmit="handleMasterLogin(event)">
           <div class="form-group">
-            <label>Company Name</label>
-            <input type="text" id="regCompanyName" class="form-control" placeholder="e.g. Kosh Innovations Pvt Ltd" />
-          </div>
-          <div class="form-group">
-            <label>Unique Company ID</label>
-            <input type="text" id="regCompanyId" class="form-control" placeholder="e.g. KOSH-UNIT3" />
-          </div>
-          <div class="grid-2">
-            <div class="form-group">
-              <label>Admin Username</label>
-              <input type="text" id="regUsername" class="form-control" value="admin" />
-            </div>
-            <div class="form-group">
-              <label>Admin Password</label>
-              <input type="password" id="regPassword" class="form-control" value="admin123" />
-            </div>
+            <label>Master Portal ID</label>
+            <input type="text" id="masterPortalId" placeholder="Enter Portal ID" required autocomplete="off" />
           </div>
           <div class="form-group">
-            <label>Company Logo (Optional)</label>
-            <input type="file" id="regLogoFile" class="form-control" accept="image/*" />
+            <label>Master Username</label>
+            <input type="text" id="masterUsername" placeholder="Enter Master Username" required autocomplete="off" />
           </div>
-          <button class="btn btn-primary w-full" onclick="handleRegisterCompany()">Create Isolated Company & Enter</button>
-        </div>
+          <div class="form-group">
+            <label>Master Password</label>
+            <input type="password" id="masterPassword" placeholder="Enter Master Password" required />
+          </div>
+          <button type="submit" class="btn btn-dark">Login to AB Software Portal</button>
+          <div id="masterLoginError" class="error-msg"></div>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- MAIN APPLICATION SHELL -->
-  <div id="appShell">
-    <!-- TOP BAR -->
+  <!-- MASTER PORTAL VIEW (ONLY FOR AB SOFTWARE SOLUTION OWNER) -->
+  <div id="masterPortalApp" class="app-container">
     <header class="topbar">
-      <div class="topbar-brand">
-        <div class="company-logo-box" id="headerLogoBox">IC</div>
+      <div class="topbar-left">
+        <div class="company-logo-box">AB</div>
         <div class="topbar-title">
-          <h2 id="headerCompanyName">ICSBAB Inventory Control</h2>
-          <span id="headerUserMeta">Company ID: ICSBAB-01 | User: admin | Session Active</span>
+          <h2>AB SOFTWARE SOLUTION — Master Admin Portal</h2>
+          <span>Create &amp; Manage Isolated Client Companies</span>
         </div>
       </div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <button class="btn btn-warning btn-sm" onclick="openLowStockModal(true)">Low Stock Alerts (<span id="topAlertCount">0</span>)</button>
-        <button class="btn btn-danger btn-sm" onclick="logoutApp()">Logout</button>
+      <div class="topbar-right">
+        <span class="badge-role">MASTER OWNER</span>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
       </div>
     </header>
 
-    <!-- NAVIGATION TABS -->
-    <nav class="nav-strip">
-      <button class="nav-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">1. Dashboard & Visuals</button>
-      <button class="nav-btn" data-tab="items" onclick="switchTab('items')">2. Item Master (RM/BOP/Packing/Consumable)</button>
-      <button class="nav-btn" data-tab="inward" onclick="switchTab('inward')">3. Inward GRN Entry</button>
-      <button class="nav-btn" data-tab="outward" onclick="switchTab('outward')">4. Outward Issue (FIFO)</button>
-      <button class="nav-btn" data-tab="returns" onclick="switchTab('returns')">5. Return from Production</button>
-      <button class="nav-btn" data-tab="ledger" onclick="switchTab('ledger')">6. GRN & Lot Stock Ledger</button>
-      <button class="nav-btn" data-tab="reports" onclick="switchTab('reports')">7. Reports, Users & Backup</button>
-    </nav>
-
-    <!-- WORKSPACE -->
-    <main class="main-container">
-
-      <!-- TAB 1: DASHBOARD -->
-      <section id="tab-dashboard" class="tab-section active">
-        <div class="hero-banner">
-          <div>
-            <h3>Live Store Operations & Isometric Warehouse Overview</h3>
-            <p>Real-time valuation across Raw Material (RM), Bought Out Parts (BOP), Packing, and Consumables with automated FIFO Lot & GRN tracking.</p>
-            <div class="cat-pills" id="categorySummaryPills"></div>
-          </div>
-          <div style="background:rgba(15,23,42,0.65); border:1px solid rgba(56,189,248,0.3); border-radius:14px; padding:14px;">
-            <div style="font-size:12px; font-weight:700; color:#7dd3fc; margin-bottom:8px;">CATEGORY STOCK VALUATION SHARE</div>
-            <div id="categoryBarsContainer"></div>
-          </div>
+    <div class="content-area">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Add New Company (Isolated Workspace)</h3>
         </div>
-
-        <div class="kpi-grid">
-          <div class="kpi-card" onclick="filterDashboardStock('ALL')">
-            <div class="kpi-label">Total Active Items</div>
-            <div class="kpi-val" id="kpiTotalItems">0</div>
-            <div class="kpi-sub">Click to view all items</div>
-          </div>
-          <div class="kpi-card red" onclick="filterDashboardStock('RED')">
-            <div class="kpi-label">Critical / Out of Stock</div>
-            <div class="kpi-val" id="kpiRedItems" style="color:#dc2626;">0</div>
-            <div class="kpi-sub">Click to filter Red alerts</div>
-          </div>
-          <div class="kpi-card yellow" onclick="filterDashboardStock('YELLOW')">
-            <div class="kpi-label">Low Reorder Warning</div>
-            <div class="kpi-val" id="kpiYellowItems" style="color:#d97706;">0</div>
-            <div class="kpi-sub">Click to filter Yellow alerts</div>
-          </div>
-          <div class="kpi-card green" onclick="filterDashboardStock('GREEN')">
-            <div class="kpi-label">Healthy Stock & Valuation</div>
-            <div class="kpi-val" id="kpiTotalValue" style="color:#16a34a;">₹0</div>
-            <div class="kpi-sub" id="kpiGreenCount">0 items in healthy range</div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Live Closing Stock & FIFO Status (<span id="dashFilterLabel">ALL ITEMS</span>)</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <select id="dashCatFilter" class="form-control" style="width:auto;" onchange="renderDashboard()">
-                <option value="ALL">All Categories</option>
-                <option value="RM">RM (Raw Material)</option>
-                <option value="BOP">BOP (Bought Out Part)</option>
-                <option value="PACKING">PACKING</option>
-                <option value="CONSUMABLE">CONSUMABLE</option>
-              </select>
-              <button class="btn btn-success btn-sm" onclick="exportClosingStockCSV()">Export Excel (CSV)</button>
-              <button class="btn btn-primary btn-sm" onclick="shareWhatsAppSummary()">Share WhatsApp</button>
+        <form onsubmit="createNewCompany(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Unique Company ID *</label>
+              <input type="text" id="newCompId" placeholder="Create unique Company ID" required />
+            </div>
+            <div class="form-group">
+              <label>Company Name *</label>
+              <input type="text" id="newCompName" placeholder="Enter Company Name" required />
+            </div>
+            <div class="form-group">
+              <label>Company Admin Username *</label>
+              <input type="text" id="newCompUser" placeholder="Create Admin Username" required />
+            </div>
+            <div class="form-group">
+              <label>Company Admin Password *</label>
+              <input type="text" id="newCompPass" placeholder="Create Admin Password" required />
+            </div>
+            <div class="form-group">
+              <label>Company Logo (Optional)</label>
+              <input type="file" id="newCompLogo" accept="image/*" />
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Item Code</th>
-                  <th>Category</th>
-                  <th>Item Name</th>
-                  <th>Grade</th>
-                  <th>Supplier</th>
-                  <th>Price (₹)</th>
-                  <th>Opening</th>
-                  <th>Inward</th>
-                  <th>Return</th>
-                  <th>Outward</th>
-                  <th>Closing Stock</th>
-                  <th>Stock Value</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="dashStockTableBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 2: ITEM MASTER (RM / BOP / PACKING / CONSUMABLE) -->
-      <section id="tab-items" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Add / Update Store Item (RM, BOP, PACKING & CONSUMABLE)</div>
-          </div>
-          <form onsubmit="saveItemMaster(event)">
-            <div class="grid-4">
-              <div class="form-group">
-                <label>Category *</label>
-                <select id="imCategory" class="form-control" required>
-                  <option value="RM">RM (Raw Material)</option>
-                  <option value="BOP">BOP (Bought Out Part)</option>
-                  <option value="PACKING">PACKING</option>
-                  <option value="CONSUMABLE">CONSUMABLE</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Item Code *</label>
-                <input type="text" id="imCode" class="form-control" placeholder="e.g. RM-101" required />
-              </div>
-              <div class="form-group">
-                <label>Item Name *</label>
-                <input type="text" id="imName" class="form-control" placeholder="e.g. CRCA Steel Sheet" required />
-              </div>
-              <div class="form-group">
-                <label>Grade / Spec *</label>
-                <input type="text" id="imGrade" class="form-control" placeholder="e.g. IS-513 D / SS-304" required />
-              </div>
-              <div class="form-group">
-                <label>Supplier Name *</label>
-                <input type="text" id="imSupplier" class="form-control" placeholder="e.g. Tata Steel Ltd" required />
-              </div>
-              <div class="form-group">
-                <label>Unit Price (₹) *</label>
-                <input type="number" id="imPrice" class="form-control" step="0.01" min="0" placeholder="0.00" required />
-              </div>
-              <div class="form-group">
-                <label>Opening Stock *</label>
-                <input type="number" id="imOpening" class="form-control" step="0.01" min="0" placeholder="0" required />
-              </div>
-              <div class="form-group">
-                <label>Min Alert Level & UOM *</label>
-                <div style="display:flex; gap:6px;">
-                  <input type="number" id="imMinStock" class="form-control" step="0.01" min="0" value="50" required title="Min Reorder Stock" />
-                  <select id="imUom" class="form-control" style="width:95px;">
-                    <option value="KG">KG</option>
-                    <option value="NOS">NOS</option>
-                    <option value="MTR">MTR</option>
-                    <option value="LTR">LTR</option>
-                    <option value="BOX">BOX</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Save Item & Initialize Opening FIFO Lot</button>
-          </form>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Registered Item Master List</div>
-            <select id="imListFilter" class="form-control" style="width:auto;" onchange="renderItemMasterTable()">
-              <option value="ALL">All Categories</option>
-              <option value="RM">RM</option>
-              <option value="BOP">BOP</option>
-              <option value="PACKING">PACKING</option>
-              <option value="CONSUMABLE">CONSUMABLE</option>
-            </select>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Code</th>
-                  <th>Item Name</th>
-                  <th>Grade</th>
-                  <th>Supplier Name</th>
-                  <th>Price (₹)</th>
-                  <th>Opening Stock</th>
-                  <th>Min Alert</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="itemMasterTableBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 3: INWARD GRN ENTRY -->
-      <section id="tab-inward" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Inward GRN & Lot Receipt Entry</div>
-          </div>
-          <form onsubmit="recordInward(event)">
-            <div class="grid-3">
-              <div class="form-group">
-                <label>Receipt Date *</label>
-                <input type="date" id="inDate" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>Select Item (RM / BOP / Packing / Consumable) *</label>
-                <select id="inItemCode" class="form-control" onchange="onInwardItemChange()" required></select>
-              </div>
-              <div class="form-group">
-                <label>Category & Grade (Auto-Fetched)</label>
-                <input type="text" id="inCatGrade" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>Supplier Name (Auto-Fetched)</label>
-                <input type="text" id="inSupplier" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>Auto-Generated GRN Number *</label>
-                <input type="text" id="inGrnNo" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>Auto-Generated Lot Number *</label>
-                <input type="text" id="inLotNo" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>Received Quantity *</label>
-                <input type="number" id="inQty" class="form-control" step="0.01" min="0.01" required />
-              </div>
-              <div class="form-group">
-                <label>Unit Price (₹) *</label>
-                <input type="number" id="inPrice" class="form-control" step="0.01" min="0" required />
-              </div>
-              <div class="form-group">
-                <label>Invoice / Challan Ref</label>
-                <input type="text" id="inRemarks" class="form-control" placeholder="e.g. INV-2026-884" />
-              </div>
-            </div>
-            <button type="submit" class="btn btn-success">Post Inward GRN & Create FIFO Lot</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- TAB 4: OUTWARD ISSUE (STRICT FIFO + LIVE GRN/LOT STOCK) -->
-      <section id="tab-outward" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Outward Issue to Production (Strict FIFO Lot & GRN Allocation)</div>
-          </div>
-          <form onsubmit="recordOutwardFIFO(event)">
-            <div class="grid-3">
-              <div class="form-group">
-                <label>Issue Date *</label>
-                <input type="date" id="outDate" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>Select Item *</label>
-                <select id="outItemCode" class="form-control" onchange="onOutwardItemChange()" required></select>
-              </div>
-              <div class="form-group">
-                <label>Total Available Closing Stock</label>
-                <input type="text" id="outAvailStock" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>FIFO Auto-Selected Lot No</label>
-                <input type="text" id="outAutoLot" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>FIFO Auto-Selected GRN No</label>
-                <input type="text" id="outAutoGrn" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>Issue Quantity *</label>
-                <input type="number" id="outQty" class="form-control" step="0.01" min="0.01" oninput="previewFifoAllocation()" required />
-              </div>
-              <div class="form-group">
-                <label>Department / Production Line *</label>
-                <input type="text" id="outDept" class="form-control" value="Press Shop / Assembly Line 1" required />
-              </div>
-              <div class="form-group">
-                <label>Unit Price (₹)</label>
-                <input type="text" id="outPrice" class="form-control" readonly />
-              </div>
-            </div>
-
-            <!-- Live GRN & Lot Breakdown Box -->
-            <div class="lot-box">
-              <h4>Available GRN No & Lot No Material Balance (Oldest FIFO First):</h4>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>FIFO Priority</th>
-                      <th>Receipt Date</th>
-                      <th>GRN Number</th>
-                      <th>Lot Number</th>
-                      <th>Available Material Qty</th>
-                      <th>Planned FIFO Deduction</th>
-                    </tr>
-                  </thead>
-                  <tbody id="outwardLotBreakdownBody"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div style="margin-top:16px;">
-              <button type="submit" class="btn btn-primary">Confirm FIFO Outward Issue</button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- TAB 5: RETURN FROM PRODUCTION (AUTO LOT & GRN FETCH) -->
-      <section id="tab-returns" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Return from Production (Auto Lot No & GRN No Fetch)</div>
-          </div>
-          <form onsubmit="recordProductionReturn(event)">
-            <div class="grid-3">
-              <div class="form-group">
-                <label>Return Date *</label>
-                <input type="date" id="retDate" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>Select Item Returned *</label>
-                <select id="retItemCode" class="form-control" onchange="onReturnItemChange()" required></select>
-              </div>
-              <div class="form-group">
-                <label>Auto-Fetched Last Issued Lot No *</label>
-                <input type="text" id="retLotNo" class="form-control" readonly required />
-              </div>
-              <div class="form-group">
-                <label>Auto-Fetched Last Issued GRN No *</label>
-                <input type="text" id="retGrnNo" class="form-control" readonly required />
-              </div>
-              <div class="form-group">
-                <label>Returnable Balance from Last Issue</label>
-                <input type="text" id="retMaxBalance" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>Return Quantity *</label>
-                <input type="number" id="retQty" class="form-control" step="0.01" min="0.01" required />
-              </div>
-              <div class="form-group">
-                <label>Unit Price (₹)</label>
-                <input type="text" id="retPrice" class="form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label>Return Reason / Batch Note</label>
-                <input type="text" id="retReason" class="form-control" value="Excess Shopfloor Material Return" />
-              </div>
-            </div>
-            <button type="submit" class="btn btn-success">Accept Production Return & Restore Lot Stock</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- TAB 6: GRN & LOT STOCK LEDGER -->
-      <section id="tab-ledger" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">Active GRN & Lot-Wise Balance Register</div>
-          </div>
-          <div class="table-wrap" style="margin-bottom:24px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Category</th>
-                  <th>Item Code & Name</th>
-                  <th>GRN Number</th>
-                  <th>Lot Number</th>
-                  <th>Initial Qty</th>
-                  <th>Remaining Qty</th>
-                  <th>Unit Price (₹)</th>
-                  <th>Lot Value (₹)</th>
-                </tr>
-              </thead>
-              <tbody id="lotRegisterBody"></tbody>
-            </table>
-          </div>
-
-          <div class="panel-header">
-            <div class="panel-title">Complete Transaction Audit Ledger (Inward / Outward / Return)</div>
-            <button class="btn btn-success btn-sm" onclick="exportTransactionsCSV()">Export Ledger CSV</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Type</th>
-                  <th>Item Code & Name</th>
-                  <th>GRN No</th>
-                  <th>Lot No</th>
-                  <th>Qty</th>
-                  <th>Price (₹)</th>
-                  <th>Reference / Dept</th>
-                </tr>
-              </thead>
-              <tbody id="txLedgerBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 7: REPORTS, SUB-USERS & BACKUP -->
-      <section id="tab-reports" class="tab-section">
-        <div class="grid-2">
-          <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Instant Reports & Dispatch Sharing</div>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-              <button class="btn btn-success" onclick="exportClosingStockCSV()">Download Date-Wise Closing Stock (Excel CSV)</button>
-              <button class="btn btn-primary" onclick="exportTransactionsCSV()">Download Full GRN & Lot Audit Ledger (CSV)</button>
-              <button class="btn btn-dark" onclick="window.print()">Print / Save PDF Inventory Report</button>
-              <button class="btn btn-warning" onclick="shareWhatsAppSummary()">Send Low Stock & Valuation Alert via WhatsApp</button>
-              <button class="btn btn-outline" onclick="shareEmailSummary()">Send Stock Report via Email</button>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">Company Data Backup & Multi-Device Sync</div>
-            </div>
-            <p style="font-size:13px; color:#475569; margin-bottom:12px;">
-              Data is isolated to Company ID <strong id="backupCompanyLabel">ICSBAB-01</strong>. Export JSON backup to transfer or restore data on any phone or PC.
-            </p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
-              <button class="btn btn-primary btn-sm" onclick="downloadJsonBackup()">Download JSON Backup</button>
-              <label class="btn btn-outline btn-sm" style="cursor:pointer;">
-                Restore JSON Backup
-                <input type="file" accept=".json" style="display:none;" onchange="restoreJsonBackup(event)" />
-              </label>
-            </div>
-            <hr style="border:none; border-top:1px solid #e2e8f0; margin:14px 0;" />
-            <div style="font-size:13px; font-weight:700; margin-bottom:8px;">Add Store Sub-User</div>
-            <div style="display:flex; gap:8px;">
-              <input type="text" id="subUserName" class="form-control" placeholder="Username" />
-              <input type="password" id="subUserPass" class="form-control" placeholder="Password" />
-              <button class="btn btn-dark btn-sm" onclick="addSubUser()">Add</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <footer class="footer-bar">
-      ICSBAB Inventory Control &bull; Powered by <strong>AB SOFTWARE SOLUTION</strong> &bull; Isolated Company Store Engine
-    </footer>
-  </div>
-
-  <!-- POST-LOGIN LOW INVENTORY ALERT MODAL -->
-  <div class="modal-backdrop" id="lowStockModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div>
-          <strong style="font-size:16px;">LOW INVENTORY & REORDER ALERT</strong>
-          <div style="font-size:12px; opacity:0.9;">Immediate attention required for items below minimum stock threshold</div>
-        </div>
-        <button class="btn btn-sm" style="background:rgba(255,255,255,0.2); color:#fff;" onclick="closeLowStockModal()">X</button>
+          <button type="submit" class="btn btn-primary" style="max-width:260px;">+ Create Isolated Company</button>
+        </form>
       </div>
-      <div class="modal-body">
-        <div class="table-wrap">
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Registered Companies (Visible Only in AB Software Portal)</h3>
+        </div>
+        <div style="overflow-x:auto;">
           <table>
             <thead>
               <tr>
-                <th>Category</th>
-                <th>Item Name</th>
-                <th>Grade / Supplier</th>
-                <th>Closing Stock</th>
-                <th>Min Level</th>
-                <th>Quick Action</th>
+                <th>Company ID</th>
+                <th>Company Name</th>
+                <th>Admin Username</th>
+                <th>Password</th>
+                <th>Created On</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody id="lowStockModalBody"></tbody>
+            <tbody id="masterCompaniesTable"></tbody>
           </table>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-success btn-sm" onclick="shareWhatsAppSummary()">Send WhatsApp Alert</button>
-        <button class="btn btn-dark btn-sm" onclick="closeLowStockModal()">Acknowledge & Continue</button>
+    </div>
+  </div>
+
+  <!-- COMPANY ISOLATED ERP DASHBOARD -->
+  <div id="companyApp" class="app-container">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="company-logo-box" id="headerCompanyLogo">CO</div>
+        <div class="topbar-title">
+          <h2 id="headerCompanyName">Company Workspace</h2>
+          <span id="headerCompanyMeta">ICSBAB Inventory Control • Powered by AB SOFTWARE SOLUTION</span>
+        </div>
       </div>
+      <div class="topbar-right">
+        <span class="badge-role" id="headerUserBadge">ADMIN</span>
+        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <div class="main-body">
+      <aside class="sidebar">
+        <button class="nav-btn active" onclick="showSection('secDashboard', this)">Dashboard &amp; Stock Status</button>
+        <button class="nav-btn" onclick="showSection('secItemMaster', this)">Item Master (RM/BOP/Pkg/Cons)</button>
+        <button class="nav-btn" onclick="showSection('secInward', this)">Inward Entry (GRN &amp; Lot)</button>
+        <button class="nav-btn" onclick="showSection('secOutward', this)">Outward Issue (Strict FIFO)</button>
+        <button class="nav-btn" onclick="showSection('secReturn', this)">Return from Production</button>
+        <button class="nav-btn" onclick="showSection('secLedger', this)">Stock Ledger &amp; Export</button>
+      </aside>
+
+      <main class="content-area">
+        <!-- DASHBOARD -->
+        <section id="secDashboard" class="section-view active">
+          <div class="stats-grid">
+            <div class="stat-card indigo">
+              <h4>Total Active Items</h4>
+              <div class="val" id="statTotalItems">0</div>
+            </div>
+            <div class="stat-card green">
+              <h4>Healthy Stock Items</h4>
+              <div class="val" id="statGreenItems">0</div>
+            </div>
+            <div class="stat-card yellow">
+              <h4>Total Stock Valuation</h4>
+              <div class="val" id="statTotalValue">₹0.00</div>
+            </div>
+            <div class="stat-card red">
+              <h4>Low Stock Alerts</h4>
+              <div class="val" id="statLowItems">0</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Live Closing Stock Summary</h3>
+              <button class="btn btn-success btn-sm" onclick="exportClosingStockCSV()">Export Closing Stock (CSV)</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Item Code</th>
+                    <th>Item Name</th>
+                    <th>Grade</th>
+                    <th>Supplier</th>
+                    <th>Unit Price</th>
+                    <th>Closing Qty</th>
+                    <th>Min Level</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardStockTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ITEM MASTER -->
+        <section id="secItemMaster" class="section-view">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Add Item Master (RM / BOP / PACKING / CONSUMABLE)</h3>
+            </div>
+            <form onsubmit="addItemMaster(event)">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Category *</label>
+                  <select id="imCategory" required>
+                    <option value="RM">RM (Raw Material)</option>
+                    <option value="BOP">BOP (Bought Out Part)</option>
+                    <option value="PACKING">PACKING</option>
+                    <option value="CONSUMABLE">CONSUMABLE</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Item Code *</label>
+                  <input type="text" id="imCode" placeholder="Enter Item Code" required />
+                </div>
+                <div class="form-group">
+                  <label>Item Name *</label>
+                  <input type="text" id="imName" placeholder="Enter Item Name" required />
+                </div>
+                <div class="form-group">
+                  <label>Grade / Spec *</label>
+                  <input type="text" id="imGrade" placeholder="Enter Material Grade" required />
+                </div>
+                <div class="form-group">
+                  <label>Supplier Name *</label>
+                  <input type="text" id="imSupplier" placeholder="Enter Supplier Name" required />
+                </div>
+                <div class="form-group">
+                  <label>Unit Price (₹) *</label>
+                  <input type="number" step="0.01" id="imPrice" placeholder="0.00" required />
+                </div>
+                <div class="form-group">
+                  <label>Opening Stock Qty *</label>
+                  <input type="number" step="0.01" id="imOpening" placeholder="0" required />
+                </div>
+                <div class="form-group">
+                  <label>Minimum Alert Level *</label>
+                  <input type="number" step="0.01" id="imMinLevel" placeholder="0" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="max-width:220px;">Save Item to Master</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- INWARD ENTRY -->
+        <section id="secInward" class="section-view">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Inward Material Entry (Creates FIFO Lot)</h3>
+            </div>
+            <form onsubmit="recordInward(event)">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Select Item *</label>
+                  <select id="inItemSelect" onchange="autoFillInwardDetails()" required></select>
+                </div>
+                <div class="form-group">
+                  <label>GRN Number *</label>
+                  <input type="text" id="inGrn" placeholder="Enter GRN Number" required />
+                </div>
+                <div class="form-group">
+                  <label>Lot Number *</label>
+                  <input type="text" id="inLot" placeholder="Enter Lot Number" required />
+                </div>
+                <div class="form-group">
+                  <label>Supplier (Auto-Fetched)</label>
+                  <input type="text" id="inSupplier" readonly />
+                </div>
+                <div class="form-group">
+                  <label>Unit Price ₹ (Auto-Fetched)</label>
+                  <input type="number" step="0.01" id="inPrice" required />
+                </div>
+                <div class="form-group">
+                  <label>Received Qty *</label>
+                  <input type="number" step="0.01" id="inQty" placeholder="Enter Qty" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="max-width:220px;">Post Inward GRN</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- OUTWARD FIFO -->
+        <section id="secOutward" class="section-view">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Outward Production Issue (Strict Oldest-Lot FIFO)</h3>
+            </div>
+            <form onsubmit="recordOutward(event)">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Select Item *</label>
+                  <select id="outItemSelect" onchange="previewFifoLot()" required></select>
+                </div>
+                <div class="form-group">
+                  <label>Next FIFO Lot &amp; GRN (Auto-Selected)</label>
+                  <input type="text" id="outFifoPreview" readonly placeholder="Select item first" />
+                </div>
+                <div class="form-group">
+                  <label>Issue Slip / Line *</label>
+                  <input type="text" id="outSlip" placeholder="Enter Slip or Line Ref" required />
+                </div>
+                <div class="form-group">
+                  <label>Issue Quantity *</label>
+                  <input type="number" step="0.01" id="outQty" placeholder="Enter Issue Qty" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="max-width:220px;">Issue Stock (FIFO)</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- RETURN FROM PRODUCTION -->
+        <section id="secReturn" class="section-view">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Return from Production (Auto-Fetches Last Issued Lot &amp; GRN)</h3>
+            </div>
+            <form onsubmit="recordProductionReturn(event)">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Select Item *</label>
+                  <select id="retItemSelect" onchange="autoFetchLastIssue()" required></select>
+                </div>
+                <div class="form-group">
+                  <label>Last Issued Lot No (Auto-Fetched)</label>
+                  <input type="text" id="retLot" readonly required />
+                </div>
+                <div class="form-group">
+                  <label>Last Issued GRN No (Auto-Fetched)</label>
+                  <input type="text" id="retGrn" readonly required />
+                </div>
+                <div class="form-group">
+                  <label>Unit Price ₹ (Auto-Fetched)</label>
+                  <input type="number" step="0.01" id="retPrice" readonly required />
+                </div>
+                <div class="form-group">
+                  <label>Return Quantity *</label>
+                  <input type="number" step="0.01" id="retQty" placeholder="Enter Return Qty" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="max-width:240px;">Post Return to Stock</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- LEDGER -->
+        <section id="secLedger" class="section-view">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Transaction &amp; Lot Movement Ledger</h3>
+              <button class="btn btn-success btn-sm" onclick="exportLedgerCSV()">Export Ledger (CSV)</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date &amp; Time</th>
+                    <th>Type</th>
+                    <th>Item Code</th>
+                    <th>Item Name</th>
+                    <th>GRN No</th>
+                    <th>Lot No</th>
+                    <th>Qty</th>
+                    <th>Rate (₹)</th>
+                    <th>Value (₹)</th>
+                  </tr>
+                </thead>
+                <tbody id="ledgerTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- LOW INVENTORY POPUP MODAL -->
+  <div id="lowStockModal" class="modal-backdrop">
+    <div class="modal-card">
+      <h3>Low Inventory Alert</h3>
+      <p>The following items in your company store are at or below minimum stock levels:</p>
+      <div style="max-height:240px; overflow-y:auto; margin-bottom:16px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Item Name</th>
+              <th>Current Qty</th>
+              <th>Min Level</th>
+            </tr>
+          </thead>
+          <tbody id="lowStockModalBody"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-primary" onclick="document.getElementById('lowStockModal').style.display='none'">Acknowledge &amp; Continue</button>
     </div>
   </div>
 
   <script>
-    const SESSION_KEY = 'icsbab_active_session_v3';
-    const COMPANIES_KEY = 'icsbab_companies_registry_v3';
-    let currentSession = null;
-    let currentDashFilter = 'ALL';
+    // AB SOFTWARE SOLUTION MASTER CREDENTIALS
+    const MASTER_CONFIG = {
+      portalId: "AB-MASTER",
+      username: "abadmin",
+      password: "abs@2026"
+    };
 
-    function todayISO() {
-      return new Date().toISOString().split('T')[0];
-    }
+    const COMPANIES_KEY = "abs_icsbab_companies_registry_v1";
+    let activeCompany = null;
 
     function getCompanies() {
-      const raw = localStorage.getItem(COMPANIES_KEY);
-      if (raw) return JSON.parse(raw);
-      const defaultCompanies = {
-        'ICSBAB-01': {
-          companyId: 'ICSBAB-01',
-          companyName: 'ICSBAB Industrial Store Pvt Ltd',
-          logo: '',
-          users: [{ username: 'admin', password: '123', role: 'ADMIN' }, { username: 'admin', password: 'admin123', role: 'ADMIN' }]
-        }
-      };
-      localStorage.setItem(COMPANIES_KEY, JSON.stringify(defaultCompanies));
-      return defaultCompanies;
+      try {
+        return JSON.parse(localStorage.getItem(COMPANIES_KEY)) || [];
+      } catch {
+        return [];
+      }
     }
 
-    function saveCompanies(obj) {
-      localStorage.setItem(COMPANIES_KEY, JSON.stringify(obj));
+    function saveCompanies(list) {
+      localStorage.setItem(COMPANIES_KEY, JSON.stringify(list));
     }
 
+    // Strict Per-Company Isolated Data Store
     function getCompanyDataKey(companyId) {
-      return 'icsbab_store_data_' + companyId.toUpperCase();
+      return "abs_icsbab_isolated_data_" + companyId.trim().toUpperCase();
     }
 
-    function getStoreData() {
-      if (!currentSession) return null;
-      const key = getCompanyDataKey(currentSession.companyId);
-      const raw = localStorage.getItem(key);
+    function getCompanyData(companyId) {
+      const raw = localStorage.getItem(getCompanyDataKey(companyId));
       if (raw) return JSON.parse(raw);
-
-      // Seed realistic industrial RM, BOP, PACKING & CONSUMABLE data
-      const seed = {
-        items: [
-          { code: 'RM-101', category: 'RM', name: 'CRCA Steel Coil 1.2mm', grade: 'IS-513 D', supplier: 'Tata Steel Ltd', price: 68.50, opening: 1200, minStock: 400, uom: 'KG' },
-          { code: 'RM-102', category: 'RM', name: 'SS-304 Bright Bar 16mm', grade: 'ASTM A276', supplier: 'Jindal Stainless', price: 215.00, opening: 140, minStock: 200, uom: 'KG' },
-          { code: 'BOP-201', category: 'BOP', name: 'M8 Hex Flange Bolt High Tensile', grade: 'Grade 8.8', supplier: 'Sundram Fasteners', price: 4.25, opening: 2500, minStock: 1000, uom: 'NOS' },
-          { code: 'BOP-202', category: 'BOP', name: 'Deep Groove Ball Bearing 6204', grade: 'ZZ C3', supplier: 'SKF India', price: 145.00, opening: 35, minStock: 80, uom: 'NOS' },
-          { code: 'PKG-301', category: 'PACKING', name: '5-Ply Corrugated Export Box', grade: '180 GSM Kraft', supplier: 'PackWell Ind.', price: 32.00, opening: 600, minStock: 250, uom: 'NOS' },
-          { code: 'CON-401', category: 'CONSUMABLE', name: 'Synthetic CNC Cutting Coolant', grade: 'ISO VG-32', supplier: 'Castrol Industrial', price: 290.00, opening: 0, minStock: 50, uom: 'LTR' }
-        ],
-        lots: [
-          { lotId: 'L1', date: '2026-11-01', itemCode: 'RM-101', grnNo: 'GRN-2026-001', lotNo: 'LOT-RM-01', initialQty: 1200, remainingQty: 950, price: 68.50 },
-          { lotId: 'L2', date: '2026-11-03', itemCode: 'RM-102', grnNo: 'GRN-2026-002', lotNo: 'LOT-RM-02', initialQty: 140, remainingQty: 140, price: 215.00 },
-          { lotId: 'L3', date: '2026-11-05', itemCode: 'BOP-201', grnNo: 'GRN-2026-003', lotNo: 'LOT-BOP-01', initialQty: 2500, remainingQty: 2100, price: 4.25 },
-          { lotId: 'L4', date: '2026-11-06', itemCode: 'BOP-202', grnNo: 'GRN-2026-004', lotNo: 'LOT-BOP-02', initialQty: 35, remainingQty: 35, price: 145.00 },
-          { lotId: 'L5', date: '2026-11-08', itemCode: 'PKG-301', grnNo: 'GRN-2026-005', lotNo: 'LOT-PKG-01', initialQty: 600, remainingQty: 600, price: 32.00 }
-        ],
-        transactions: [
-          { id: 'TX-1', date: '2026-11-10', type: 'OUTWARD', itemCode: 'RM-101', grnNo: 'GRN-2026-001', lotNo: 'LOT-RM-01', qty: 250, price: 68.50, ref: 'Press Line 1' },
-          { id: 'TX-2', date: '2026-11-12', type: 'OUTWARD', itemCode: 'BOP-201', grnNo: 'GRN-2026-003', lotNo: 'LOT-BOP-01', qty: 400, price: 4.25, ref: 'Assembly Bay A' }
-        ],
-        grnCounter: 6,
-        lotCounter: 6
-      };
-      localStorage.setItem(key, JSON.stringify(seed));
-      return seed;
+      return { items: [], lots: [], ledger: [] };
     }
 
-    function saveStoreData(data) {
-      if (!currentSession) return;
-      localStorage.setItem(getCompanyDataKey(currentSession.companyId), JSON.stringify(data));
+    function saveCompanyData(companyId, data) {
+      localStorage.setItem(getCompanyDataKey(companyId), JSON.stringify(data));
     }
 
     function switchAuthTab(tab) {
-      document.getElementById('tabBtnLogin').classList.toggle('active', tab === 'login');
-      document.getElementById('tabBtnRegister').classList.toggle('active', tab === 'register');
-      document.getElementById('authLoginForm').style.display = tab === 'login' ? 'block' : 'none';
-      document.getElementById('authRegisterForm').style.display = tab === 'register' ? 'block' : 'none';
+      document.getElementById("companyLoginError").style.display = "none";
+      document.getElementById("masterLoginError").style.display = "none";
+      if (tab === "company") {
+        document.getElementById("tabCompany").classList.add("active");
+        document.getElementById("tabMaster").classList.remove("active");
+        document.getElementById("companyLoginForm").style.display = "block";
+        document.getElementById("masterLoginForm").style.display = "none";
+      } else {
+        document.getElementById("tabMaster").classList.add("active");
+        document.getElementById("tabCompany").classList.remove("active");
+        document.getElementById("masterLoginForm").style.display = "block";
+        document.getElementById("companyLoginForm").style.display = "none";
+      }
     }
 
-    function handleLogin() {
-      const cid = document.getElementById('loginCompanyId').value.trim().toUpperCase();
-      const uname = document.getElementById('loginUsername').value.trim();
-      const pass = document.getElementById('loginPassword').value.trim();
-      const companies = getCompanies();
-      const comp = companies[cid];
-      if (!comp) {
-        alert('Company ID not found. Please check ID or create a New Company.');
-        return;
+    function handleMasterLogin(e) {
+      e.preventDefault();
+      const pid = document.getElementById("masterPortalId").value.trim();
+      const user = document.getElementById("masterUsername").value.trim();
+      const pass = document.getElementById("masterPassword").value;
+      const err = document.getElementById("masterLoginError");
+
+      if (pid === MASTER_CONFIG.portalId && user === MASTER_CONFIG.username && pass === MASTER_CONFIG.password) {
+        err.style.display = "none";
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("masterPortalApp").style.display = "flex";
+        renderMasterCompanies();
+      } else {
+        err.textContent = "Invalid AB Software Master Portal credentials.";
+        err.style.display = "block";
       }
-      const matched = comp.users.find(u => u.username === uname && u.password === pass);
-      if (!matched) {
-        alert('Invalid Username or Password.');
-        return;
-      }
-      startSession(comp, matched.username);
     }
 
-    function demoLogin() {
-      const companies = getCompanies();
-      startSession(companies['ICSBAB-01'], 'admin');
-    }
+    function createNewCompany(e) {
+      e.preventDefault();
+      const id = document.getElementById("newCompId").value.trim().toUpperCase();
+      const name = document.getElementById("newCompName").value.trim();
+      const username = document.getElementById("newCompUser").value.trim();
+      const password = document.getElementById("newCompPass").value;
+      const logoInput = document.getElementById("newCompLogo");
 
-    function handleRegisterCompany() {
-      const cname = document.getElementById('regCompanyName').value.trim();
-      const cid = document.getElementById('regCompanyId').value.trim().toUpperCase();
-      const uname = document.getElementById('regUsername').value.trim();
-      const pass = document.getElementById('regPassword').value.trim();
-      const logoInput = document.getElementById('regLogoFile');
-
-      if (!cname || !cid || !uname || !pass) {
-        alert('Please fill all required company details.');
-        return;
-      }
       const companies = getCompanies();
-      if (companies[cid]) {
-        alert('Company ID already exists. Choose another ID or login.');
+      if (companies.some(c => c.id === id)) {
+        alert("This Company ID already exists. Please use a unique ID.");
         return;
       }
 
-      const finalizeReg = (logoData) => {
-        companies[cid] = {
-          companyId: cid,
-          companyName: cname,
-          logo: logoData || '',
-          users: [{ username: uname, password: pass, role: 'ADMIN' }]
-        };
+      const finalizeSave = (logoDataUrl) => {
+        companies.push({
+          id,
+          name,
+          username,
+          password,
+          logo: logoDataUrl || "",
+          createdAt: new Date().toLocaleDateString("en-IN")
+        });
         saveCompanies(companies);
-        startSession(companies[cid], uname);
+        // Initialize completely empty isolated workspace
+        saveCompanyData(id, { items: [], lots: [], ledger: [] });
+        e.target.reset();
+        renderMasterCompanies();
+        alert("Company created successfully with 100% isolated blank database.");
       };
 
       if (logoInput.files && logoInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e) => finalizeReg(e.target.result);
+        reader.onload = (ev) => finalizeSave(ev.target.result);
         reader.readAsDataURL(logoInput.files[0]);
       } else {
-        finalizeReg('');
+        finalizeSave("");
       }
     }
 
-    function startSession(comp, username) {
-      currentSession = {
-        companyId: comp.companyId,
-        companyName: comp.companyName,
-        logo: comp.logo || '',
-        username: username,
-        expiresAt: Date.now() + 6 * 60 * 60 * 1000
-      };
-      localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession));
-      enterApp(true);
-    }
-
-    function logoutApp() {
-      localStorage.removeItem(SESSION_KEY);
-      currentSession = null;
-      document.getElementById('appShell').style.display = 'none';
-      document.getElementById('loginScreen').style.display = 'flex';
-    }
-
-    function enterApp(showAlertPopup) {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('appShell').style.display = 'flex';
-
-      document.getElementById('headerCompanyName').textContent = currentSession.companyName;
-      document.getElementById('headerUserMeta').textContent = `Company ID: ${currentSession.companyId} | User: ${currentSession.username} | Session: 6 Hrs`;
-      document.getElementById('backupCompanyLabel').textContent = currentSession.companyId;
-
-      const logoBox = document.getElementById('headerLogoBox');
-      if (currentSession.logo) {
-        logoBox.innerHTML = `<img src="${currentSession.logo}" alt="Logo" />`;
-      } else {
-        logoBox.textContent = currentSession.companyName.substring(0, 2).toUpperCase();
+    function renderMasterCompanies() {
+      const tbody = document.getElementById("masterCompaniesTable");
+      const companies = getCompanies();
+      if (companies.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#64748b;">No companies added yet. Use the form above to add your first company.</td></tr>`;
+        return;
       }
-
-      document.getElementById('inDate').value = todayISO();
-      document.getElementById('outDate').value = todayISO();
-      document.getElementById('retDate').value = todayISO();
-
-      refreshAllViews();
-      if (showAlertPopup) {
-        openLowStockModal(false);
-      }
-    }
-
-    function switchTab(tabName) {
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
-      document.querySelectorAll('.tab-section').forEach(s => s.classList.toggle('active', s.id === 'tab-' + tabName));
-      refreshAllViews();
-    }
-
-    function computeStockMetrics() {
-      const data = getStoreData();
-      return data.items.map(item => {
-        const itemLots = data.lots.filter(l => l.itemCode === item.code);
-        const closing = itemLots.reduce((acc, l) => acc + Number(l.remainingQty || 0), 0);
-        const inward = data.transactions
-          .filter(t => t.itemCode === item.code && t.type === 'INWARD')
-          .reduce((acc, t) => acc + Number(t.qty), 0);
-        const outward = data.transactions
-          .filter(t => t.itemCode === item.code && t.type === 'OUTWARD')
-          .reduce((acc, t) => acc + Number(t.qty), 0);
-        const retQty = data.transactions
-          .filter(t => t.itemCode === item.code && t.type === 'RETURN')
-          .reduce((acc, t) => acc + Number(t.qty), 0);
-
-        let status = 'GREEN';
-        if (closing <= 0) status = 'RED';
-        else if (closing <= Number(item.minStock)) status = 'YELLOW';
-
-        return {
-          ...item,
-          inward,
-          outward,
-          retQty,
-          closing: Math.round(closing * 100) / 100,
-          value: Math.round(closing * Number(item.price) * 100) / 100,
-          status
-        };
-      });
-    }
-
-    function refreshAllViews() {
-      renderDashboard();
-      renderItemMasterTable();
-      populateItemDropdowns();
-      renderLedgerTables();
-    }
-
-    function filterDashboardStock(statusFilter) {
-      currentDashFilter = statusFilter;
-      document.getElementById('dashFilterLabel').textContent =
-        statusFilter === 'ALL' ? 'ALL ITEMS' :
-        statusFilter === 'RED' ? 'CRITICAL OUT-OF-STOCK (RED)' :
-        statusFilter === 'YELLOW' ? 'LOW STOCK WARNING (YELLOW)' : 'HEALTHY STOCK (GREEN)';
-      renderDashboard();
-    }
-
-    function renderDashboard() {
-      const metrics = computeStockMetrics();
-      const catFilter = document.getElementById('dashCatFilter').value;
-
-      const redCount = metrics.filter(m => m.status === 'RED').length;
-      const yellowCount = metrics.filter(m => m.status === 'YELLOW').length;
-      const greenCount = metrics.filter(m => m.status === 'GREEN').length;
-      const totalVal = metrics.reduce((acc, m) => acc + m.value, 0);
-
-      document.getElementById('kpiTotalItems').textContent = metrics.length;
-      document.getElementById('kpiRedItems').textContent = redCount;
-      document.getElementById('kpiYellowItems').textContent = yellowCount;
-      document.getElementById('kpiTotalValue').textContent = '₹' + totalVal.toLocaleString('en-IN');
-      document.getElementById('kpiGreenCount').textContent = `${greenCount} items in healthy range`;
-      document.getElementById('topAlertCount').textContent = redCount + yellowCount;
-
-      // Category pills & valuation bars
-      const cats = ['RM', 'BOP', 'PACKING', 'CONSUMABLE'];
-      const pillsEl = document.getElementById('categorySummaryPills');
-      const barsEl = document.getElementById('categoryBarsContainer');
-      pillsEl.innerHTML = '';
-      barsEl.innerHTML = '';
-
-      cats.forEach(cat => {
-        const catItems = metrics.filter(m => m.category === cat);
-        const catVal = catItems.reduce((a, b) => a + b.value, 0);
-        const pct = totalVal > 0 ? Math.round((catVal / totalVal) * 100) : 0;
-        pillsEl.innerHTML += `<span class="cat-pill">${cat}: ${catItems.length} Items</span>`;
-        barsEl.innerHTML += `
-          <div style="margin-bottom:7px;">
-            <div style="display:flex; justify-content:space-between; font-size:11.5px; color:#e2e8f0; margin-bottom:2px;">
-              <span>${cat}</span><span>₹${catVal.toLocaleString('en-IN')} (${pct}%)</span>
-            </div>
-            <div style="height:7px; background:rgba(255,255,255,0.14); border-radius:99px; overflow:hidden;">
-              <div style="width:${pct}%; height:100%; background:linear-gradient(90deg,#06b6d4,#38bdf8);"></div>
-            </div>
-          </div>`;
-      });
-
-      const filtered = metrics.filter(m => {
-        const okStatus = currentDashFilter === 'ALL' || m.status === currentDashFilter;
-        const okCat = catFilter === 'ALL' || m.category === catFilter;
-        return okStatus && okCat;
-      });
-
-      const tbody = document.getElementById('dashStockTableBody');
-      tbody.innerHTML = filtered.map(m => `
+      tbody.innerHTML = companies.map(c => `
         <tr>
-          <td><strong>${m.code}</strong></td>
-          <td><span class="badge badge-blue">${m.category}</span></td>
-          <td>${m.name}</td>
-          <td>${m.grade}</td>
-          <td>${m.supplier}</td>
-          <td>₹${Number(m.price).toFixed(2)}</td>
-          <td>${m.opening} ${m.uom}</td>
-          <td>${m.inward}</td>
-          <td>${m.retQty}</td>
-          <td>${m.outward}</td>
-          <td><strong>${m.closing} ${m.uom}</strong></td>
-          <td><strong>₹${m.value.toLocaleString('en-IN')}</strong></td>
-          <td>
-            <span class="badge ${m.status === 'RED' ? 'badge-red' : m.status === 'YELLOW' ? 'badge-yellow' : 'badge-green'}">
-              ${m.status === 'RED' ? 'OUT OF STOCK' : m.status === 'YELLOW' ? 'LOW STOCK' : 'OPTIMAL'}
-            </span>
-          </td>
+          <td><strong>${c.id}</strong></td>
+          <td>${c.name}</td>
+          <td>${c.username}</td>
+          <td>${c.password}</td>
+          <td>${c.createdAt}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteCompany('${c.id}')">Delete</button></td>
         </tr>
-      `).join('');
+      `).join("");
     }
 
-    function saveItemMaster(e) {
+    function deleteCompany(id) {
+      if (!confirm("Delete this company and all its isolated inventory data?")) return;
+      const updated = getCompanies().filter(c => c.id !== id);
+      saveCompanies(updated);
+      localStorage.removeItem(getCompanyDataKey(id));
+      renderMasterCompanies();
+    }
+
+    function handleCompanyLogin(e) {
       e.preventDefault();
-      const data = getStoreData();
-      const category = document.getElementById('imCategory').value;
-      const code = document.getElementById('imCode').value.trim().toUpperCase();
-      const name = document.getElementById('imName').value.trim();
-      const grade = document.getElementById('imGrade').value.trim();
-      const supplier = document.getElementById('imSupplier').value.trim();
-      const price = parseFloat(document.getElementById('imPrice').value) || 0;
-      const opening = parseFloat(document.getElementById('imOpening').value) || 0;
-      const minStock = parseFloat(document.getElementById('imMinStock').value) || 0;
-      const uom = document.getElementById('imUom').value;
+      const cid = document.getElementById("loginCompanyId").value.trim().toUpperCase();
+      const user = document.getElementById("loginUsername").value.trim();
+      const pass = document.getElementById("loginPassword").value;
+      const err = document.getElementById("companyLoginError");
 
-      const existingIdx = data.items.findIndex(i => i.code === code);
-      if (existingIdx >= 0) {
-        data.items[existingIdx] = { code, category, name, grade, supplier, price, opening, minStock, uom };
-      } else {
-        data.items.push({ code, category, name, grade, supplier, price, opening, minStock, uom });
-        if (opening > 0) {
-          const grnNo = 'GRN-OP-' + String(data.grnCounter++).padStart(3, '0');
-          const lotNo = 'LOT-OP-' + String(data.lotCounter++).padStart(3, '0');
-          data.lots.push({
-            lotId: 'L-' + Date.now(),
-            date: todayISO(),
-            itemCode: code,
-            grnNo,
-            lotNo,
-            initialQty: opening,
-            remainingQty: opening,
-            price
-          });
-        }
+      const comp = getCompanies().find(c => c.id === cid && c.username === user && c.password === pass);
+      if (!comp) {
+        err.textContent = "Invalid Company ID, Username, or Password.";
+        err.style.display = "block";
+        return;
       }
-      saveStoreData(data);
+
+      err.style.display = "none";
+      activeCompany = comp;
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("companyApp").style.display = "flex";
+
+      document.getElementById("headerCompanyName").textContent = comp.name;
+      document.getElementById("headerCompanyMeta").textContent = `Company ID: ${comp.id} • ICSBAB Inventory Control`;
+      document.getElementById("headerUserBadge").textContent = comp.username.toUpperCase();
+
+      const logoBox = document.getElementById("headerCompanyLogo");
+      if (comp.logo) {
+        logoBox.innerHTML = `<img src="${comp.logo}" alt="Logo" />`;
+      } else {
+        logoBox.textContent = comp.name.substring(0, 2).toUpperCase();
+      }
+
+      refreshCompanyUI(true);
+    }
+
+    function logout() {
+      activeCompany = null;
+      document.getElementById("companyApp").style.display = "none";
+      document.getElementById("masterPortalApp").style.display = "none";
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("companyLoginForm").reset();
+      document.getElementById("masterLoginForm").reset();
+    }
+
+    function showSection(sectionId, btn) {
+      document.querySelectorAll(".section-view").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById(sectionId).classList.add("active");
+      btn.classList.add("active");
+    }
+
+    function addItemMaster(e) {
+      e.preventDefault();
+      const data = getCompanyData(activeCompany.id);
+      const code = document.getElementById("imCode").value.trim().toUpperCase();
+      if (data.items.some(i => i.code === code)) {
+        alert("Item Code already exists in your company.");
+        return;
+      }
+
+      const category = document.getElementById("imCategory").value;
+      const name = document.getElementById("imName").value.trim();
+      const grade = document.getElementById("imGrade").value.trim();
+      const supplier = document.getElementById("imSupplier").value.trim();
+      const price = parseFloat(document.getElementById("imPrice").value) || 0;
+      const opening = parseFloat(document.getElementById("imOpening").value) || 0;
+      const minLevel = parseFloat(document.getElementById("imMinLevel").value) || 0;
+
+      data.items.push({ code, category, name, grade, supplier, price, minLevel });
+
+      if (opening > 0) {
+        data.lots.push({
+          lotId: "LOT-" + Date.now(),
+          itemCode: code,
+          grnNo: "OPENING",
+          lotNo: "OP-01",
+          price,
+          qty: opening,
+          createdAt: Date.now()
+        });
+        data.ledger.unshift({
+          date: new Date().toLocaleString("en-IN"),
+          type: "OPENING",
+          itemCode: code,
+          itemName: name,
+          grnNo: "OPENING",
+          lotNo: "OP-01",
+          qty: opening,
+          price,
+          value: opening * price
+        });
+      }
+
+      saveCompanyData(activeCompany.id, data);
       e.target.reset();
-      refreshAllViews();
-      alert('Item saved successfully in ' + category + ' Master!');
+      refreshCompanyUI(false);
+      alert("Item added to Master.");
     }
 
-    function renderItemMasterTable() {
-      const data = getStoreData();
-      const filter = document.getElementById('imListFilter').value;
-      const rows = data.items.filter(i => filter === 'ALL' || i.category === filter);
-      document.getElementById('itemMasterTableBody').innerHTML = rows.map(i => `
-        <tr>
-          <td><span class="badge badge-blue">${i.category}</span></td>
-          <td><strong>${i.code}</strong></td>
-          <td>${i.name}</td>
-          <td>${i.grade}</td>
-          <td>${i.supplier}</td>
-          <td>₹${Number(i.price).toFixed(2)}</td>
-          <td>${i.opening} ${i.uom}</td>
-          <td>${i.minStock} ${i.uom}</td>
-          <td><button class="btn btn-danger btn-sm" onclick="deleteItem('${i.code}')">Delete</button></td>
-        </tr>
-      `).join('');
-    }
-
-    function deleteItem(code) {
-      if (!confirm('Delete item ' + code + '?')) return;
-      const data = getStoreData();
-      data.items = data.items.filter(i => i.code !== code);
-      data.lots = data.lots.filter(l => l.itemCode !== code);
-      saveStoreData(data);
-      refreshAllViews();
-    }
-
-    function populateItemDropdowns() {
-      const data = getStoreData();
-      const opts = data.items.map(i => `<option value="${i.code}">[${i.category}] ${i.code} - ${i.name} (${i.grade})</option>`).join('');
-      ['inItemCode', 'outItemCode', 'retItemCode'].forEach(id => {
-        const el = document.getElementById(id);
-        const prev = el.value;
-        el.innerHTML = opts;
-        if (prev && data.items.some(i => i.code === prev)) el.value = prev;
-      });
-      onInwardItemChange();
-      onOutwardItemChange();
-      onReturnItemChange();
-    }
-
-    function onInwardItemChange() {
-      const data = getStoreData();
-      const code = document.getElementById('inItemCode').value;
+    function autoFillInwardDetails() {
+      const code = document.getElementById("inItemSelect").value;
+      const data = getCompanyData(activeCompany.id);
       const item = data.items.find(i => i.code === code);
-      if (!item) return;
-      document.getElementById('inCatGrade').value = `${item.category} | Grade: ${item.grade}`;
-      document.getElementById('inSupplier').value = item.supplier;
-      document.getElementById('inPrice').value = item.price;
-      document.getElementById('inGrnNo').value = `GRN-2026-${String(data.grnCounter).padStart(3, '0')}`;
-      document.getElementById('inLotNo').value = `LOT-${item.category}-${String(data.lotCounter).padStart(3, '0')}`;
+      if (item) {
+        document.getElementById("inSupplier").value = item.supplier;
+        document.getElementById("inPrice").value = item.price;
+      }
     }
 
     function recordInward(e) {
       e.preventDefault();
-      const data = getStoreData();
-      const date = document.getElementById('inDate').value;
-      const itemCode = document.getElementById('inItemCode').value;
-      const grnNo = document.getElementById('inGrnNo').value.trim();
-      const lotNo = document.getElementById('inLotNo').value.trim();
-      const qty = parseFloat(document.getElementById('inQty').value);
-      const price = parseFloat(document.getElementById('inPrice').value);
-      const ref = document.getElementById('inRemarks').value.trim() || 'Supplier GRN';
+      const data = getCompanyData(activeCompany.id);
+      const code = document.getElementById("inItemSelect").value;
+      const item = data.items.find(i => i.code === code);
+      if (!item) return;
 
+      const grnNo = document.getElementById("inGrn").value.trim();
+      const lotNo = document.getElementById("inLot").value.trim();
+      const price = parseFloat(document.getElementById("inPrice").value) || item.price;
+      const qty = parseFloat(document.getElementById("inQty").value) || 0;
+
+      item.price = price;
       data.lots.push({
-        lotId: 'L-' + Date.now(),
-        date,
-        itemCode,
+        lotId: "LOT-" + Date.now(),
+        itemCode: code,
         grnNo,
         lotNo,
-        initialQty: qty,
-        remainingQty: qty,
-        price
+        price,
+        qty,
+        createdAt: Date.now()
       });
-      data.transactions.push({
-        id: 'TX-' + Date.now(),
-        date,
-        type: 'INWARD',
-        itemCode,
+
+      data.ledger.unshift({
+        date: new Date().toLocaleString("en-IN"),
+        type: "INWARD",
+        itemCode: code,
+        itemName: item.name,
         grnNo,
         lotNo,
         qty,
         price,
-        ref
+        value: qty * price
       });
-      data.grnCounter++;
-      data.lotCounter++;
-      saveStoreData(data);
-      document.getElementById('inQty').value = '';
-      refreshAllViews();
-      alert(`Inward GRN ${grnNo} (Lot ${lotNo}) posted successfully!`);
+
+      saveCompanyData(activeCompany.id, data);
+      e.target.reset();
+      refreshCompanyUI(false);
+      alert("Inward GRN recorded & FIFO Lot created.");
     }
 
-    function getActiveLotsFIFO(itemCode) {
-      const data = getStoreData();
-      return data.lots
-        .filter(l => l.itemCode === itemCode && Number(l.remainingQty) > 0)
-        .sort((a, b) => a.date.localeCompare(b.date) || a.lotId.localeCompare(b.lotId));
-    }
-
-    function onOutwardItemChange() {
-      const data = getStoreData();
-      const code = document.getElementById('outItemCode').value;
-      const item = data.items.find(i => i.code === code);
-      if (!item) return;
-
-      const activeLots = getActiveLotsFIFO(code);
-      const totalAvail = activeLots.reduce((a, b) => a + Number(b.remainingQty), 0);
-
-      document.getElementById('outAvailStock').value = `${totalAvail} ${item.uom}`;
-      document.getElementById('outPrice').value = `₹${Number(item.price).toFixed(2)}`;
-      document.getElementById('outAutoLot').value = activeLots.length ? activeLots[0].lotNo : 'NO ACTIVE LOT';
-      document.getElementById('outAutoGrn').value = activeLots.length ? activeLots[0].grnNo : 'NO ACTIVE GRN';
-      previewFifoAllocation();
-    }
-
-    function previewFifoAllocation() {
-      const code = document.getElementById('outItemCode').value;
-      const reqQty = parseFloat(document.getElementById('outQty').value) || 0;
-      const activeLots = getActiveLotsFIFO(code);
-      let remToIssue = reqQty;
-
-      const tbody = document.getElementById('outwardLotBreakdownBody');
-      if (!activeLots.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#dc2626; font-weight:700;">Zero stock available across all GRNs & Lots</td></tr>`;
-        return;
+    function previewFifoLot() {
+      const code = document.getElementById("outItemSelect").value;
+      const data = getCompanyData(activeCompany.id);
+      const activeLots = data.lots.filter(l => l.itemCode === code && l.qty > 0).sort((a, b) => a.createdAt - b.createdAt);
+      const preview = document.getElementById("outFifoPreview");
+      if (activeLots.length === 0) {
+        preview.value = "No available stock lots";
+      } else {
+        preview.value = `Lot: ${activeLots[0].lotNo} | GRN: ${activeLots[0].grnNo} (Avail: ${activeLots[0].qty})`;
       }
-
-      tbody.innerHTML = activeLots.map((lot, idx) => {
-        const take = Math.min(Number(lot.remainingQty), Math.max(0, remToIssue));
-        remToIssue -= take;
-        return `
-          <tr>
-            <td><span class="badge ${idx === 0 ? 'badge-green' : 'badge-blue'}">FIFO #${idx + 1}</span></td>
-            <td>${lot.date}</td>
-            <td><strong>${lot.grnNo}</strong></td>
-            <td><strong>${lot.lotNo}</strong></td>
-            <td><strong>${lot.remainingQty}</strong></td>
-            <td style="color:${take > 0 ? '#dc2626' : '#64748b'}; font-weight:800;">${take > 0 ? '-' + take : '0'}</td>
-          </tr>`;
-      }).join('');
     }
 
-    function recordOutwardFIFO(e) {
+    function recordOutward(e) {
       e.preventDefault();
-      const data = getStoreData();
-      const date = document.getElementById('outDate').value;
-      const itemCode = document.getElementById('outItemCode').value;
-      const item = data.items.find(i => i.code === itemCode);
-      let qtyNeeded = parseFloat(document.getElementById('outQty').value);
-      const dept = document.getElementById('outDept').value.trim();
+      const data = getCompanyData(activeCompany.id);
+      const code = document.getElementById("outItemSelect").value;
+      const item = data.items.find(i => i.code === code);
+      let reqQty = parseFloat(document.getElementById("outQty").value) || 0;
+      const slip = document.getElementById("outSlip").value.trim();
 
-      const activeLots = getActiveLotsFIFO(itemCode);
-      const totalAvail = activeLots.reduce((a, b) => a + Number(b.remainingQty), 0);
+      const activeLots = data.lots.filter(l => l.itemCode === code && l.qty > 0).sort((a, b) => a.createdAt - b.createdAt);
+      const totalAvail = activeLots.reduce((sum, l) => sum + l.qty, 0);
 
-      if (qtyNeeded > totalAvail) {
-        alert(`Insufficient stock! Available: ${totalAvail} ${item.uom}`);
+      if (reqQty <= 0 || reqQty > totalAvail) {
+        alert(`Insufficient stock. Available FIFO stock: ${totalAvail}`);
         return;
       }
 
       for (const lot of activeLots) {
-        if (qtyNeeded <= 0) break;
-        const deduct = Math.min(Number(lot.remainingQty), qtyNeeded);
-        lot.remainingQty = Math.round((Number(lot.remainingQty) - deduct) * 100) / 100;
-        qtyNeeded = Math.round((qtyNeeded - deduct) * 100) / 100;
+        if (reqQty <= 0) break;
+        const deduct = Math.min(lot.qty, reqQty);
+        lot.qty -= deduct;
+        reqQty -= deduct;
 
-        data.transactions.push({
-          id: 'TX-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5),
-          date,
-          type: 'OUTWARD',
-          itemCode,
+        data.ledger.unshift({
+          date: new Date().toLocaleString("en-IN"),
+          type: `OUTWARD (${slip})`,
+          itemCode: code,
+          itemName: item.name,
           grnNo: lot.grnNo,
           lotNo: lot.lotNo,
-          qty: deduct,
-          price: lot.price || item.price,
-          ref: dept
+          qty: -deduct,
+          price: lot.price,
+          value: deduct * lot.price
         });
       }
 
-      saveStoreData(data);
-      document.getElementById('outQty').value = '';
-      refreshAllViews();
-      alert('FIFO Outward Issue completed and GRN/Lot balances updated!');
+      saveCompanyData(activeCompany.id, data);
+      e.target.reset();
+      refreshCompanyUI(true);
+      alert("Stock issued using strict FIFO order.");
     }
 
-    function onReturnItemChange() {
-      const data = getStoreData();
-      const code = document.getElementById('retItemCode').value;
-      const item = data.items.find(i => i.code === code);
-      if (!item) return;
-
-      // Find latest outward transaction for auto-fetching Lot No and GRN No
-      const outwardTxs = data.transactions
-        .filter(t => t.itemCode === code && t.type === 'OUTWARD')
-        .reverse();
-
-      if (outwardTxs.length > 0) {
-        const lastTx = outwardTxs[0];
-        document.getElementById('retLotNo').value = lastTx.lotNo;
-        document.getElementById('retGrnNo').value = lastTx.grnNo;
-        document.getElementById('retMaxBalance').value = `${lastTx.qty} ${item.uom}`;
-        document.getElementById('retPrice').value = `₹${Number(lastTx.price).toFixed(2)}`;
+    function autoFetchLastIssue() {
+      const code = document.getElementById("retItemSelect").value;
+      const data = getCompanyData(activeCompany.id);
+      const lastIssue = data.ledger.find(entry => entry.itemCode === code && entry.type.startsWith("OUTWARD"));
+      if (lastIssue) {
+        document.getElementById("retLot").value = lastIssue.lotNo;
+        document.getElementById("retGrn").value = lastIssue.grnNo;
+        document.getElementById("retPrice").value = lastIssue.price;
       } else {
-        const fallbackLot = data.lots.find(l => l.itemCode === code);
-        document.getElementById('retLotNo').value = fallbackLot ? fallbackLot.lotNo : 'LOT-RET-001';
-        document.getElementById('retGrnNo').value = fallbackLot ? fallbackLot.grnNo : 'GRN-RET-001';
-        document.getElementById('retMaxBalance').value = `0 ${item.uom} (No prior issue)`;
-        document.getElementById('retPrice').value = `₹${Number(item.price).toFixed(2)}`;
+        document.getElementById("retLot").value = "";
+        document.getElementById("retGrn").value = "";
+        document.getElementById("retPrice").value = "";
+        alert("No prior production outward issue found for this item.");
       }
     }
 
     function recordProductionReturn(e) {
       e.preventDefault();
-      const data = getStoreData();
-      const date = document.getElementById('retDate').value;
-      const itemCode = document.getElementById('retItemCode').value;
-      const item = data.items.find(i => i.code === itemCode);
-      const lotNo = document.getElementById('retLotNo').value;
-      const grnNo = document.getElementById('retGrnNo').value;
-      const qty = parseFloat(document.getElementById('retQty').value);
-      const reason = document.getElementById('retReason').value.trim() || 'Production Return';
+      const data = getCompanyData(activeCompany.id);
+      const code = document.getElementById("retItemSelect").value;
+      const item = data.items.find(i => i.code === code);
+      const lotNo = document.getElementById("retLot").value;
+      const grnNo = document.getElementById("retGrn").value;
+      const price = parseFloat(document.getElementById("retPrice").value) || 0;
+      const qty = parseFloat(document.getElementById("retQty").value) || 0;
 
-      let targetLot = data.lots.find(l => l.itemCode === itemCode && l.lotNo === lotNo && l.grnNo === grnNo);
-      if (targetLot) {
-        targetLot.remainingQty = Math.round((Number(targetLot.remainingQty) + qty) * 100) / 100;
+      if (!lotNo || !grnNo || qty <= 0) return;
+
+      const existingLot = data.lots.find(l => l.itemCode === code && l.lotNo === lotNo && l.grnNo === grnNo);
+      if (existingLot) {
+        existingLot.qty += qty;
       } else {
         data.lots.push({
-          lotId: 'L-' + Date.now(),
-          date,
-          itemCode,
+          lotId: "LOT-" + Date.now(),
+          itemCode: code,
           grnNo,
           lotNo,
-          initialQty: qty,
-          remainingQty: qty,
-          price: item.price
+          price,
+          qty,
+          createdAt: Date.now()
         });
       }
 
-      data.transactions.push({
-        id: 'TX-' + Date.now(),
-        date,
-        type: 'RETURN',
-        itemCode,
+      data.ledger.unshift({
+        date: new Date().toLocaleString("en-IN"),
+        type: "PROD-RETURN",
+        itemCode: code,
+        itemName: item.name,
         grnNo,
         lotNo,
         qty,
-        price: item.price,
-        ref: reason
+        price,
+        value: qty * price
       });
 
-      saveStoreData(data);
-      document.getElementById('retQty').value = '';
-      refreshAllViews();
-      alert(`Production Return restored to Lot ${lotNo} (GRN ${grnNo})!`);
+      saveCompanyData(activeCompany.id, data);
+      e.target.reset();
+      refreshCompanyUI(false);
+      alert("Production return added back to closing stock.");
     }
 
-    function renderLedgerTables() {
-      const data = getStoreData();
-      const itemMap = Object.fromEntries(data.items.map(i => [i.code, i]));
+    function refreshCompanyUI(checkLowStockPopup) {
+      const data = getCompanyData(activeCompany.id);
 
-      document.getElementById('lotRegisterBody').innerHTML = data.lots.map(l => {
-        const it = itemMap[l.itemCode] || { name: l.itemCode, category: '-', uom: '' };
-        const val = Math.round(Number(l.remainingQty) * Number(l.price) * 100) / 100;
+      // Populate Item Dropdowns
+      const optionsHtml = `<option value="">-- Select Item --</option>` +
+        data.items.map(i => `<option value="${i.code}">[${i.category}] ${i.code} - ${i.name}</option>`).join("");
+      document.getElementById("inItemSelect").innerHTML = optionsHtml;
+      document.getElementById("outItemSelect").innerHTML = optionsHtml;
+      document.getElementById("retItemSelect").innerHTML = optionsHtml;
+
+      let totalVal = 0;
+      let lowItems = [];
+      let greenCount = 0;
+
+      const stockRows = data.items.map(item => {
+        const closingQty = data.lots
+          .filter(l => l.itemCode === item.code)
+          .reduce((sum, l) => sum + l.qty, 0);
+        totalVal += closingQty * item.price;
+
+        const isLow = closingQty <= item.minLevel;
+        if (isLow) lowItems.push({ ...item, closingQty });
+        else greenCount++;
+
+        const catClass = "tag-" + item.category.toLowerCase();
         return `
           <tr>
-            <td>${l.date}</td>
-            <td><span class="badge badge-blue">${it.category}</span></td>
-            <td><strong>${l.itemCode}</strong> - ${it.name}</td>
-            <td><strong>${l.grnNo}</strong></td>
-            <td><strong>${l.lotNo}</strong></td>
-            <td>${l.initialQty} ${it.uom}</td>
-            <td><strong style="color:${l.remainingQty > 0 ? '#16a34a' : '#94a3b8'};">${l.remainingQty} ${it.uom}</strong></td>
-            <td>₹${Number(l.price).toFixed(2)}</td>
-            <td>₹${val.toLocaleString('en-IN')}</td>
-          </tr>`;
-      }).join('');
-
-      document.getElementById('txLedgerBody').innerHTML = [...data.transactions].reverse().map(t => {
-        const it = itemMap[t.itemCode] || { name: t.itemCode };
-        const badgeCls = t.type === 'INWARD' ? 'badge-green' : t.type === 'RETURN' ? 'badge-blue' : 'badge-red';
-        return `
-          <tr>
-            <td>${t.date}</td>
-            <td><span class="badge ${badgeCls}">${t.type}</span></td>
-            <td><strong>${t.itemCode}</strong> - ${it.name}</td>
-            <td>${t.grnNo}</td>
-            <td>${t.lotNo}</td>
-            <td><strong>${t.qty}</strong></td>
-            <td>₹${Number(t.price).toFixed(2)}</td>
-            <td>${t.ref}</td>
-          </tr>`;
-      }).join('');
-    }
-
-    /* LOW STOCK POPUP AFTER LOGIN */
-    function openLowStockModal(forceOpen) {
-      const metrics = computeStockMetrics();
-      const lowItems = metrics.filter(m => m.status === 'RED' || m.status === 'YELLOW');
-      if (!lowItems.length && !forceOpen) return;
-
-      const tbody = document.getElementById('lowStockModalBody');
-      if (!lowItems.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#16a34a; font-weight:700;">All store items are above minimum stock levels!</td></tr>`;
-      } else {
-        tbody.innerHTML = lowItems.map(m => `
-          <tr>
-            <td><span class="badge badge-blue">${m.category}</span></td>
-            <td><strong>${m.code}</strong> - ${m.name}</td>
-            <td>${m.grade}<br><small style="color:#64748b;">${m.supplier}</small></td>
-            <td><span class="badge ${m.status === 'RED' ? 'badge-red' : 'badge-yellow'}">${m.closing} ${m.uom}</span></td>
-            <td>${m.minStock} ${m.uom}</td>
-            <td><button class="btn btn-primary btn-sm" onclick="quickRestock('${m.code}')">+ Inward GRN</button></td>
+            <td><span class="tag ${catClass}">${item.category}</span></td>
+            <td><strong>${item.code}</strong></td>
+            <td>${item.name}</td>
+            <td>${item.grade}</td>
+            <td>${item.supplier}</td>
+            <td>₹${item.price.toFixed(2)}</td>
+            <td><strong>${closingQty}</strong></td>
+            <td>${item.minLevel}</td>
+            <td>${isLow ? '<span class="tag tag-low">LOW STOCK</span>' : '<span class="tag tag-ok">OK</span>'}</td>
           </tr>
-        `).join('');
+        `;
+      }).join("");
+
+      document.getElementById("dashboardStockTable").innerHTML = stockRows ||
+        `<tr><td colspan="9" style="text-align:center;color:#64748b;">No items added yet. Go to Item Master to add your company items.</td></tr>`;
+
+      document.getElementById("statTotalItems").textContent = data.items.length;
+      document.getElementById("statGreenItems").textContent = greenCount;
+      document.getElementById("statTotalValue").textContent = "₹" + totalVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("statLowItems").textContent = lowItems.length;
+
+      // Render Ledger
+      document.getElementById("ledgerTableBody").innerHTML = data.ledger.map(l => `
+        <tr>
+          <td>${l.date}</td>
+          <td><strong>${l.type}</strong></td>
+          <td>${l.itemCode}</td>
+          <td>${l.itemName}</td>
+          <td>${l.grnNo}</td>
+          <td>${l.lotNo}</td>
+          <td><strong>${l.qty}</strong></td>
+          <td>₹${l.price.toFixed(2)}</td>
+          <td>₹${l.value.toFixed(2)}</td>
+        </tr>
+      `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No stock transactions yet.</td></tr>`;
+
+      if (checkLowStockPopup && lowItems.length > 0) {
+        document.getElementById("lowStockModalBody").innerHTML = lowItems.map(li => `
+          <tr>
+            <td>${li.category}</td>
+            <td>${li.name} (${li.code})</td>
+            <td style="color:#dc2626;font-weight:700;">${li.closingQty}</td>
+            <td>${li.minLevel}</td>
+          </tr>
+        `).join("");
+        document.getElementById("lowStockModal").style.display = "flex";
       }
-      document.getElementById('lowStockModal').style.display = 'flex';
     }
 
-    function closeLowStockModal() {
-      document.getElementById('lowStockModal').style.display = 'none';
-    }
-
-    function quickRestock(itemCode) {
-      closeLowStockModal();
-      switchTab('inward');
-      document.getElementById('inItemCode').value = itemCode;
-      onInwardItemChange();
-    }
-
-    /* EXPORTS & SHARING */
     function exportClosingStockCSV() {
-      const metrics = computeStockMetrics();
-      const headers = ['Code', 'Category', 'Item Name', 'Grade', 'Supplier', 'Price', 'Opening', 'Inward', 'Return', 'Outward', 'Closing Stock', 'UOM', 'Stock Value', 'Status'];
-      const rows = metrics.map(m => [m.code, m.category, `"${m.name}"`, `"${m.grade}"`, `"${m.supplier}"`, m.price, m.opening, m.inward, m.retQty, m.outward, m.closing, m.uom, m.value, m.status]);
-      downloadCSV([headers, ...rows], `ICSBAB_Closing_Stock_${todayISO()}.csv`);
+      const data = getCompanyData(activeCompany.id);
+      let csv = "Category,Item Code,Item Name,Grade,Supplier,Unit Price,Closing Qty,Min Level\n";
+      data.items.forEach(item => {
+        const qty = data.lots.filter(l => l.itemCode === item.code).reduce((s, l) => s + l.qty, 0);
+        csv += `"${item.category}","${item.code}","${item.name}","${item.grade}","${item.supplier}",${item.price},${qty},${item.minLevel}\n`;
+      });
+      downloadCSV(csv, `${activeCompany.id}_Closing_Stock.csv`);
     }
 
-    function exportTransactionsCSV() {
-      const data = getStoreData();
-      const headers = ['Date', 'Type', 'Item Code', 'GRN No', 'Lot No', 'Qty', 'Price', 'Reference'];
-      const rows = data.transactions.map(t => [t.date, t.type, t.itemCode, t.grnNo, t.lotNo, t.qty, t.price, `"${t.ref}"`]);
-      downloadCSV([headers, ...rows], `ICSBAB_Audit_Ledger_${todayISO()}.csv`);
+    function exportLedgerCSV() {
+      const data = getCompanyData(activeCompany.id);
+      let csv = "Date,Type,Item Code,Item Name,GRN No,Lot No,Qty,Rate,Value\n";
+      data.ledger.forEach(l => {
+        csv += `"${l.date}","${l.type}","${l.itemCode}","${l.itemName}","${l.grnNo}","${l.lotNo}",${l.qty},${l.price},${l.value}\n`;
+      });
+      downloadCSV(csv, `${activeCompany.id}_Stock_Ledger.csv`);
     }
 
-    function downloadCSV(rows, filename) {
-      const csv = rows.map(r => r.join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
+    function downloadCSV(content, filename) {
+      const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = filename;
       link.click();
     }
-
-    function shareWhatsAppSummary() {
-      const metrics = computeStockMetrics();
-      const low = metrics.filter(m => m.status !== 'GREEN');
-      const totalVal = metrics.reduce((a, b) => a + b.value, 0);
-      let msg = `*ICSBAB Inventory Alert (${currentSession.companyName})*\nDate: ${todayISO()}\nTotal Stock Value: ₹${totalVal.toLocaleString('en-IN')}\nLow/Out Stock Items: ${low.length}\n`;
-      low.slice(0, 6).forEach(i => {
-        msg += `- [${i.category}] ${i.name}: ${i.closing} ${i.uom} (Min: ${i.minStock})\n`;
-      });
-      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-    }
-
-    function shareEmailSummary() {
-      const metrics = computeStockMetrics();
-      const totalVal = metrics.reduce((a, b) => a + b.value, 0);
-      const subject = `ICSBAB Store Closing Stock Report - ${todayISO()}`;
-      const body = `Company: ${currentSession.companyName}\nTotal Items: ${metrics.length}\nTotal Inventory Valuation: INR ${totalVal.toLocaleString('en-IN')}`;
-      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
-
-    function downloadJsonBackup() {
-      const data = getStoreData();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `ICSBAB_Backup_${currentSession.companyId}_${todayISO()}.json`;
-      link.click();
-    }
-
-    function restoreJsonBackup(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        try {
-          const parsed = JSON.parse(ev.target.result);
-          if (!parsed.items || !parsed.lots) throw new Error('Invalid backup');
-          saveStoreData(parsed);
-          refreshAllViews();
-          alert('Backup restored successfully!');
-        } catch (err) {
-          alert('Invalid JSON backup file.');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function addSubUser() {
-      const u = document.getElementById('subUserName').value.trim();
-      const p = document.getElementById('subUserPass').value.trim();
-      if (!u || !p) return;
-      const companies = getCompanies();
-      companies[currentSession.companyId].users.push({ username: u, password: p, role: 'OPERATOR' });
-      saveCompanies(companies);
-      document.getElementById('subUserName').value = '';
-      document.getElementById('subUserPass').value = '';
-      alert('Sub-user ' + u + ' added!');
-    }
-
-    // Auto-restore active session on load
-    window.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem(SESSION_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.expiresAt > Date.now()) {
-          currentSession = parsed;
-          enterApp(false);
-        }
-      }
-    });
   </script>
 </body>
 </html>
