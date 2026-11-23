@@ -450,29 +450,6 @@
     }
     .inward-line-row .field { margin-bottom: 0; }
 
-    /* Level Matrix Inputs */
-    .lvl-input {
-      width: 110px;
-      padding: 7px 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #0f172a;
-      background: #ffffff;
-    }
-    .lvl-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
-    .level-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .level-toolbar input[type="month"] {
-      padding: 8px 11px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 12.5px;
-      font-weight: 700;
-      background: #ffffff;
-      color: #0f172a;
-    }
-
     .three-col-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -756,7 +733,6 @@
     <nav class="sub-nav">
       <button class="tab-pill active" onclick="switchTab('tabDash', this)">Dashboard</button>
       <button class="tab-pill" onclick="switchTab('tabMaster', this)">Item Master (RM / BOP / Packing / Consumable)</button>
-      <button class="tab-pill" onclick="switchTab('tabLevels', this)">Min / Reorder / Max Levels</button>
       <button class="tab-pill" onclick="switchTab('tabInward', this)">Inward GRN</button>
       <button class="tab-pill" onclick="switchTab('tabOutward', this)">Outward (FIFO)</button>
       <button class="tab-pill" onclick="switchTab('tabReturn', this)">Return from Prod</button>
@@ -958,18 +934,18 @@
         </div>
       </div>
 
-      <!-- ITEM MASTER TAB -->
+      <!-- ITEM MASTER TAB (AUTO ITEM CODE + EDIT & DELETE) -->
       <div id="tabMaster" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
-            <h3>Add Item Master</h3>
-            <span>Categories: RM, BOP, PACKING, CONSUMABLE</span>
+            <h3 id="itemMasterFormTitle">Add Item Master</h3>
+            <span>Item Code auto-generates by category (editable)</span>
           </div>
           <form onsubmit="saveMasterItem(event)">
             <div class="form-row-grid">
               <div class="field">
                 <label>Category *</label>
-                <select id="mCat" required>
+                <select id="mCat" onchange="onMasterCategoryChange()" required>
                   <option value="RM">RM</option>
                   <option value="BOP">BOP</option>
                   <option value="PACKING">PACKING</option>
@@ -977,8 +953,8 @@
                 </select>
               </div>
               <div class="field">
-                <label>Item Code *</label>
-                <input type="text" id="mCode" placeholder="Enter Item Code" required />
+                <label>Item Code (Auto-Generated) *</label>
+                <input type="text" id="mCode" placeholder="Auto Code" required />
               </div>
               <div class="field">
                 <label>Item Name *</label>
@@ -1005,55 +981,45 @@
                 <input type="number" step="0.01" id="mMin" placeholder="0" required />
               </div>
             </div>
-            <button type="submit" class="btn btn-blue">Save Item</button>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+              <button type="submit" id="btnSaveMasterItem" class="btn btn-blue">Save Item</button>
+              <button type="button" id="btnCancelEditItem" class="btn btn-dark btn-sm" style="display:none;" onclick="cancelEditMasterItem()">Cancel Edit</button>
+            </div>
           </form>
         </div>
-      </div>
 
-      <!-- DEDICATED MINIMUM / REORDER / MAXIMUM BY MONTH TAB -->
-      <div id="tabLevels" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
-            <div>
-              <h3>Minimum / reorder / maximum by month</h3>
-              <span>Levels set for a month apply to that month and the months after it, until you set new ones. Status colours use the selected/current month: red = at or below minimum, yellow = at or below reorder level, green = above reorder level.</span>
-            </div>
-            <div class="level-toolbar">
-              <select id="lvlCatFilter" onchange="renderMonthLevelsTable()">
-                <option value="ALL">All Materials</option>
-                <option value="RM">RM</option>
-                <option value="BOP">BOP</option>
-                <option value="PACKING">PACKING</option>
-                <option value="CONSUMABLE">CONSUMABLE</option>
-              </select>
-              <input type="month" id="lvlMonthPicker" onchange="renderMonthLevelsTable()" />
-              <button type="button" class="btn btn-blue btn-sm" onclick="saveMonthLevels()">Save levels</button>
-            </div>
+            <h3>Master Items List (Edit &amp; Delete)</h3>
+            <span>Edit item details or delete unwanted master items</span>
           </div>
-
           <div style="overflow-x:auto;">
             <table>
               <thead>
                 <tr>
-                  <th>Item</th>
-                  <th>Type</th>
-                  <th>Minimum</th>
-                  <th>Reorder</th>
-                  <th>Maximum</th>
+                  <th>Category</th>
+                  <th>Item Code</th>
+                  <th>Item Name</th>
+                  <th>Grade</th>
+                  <th>Supplier</th>
+                  <th>Price</th>
+                  <th>Opening</th>
+                  <th>Min Level</th>
+                  <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="monthLevelsTableBody"></tbody>
+              <tbody id="masterItemsListRows"></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- INWARD GRN TAB -->
+      <!-- INWARD GRN TAB (AUTO GRN NUMBER) -->
       <div id="tabInward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
             <h3>Inward GRN Entry (Multiple Lots &amp; Items Allowed Per GRN)</h3>
-            <span>Same GRN + Lot cannot be posted twice</span>
+            <span>GRN Number auto-generates • Same GRN + Lot cannot be posted twice</span>
           </div>
           <form onsubmit="saveMultiInwardGRN(event)">
             <div class="form-row-grid">
@@ -1062,8 +1028,8 @@
                 <input type="date" id="inBatchDate" required />
               </div>
               <div class="field">
-                <label>GRN Number *</label>
-                <input type="text" id="inBatchGrn" placeholder="Enter GRN Number" required />
+                <label>GRN Number (Auto-Generated) *</label>
+                <input type="text" id="inBatchGrn" placeholder="Auto GRN No" required />
               </div>
             </div>
 
@@ -1100,12 +1066,12 @@
         </div>
       </div>
 
-      <!-- OUTWARD FIFO TAB -->
+      <!-- OUTWARD FIFO TAB (AUTO ISSUE SLIP NUMBER) -->
       <div id="tabOutward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
             <h3>Outward Issue (FIFO)</h3>
-            <span>Automatically picks oldest available lot first</span>
+            <span>Issue Slip Number auto-generates • Automatically picks oldest available lot first</span>
           </div>
           <form onsubmit="saveOutwardEntry(event)">
             <div class="form-row-grid">
@@ -1122,8 +1088,8 @@
                 <input type="text" id="outFifoInfo" readonly />
               </div>
               <div class="field">
-                <label>Slip / Reference *</label>
-                <input type="text" id="outSlipRef" placeholder="Enter Slip / Ref" required />
+                <label>Issue Slip Number (Auto-Generated) *</label>
+                <input type="text" id="outSlipRef" placeholder="Auto Slip No" required />
               </div>
               <div class="field">
                 <label>Issue Qty *</label>
@@ -1362,7 +1328,7 @@
               <th>Category</th>
               <th>Item</th>
               <th>Closing Qty</th>
-              <th>Min / Reorder / Max</th>
+              <th>Min Level</th>
             </tr>
           </thead>
           <tbody id="lowStockPopupRows"></tbody>
@@ -1386,18 +1352,14 @@
     let currentSessionUser = null;
     let cachedLowList = [];
     let computedStockRows = [];
+    let editingItemOriginalCode = null;
 
     function todayISO() {
       return new Date().toISOString().slice(0, 10);
     }
 
-    function currentMonthYM() {
-      return new Date().toISOString().slice(0, 7);
-    }
-
     function initDefaultDates() {
       const t = todayISO();
-      const ym = currentMonthYM();
       if (document.getElementById("closingStockDate") && !document.getElementById("closingStockDate").value) {
         document.getElementById("closingStockDate").value = t;
       }
@@ -1406,9 +1368,6 @@
       }
       if (document.getElementById("ioToDate") && !document.getElementById("ioToDate").value) {
         document.getElementById("ioToDate").value = t;
-      }
-      if (document.getElementById("lvlMonthPicker") && !document.getElementById("lvlMonthPicker").value) {
-        document.getElementById("lvlMonthPicker").value = ym;
       }
       ["inBatchDate", "outSelDate", "retSelDate"].forEach(id => {
         const el = document.getElementById(id);
@@ -1433,96 +1392,79 @@
         items: parsed.items || [],
         lots: parsed.lots || [],
         ledger: parsed.ledger || [],
-        subUsers: parsed.subUsers || [],
-        monthLevels: parsed.monthLevels || {}
+        subUsers: parsed.subUsers || []
       };
     }
     function saveCompStore(compId, store) {
       localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
     }
 
-    // Resolve effective Minimum, Reorder, Maximum for an item as of targetMonthYM ("YYYY-MM")
-    function resolveEffectiveLevels(store, item, targetYM) {
-      const baseMin = parseFloat(item.min) || 0;
-      const baseReorder = item.reorder !== undefined ? (parseFloat(item.reorder) || 0) : baseMin;
-      const baseMax = item.max !== undefined ? (parseFloat(item.max) || 0) : 0;
-
-      let effMin = baseMin;
-      let effReorder = baseReorder;
-      let effMax = baseMax;
-
-      const monthMap = store.monthLevels || {};
-      const sortedMonths = Object.keys(monthMap).sort();
-      for (const mKey of sortedMonths) {
-        if (mKey <= targetYM) {
-          const itemCfg = monthMap[mKey] && monthMap[mKey][item.code];
-          if (itemCfg) {
-            if (itemCfg.min !== undefined && itemCfg.min !== "") effMin = parseFloat(itemCfg.min) || 0;
-            if (itemCfg.reorder !== undefined && itemCfg.reorder !== "") effReorder = parseFloat(itemCfg.reorder) || 0;
-            if (itemCfg.max !== undefined && itemCfg.max !== "") effMax = parseFloat(itemCfg.max) || 0;
-          }
-        }
-      }
-      return { min: effMin, reorder: effReorder, max: effMax };
-    }
-
-    function renderMonthLevelsTable() {
-      if (!currentComp) return;
-      const store = loadCompStore(currentComp.id);
-      const ym = document.getElementById("lvlMonthPicker").value || currentMonthYM();
-      const catFlt = document.getElementById("lvlCatFilter").value || "ALL";
-      const tbody = document.getElementById("monthLevelsTableBody");
-
-      const list = store.items.filter(i => catFlt === "ALL" || i.category === catFlt);
-      if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#64748b;padding:16px;">No items added yet. Add items in Item Master first.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = list.map(item => {
-        const eff = resolveEffectiveLevels(store, item, ym);
-        return `
-          <tr data-item-code="${item.code}">
-            <td><strong>${item.name} (${item.code})</strong></td>
-            <td><strong>${item.category}</strong></td>
-            <td><input type="number" step="0.01" class="lvl-input lvl-min" value="${eff.min}" /></td>
-            <td><input type="number" step="0.01" class="lvl-input lvl-reorder" value="${eff.reorder}" /></td>
-            <td><input type="number" step="0.01" class="lvl-input lvl-max" value="${eff.max}" /></td>
-          </tr>
-        `;
-      }).join("");
-    }
-
-    function saveMonthLevels() {
-      if (!currentComp) return;
-      const store = loadCompStore(currentComp.id);
-      const ym = document.getElementById("lvlMonthPicker").value || currentMonthYM();
-      if (!store.monthLevels) store.monthLevels = {};
-      if (!store.monthLevels[ym]) store.monthLevels[ym] = {};
-
-      document.querySelectorAll("#monthLevelsTableBody tr[data-item-code]").forEach(tr => {
-        const code = tr.getAttribute("data-item-code");
-        const minVal = parseFloat(tr.querySelector(".lvl-min").value) || 0;
-        const reorderVal = parseFloat(tr.querySelector(".lvl-reorder").value) || 0;
-        const maxVal = parseFloat(tr.querySelector(".lvl-max").value) || 0;
-
-        store.monthLevels[ym][code] = {
-          min: minVal,
-          reorder: reorderVal,
-          max: maxVal
-        };
-
-        const masterItem = store.items.find(i => i.code === code);
-        if (masterItem) {
-          masterItem.min = minVal;
-          masterItem.reorder = reorderVal;
-          masterItem.max = maxVal;
+    /* AUTO GENERATORS FOR ITEM CODE, GRN NUMBER & ISSUE SLIP NUMBER */
+    function generateNextItemCode(store, category) {
+      const prefixMap = {
+        RM: "RM",
+        BOP: "BOP",
+        PACKING: "PKG",
+        CONSUMABLE: "CON"
+      };
+      const prefix = prefixMap[category] || "ITM";
+      let maxNum = 0;
+      (store.items || []).forEach(it => {
+        const m = String(it.code || "").toUpperCase().match(new RegExp("^" + prefix + "-(\\d+)$"));
+        if (m) {
+          const n = parseInt(m[1], 10);
+          if (n > maxNum) maxNum = n;
         }
       });
+      return `${prefix}-${String(maxNum + 1).padStart(3, "0")}`;
+    }
 
-      saveCompStore(currentComp.id, store);
-      refreshWorkspace(false);
-      alert(`Levels saved for ${ym} and following months.`);
+    function generateNextGRNNumber(store) {
+      let maxNum = 0;
+      const allGrns = new Set();
+      (store.ledger || []).forEach(l => { if (l.grn && l.grn !== "OPENING") allGrns.add(String(l.grn).toUpperCase()); });
+      (store.lots || []).forEach(l => { if (l.grn && l.grn !== "OPENING") allGrns.add(String(l.grn).toUpperCase()); });
+      allGrns.forEach(g => {
+        const m = g.match(/^GRN-(\d+)$/);
+        if (m) {
+          const n = parseInt(m[1], 10);
+          if (n > maxNum) maxNum = n;
+        }
+      });
+      return `GRN-${String(maxNum + 1).padStart(4, "0")}`;
+    }
+
+    function generateNextSlipNumber(store) {
+      let maxNum = 0;
+      (store.ledger || []).forEach(l => {
+        if (l.type === "OUTWARD" && l.ref) {
+          const m = String(l.ref).toUpperCase().match(/^SLIP-(\d+)$/);
+          if (m) {
+            const n = parseInt(m[1], 10);
+            if (n > maxNum) maxNum = n;
+          }
+        }
+      });
+      return `SLIP-${String(maxNum + 1).padStart(4, "0")}`;
+    }
+
+    function refreshAutoDocNumbers() {
+      if (!currentComp) return;
+      const store = loadCompStore(currentComp.id);
+
+      if (!editingItemOriginalCode) {
+        const catVal = document.getElementById("mCat").value;
+        document.getElementById("mCode").value = generateNextItemCode(store, catVal);
+      }
+      document.getElementById("inBatchGrn").value = generateNextGRNNumber(store);
+      document.getElementById("outSlipRef").value = generateNextSlipNumber(store);
+    }
+
+    function onMasterCategoryChange() {
+      if (!currentComp || editingItemOriginalCode) return;
+      const store = loadCompStore(currentComp.id);
+      const catVal = document.getElementById("mCat").value;
+      document.getElementById("mCode").value = generateNextItemCode(store, catVal);
     }
 
     function getStatusBadgeHTML(status) {
@@ -1593,7 +1535,7 @@
           created: new Date().toLocaleDateString("en-IN")
         });
         saveRegistry(list);
-        saveCompStore(id, { items: [], lots: [], ledger: [], subUsers: [], monthLevels: {} });
+        saveCompStore(id, { items: [], lots: [], ledger: [], subUsers: [] });
         e.target.reset();
         renderMasterRegistry();
         alert("Company added with separate isolated store.");
@@ -1697,6 +1639,7 @@
     function logoutSession() {
       currentComp = null;
       currentSessionUser = null;
+      editingItemOriginalCode = null;
       document.getElementById("companyView").style.display = "none";
       document.getElementById("masterView").style.display = "none";
       document.getElementById("authScreen").style.display = "flex";
@@ -1709,7 +1652,7 @@
       document.querySelectorAll(".tab-pill").forEach(b => b.classList.remove("active"));
       document.getElementById(panelId).classList.add("active");
       if (btnEl) btnEl.classList.add("active");
-      if (panelId === "tabLevels") renderMonthLevelsTable();
+      refreshAutoDocNumbers();
     }
 
     function jumpToTab(panelId) {
@@ -1721,10 +1664,6 @@
       e.preventDefault();
       const store = loadCompStore(currentComp.id);
       const code = document.getElementById("mCode").value.trim().toUpperCase();
-      if (store.items.some(i => i.code === code)) {
-        alert("Item Code already exists.");
-        return;
-      }
       const category = document.getElementById("mCat").value;
       const name = document.getElementById("mName").value.trim();
       const grade = document.getElementById("mGrade").value.trim();
@@ -1734,7 +1673,67 @@
       const min = parseFloat(document.getElementById("mMin").value) || 0;
       const dtISO = todayISO();
 
-      store.items.push({ code, category, name, grade, supplier, price, opening, min, reorder: min, max: 0, createdDate: dtISO });
+      if (editingItemOriginalCode) {
+        const idx = store.items.findIndex(i => i.code === editingItemOriginalCode);
+        if (idx === -1) return;
+        if (code !== editingItemOriginalCode && store.items.some(i => i.code === code)) {
+          alert("Item Code already exists.");
+          return;
+        }
+        const prevCode = editingItemOriginalCode;
+        store.items[idx] = {
+          ...store.items[idx],
+          code,
+          category,
+          name,
+          grade,
+          supplier,
+          price,
+          opening,
+          min
+        };
+
+        store.lots.forEach(l => {
+          if (l.code === prevCode) {
+            l.code = code;
+            if (l.grn === "OPENING") {
+              l.qty = opening;
+              l.price = price;
+            }
+          }
+        });
+
+        store.ledger.forEach(ld => {
+          if (ld.code === prevCode) {
+            ld.code = code;
+            ld.name = name;
+            ld.category = category;
+            if (ld.type === "OPENING") {
+              ld.qty = opening;
+              ld.rate = price;
+              ld.amt = opening * price;
+            }
+          }
+        });
+
+        editingItemOriginalCode = null;
+        document.getElementById("itemMasterFormTitle").textContent = "Add Item Master";
+        document.getElementById("btnSaveMasterItem").textContent = "Save Item";
+        document.getElementById("btnCancelEditItem").style.display = "none";
+
+        saveCompStore(currentComp.id, store);
+        e.target.reset();
+        refreshWorkspace(false);
+        alert("Item updated successfully.");
+        return;
+      }
+
+      if (store.items.some(i => i.code === code)) {
+        alert("Item Code already exists.");
+        return;
+      }
+
+      store.items.push({ code, category, name, grade, supplier, price, opening, min, createdDate: dtISO });
       if (opening > 0) {
         const lid = "LOT-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6);
         store.lots.push({ lotId: lid, code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now(), dateISO: dtISO });
@@ -1758,6 +1757,75 @@
       e.target.reset();
       refreshWorkspace(false);
       alert("Item saved.");
+    }
+
+    function startEditMasterItem(code) {
+      const store = loadCompStore(currentComp.id);
+      const item = store.items.find(i => i.code === code);
+      if (!item) return;
+
+      editingItemOriginalCode = item.code;
+      document.getElementById("mCat").value = item.category;
+      document.getElementById("mCode").value = item.code;
+      document.getElementById("mName").value = item.name;
+      document.getElementById("mGrade").value = item.grade;
+      document.getElementById("mSupplier").value = item.supplier;
+      document.getElementById("mPrice").value = item.price;
+      document.getElementById("mOpening").value = item.opening || 0;
+      document.getElementById("mMin").value = item.min;
+
+      document.getElementById("itemMasterFormTitle").textContent = `Edit Item Master (${item.code})`;
+      document.getElementById("btnSaveMasterItem").textContent = "Update Item";
+      document.getElementById("btnCancelEditItem").style.display = "inline-flex";
+      document.getElementById("tabMaster").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function cancelEditMasterItem() {
+      editingItemOriginalCode = null;
+      document.getElementById("itemMasterFormTitle").textContent = "Add Item Master";
+      document.getElementById("btnSaveMasterItem").textContent = "Save Item";
+      document.getElementById("btnCancelEditItem").style.display = "none";
+      const form = document.querySelector("#tabMaster form");
+      if (form) form.reset();
+      refreshAutoDocNumbers();
+    }
+
+    function deleteMasterItem(code) {
+      if (!confirm(`Delete item "${code}" along with its lots and ledger records?`)) return;
+      const store = loadCompStore(currentComp.id);
+      store.items = store.items.filter(i => i.code !== code);
+      store.lots = store.lots.filter(l => l.code !== code);
+      store.ledger = store.ledger.filter(l => l.code !== code);
+      if (editingItemOriginalCode === code) {
+        cancelEditMasterItem();
+      }
+      saveCompStore(currentComp.id, store);
+      refreshWorkspace(false);
+    }
+
+    function renderMasterItemsTable(store) {
+      const tbody = document.getElementById("masterItemsListRows");
+      if (!tbody) return;
+      if (!store.items.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#64748b;padding:14px;">No items added yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = store.items.map(item => `
+        <tr>
+          <td><strong>${item.category}</strong></td>
+          <td><strong>${item.code}</strong></td>
+          <td>${item.name}</td>
+          <td>${item.grade}</td>
+          <td>${item.supplier}</td>
+          <td>₹${Number(item.price).toFixed(2)}</td>
+          <td>${item.opening || 0}</td>
+          <td>${item.min}</td>
+          <td style="display:flex;gap:6px;">
+            <button type="button" class="btn btn-blue btn-sm" onclick="startEditMasterItem('${item.code}')">Edit</button>
+            <button type="button" class="btn btn-rose btn-sm" onclick="deleteMasterItem('${item.code}')">Delete</button>
+          </td>
+        </tr>
+      `).join("");
     }
 
     function buildItemOptionsHtml(store) {
@@ -1904,7 +1972,6 @@
       });
 
       saveCompStore(currentComp.id, store);
-      document.getElementById("inBatchGrn").value = "";
       resetInwardLines();
       initDefaultDates();
       refreshWorkspace(false);
@@ -1944,7 +2011,7 @@
       const code = document.getElementById("outSelItem").value;
       const item = store.items.find(i => i.code === code);
       const dtISO = document.getElementById("outSelDate").value || todayISO();
-      const ref = document.getElementById("outSlipRef").value.trim();
+      const ref = document.getElementById("outSlipRef").value.trim().toUpperCase();
       let need = parseFloat(document.getElementById("outIssueQty").value) || 0;
 
       const lots = store.lots.filter(l => l.code === code && l.qty > 0).sort((a, b) => a.ts - b.ts);
@@ -1978,10 +2045,12 @@
         });
       }
       saveCompStore(currentComp.id, store);
-      e.target.reset();
+      document.getElementById("outSelItem").value = "";
+      document.getElementById("outFifoInfo").value = "";
+      document.getElementById("outIssueQty").value = "";
       initDefaultDates();
       refreshWorkspace(true);
-      alert("FIFO outward issued.");
+      alert(`FIFO outward issued under Slip "${ref}".`);
     }
 
     function deleteOutwardEntry(entryId) {
@@ -2181,8 +2250,7 @@
             items: restoredStore.items || [],
             lots: restoredStore.lots || [],
             ledger: restoredStore.ledger || [],
-            subUsers: restoredStore.subUsers || [],
-            monthLevels: restoredStore.monthLevels || {}
+            subUsers: restoredStore.subUsers || []
           });
           refreshWorkspace(false);
           alert("Company JSON backup restored.");
@@ -2233,8 +2301,6 @@
     }
 
     function computeStockAsOnDate(store, targetDateISO) {
-      const targetYM = (targetDateISO || todayISO()).slice(0, 7);
-
       return store.items.map(item => {
         const created = item.createdDate || "0000-00-00";
         const opening = created <= targetDateISO ? (parseFloat(item.opening) || 0) : 0;
@@ -2254,14 +2320,9 @@
 
         const closingQty = opening + inward + prodRet - outward;
         const stockValue = closingQty * item.price;
-
-        const levels = resolveEffectiveLevels(store, item, targetYM);
         let status = "HEALTHY";
-        if (closingQty <= levels.min) {
-          status = "CRITICAL";
-        } else if (closingQty <= levels.reorder) {
-          status = "LOW";
-        }
+        if (closingQty <= 0) status = "CRITICAL";
+        else if (closingQty <= item.min) status = "LOW";
 
         return {
           ...item,
@@ -2271,9 +2332,6 @@
           outward,
           closingQty,
           stockValue,
-          minLevel: levels.min,
-          reorderLevel: levels.reorder,
-          maxLevel: levels.max,
           status
         };
       });
@@ -2291,8 +2349,10 @@
       document.getElementById("outSelItem").innerHTML = opts;
       document.getElementById("retSelItem").innerHTML = opts;
 
-      const activeDateVal = (document.getElementById("closingStockDate") && document.getElementById("closingStockDate").value) || todayISO();
-      computedStockRows = computeStockAsOnDate(store, activeDateVal);
+      refreshAutoDocNumbers();
+      renderMasterItemsTable(store);
+
+      computedStockRows = computeStockAsOnDate(store, "9999-12-31");
 
       let totalVal = 0;
       let crit = 0;
@@ -2341,7 +2401,6 @@
       });
 
       renderDashboardTable();
-      renderMonthLevelsTable();
       renderWorkflowDeleteTables(store);
 
       document.getElementById("ledgerRows").innerHTML = store.ledger.map(l => `
@@ -2479,13 +2538,13 @@
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.code}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.name}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.grade}</td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.supplier}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.price.toFixed(2)}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.opening}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.inward}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.prodRet}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.outward}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;"><strong>${r.closingQty}</strong></td>
-            <td style="border:1px solid #cbd5e1;padding:6px;">${r.minLevel} / ${r.reorderLevel} / ${r.maxLevel}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;background:${badgeBg};color:${badgeColor};font-weight:800;">${statusLabel}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.stockValue.toFixed(2)}</td>
           </tr>
@@ -2495,8 +2554,8 @@
       const sheet = document.getElementById("pdfPrintSheet");
       sheet.innerHTML = `
         <h2 style="margin-bottom:4px;">${currentComp.name} (${currentComp.id}) — Day Wise Closing Stock Report</h2>
-        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Stock Status: RED / YELLOW / GREEN (Based on Min / Reorder / Max Levels)</p>
-        <table style="width:100%;border-collapse:collapse;font-size:10.5px;">
+        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Stock Status: RED / YELLOW / GREEN • Formula: Opening + Inward + Prod Ret - Outward</p>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead>
             <tr>
               <th style="border:1px solid #cbd5e1;padding:6px;">Status</th>
@@ -2504,13 +2563,13 @@
               <th style="border:1px solid #cbd5e1;padding:6px;">Code</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Item Name</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Grade</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Supplier</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Rate</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Opening</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Inward</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Prod Ret</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Outward</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Closing</th>
-              <th style="border:1px solid #cbd5e1;padding:6px;">Min/Re/Max</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Stock Status</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Value</th>
             </tr>
@@ -2585,17 +2644,17 @@
         box.style.borderTopColor = "#dc2626";
         title.style.color = "#b91c1c";
         title.textContent = "Critical / Out of Stock Items (Red)";
-        desc.textContent = "Items at or below Minimum level:";
+        desc.textContent = "Items with 0 or negative closing stock:";
       } else if (statusFilter === "LOW") {
         box.style.borderTopColor = "#d97706";
         title.style.color = "#b45309";
         title.textContent = "Low / Reorder Stock Items (Yellow)";
-        desc.textContent = "Items at or below Reorder level:";
+        desc.textContent = "Items at or below minimum reorder level:";
       } else {
         box.style.borderTopColor = "#16a34a";
         title.style.color = "#15803d";
         title.textContent = "Healthy Stock Items (Green)";
-        desc.textContent = "Items above Reorder level:";
+        desc.textContent = "Items above minimum reorder level:";
       }
 
       document.getElementById("lowStockPopupRows").innerHTML = list.length
@@ -2605,7 +2664,7 @@
               <td>${x.category}</td>
               <td>${x.name} (${x.code})</td>
               <td><strong>${x.closingQty}</strong></td>
-              <td>Min: ${x.minLevel} / Re: ${x.reorderLevel} / Max: ${x.maxLevel}</td>
+              <td>${x.min}</td>
             </tr>
           `).join("")
         : `<tr><td colspan="5" style="text-align:center;color:#64748b;">No items in this status category.</td></tr>`;
@@ -2620,7 +2679,7 @@
       box.style.borderTopColor = "#dc2626";
       title.style.color = "#b91c1c";
       title.textContent = "Low & Critical Stock Alert";
-      desc.textContent = "Items at or below Minimum / Reorder level in this company:";
+      desc.textContent = "Items at or below minimum stock level in this company:";
 
       document.getElementById("lowStockPopupRows").innerHTML = cachedLowList.length
         ? cachedLowList.map(x => `
@@ -2629,7 +2688,7 @@
               <td>${x.category}</td>
               <td>${x.name} (${x.code})</td>
               <td><strong>${x.closingQty}</strong></td>
-              <td>Min: ${x.minLevel} / Re: ${x.reorderLevel} / Max: ${x.maxLevel}</td>
+              <td>${x.min}</td>
             </tr>
           `).join("")
         : `<tr><td colspan="5" style="text-align:center;color:#64748b;">No low-stock alerts right now.</td></tr>`;
@@ -2637,10 +2696,10 @@
     }
 
     function downloadStockCSV() {
-      let csv = "Status,Category,Code,Name,Grade,Supplier,Price,Opening,Inward,ProdReturn,Outward,Closing,MinLevel,ReorderLevel,MaxLevel,StockStatus,Value\n";
+      let csv = "Status,Category,Code,Name,Grade,Supplier,Price,Opening,Inward,ProdReturn,Outward,Closing,StockStatus,Value\n";
       computedStockRows.forEach(r => {
         const stLabel = r.status === "CRITICAL" ? "RED" : (r.status === "LOW" ? "YELLOW" : "GREEN");
-        csv += `"${r.status}","${r.category}","${r.code}","${r.name}","${r.grade}","${r.supplier}",${r.price},${r.opening},${r.inward},${r.prodRet},${r.outward},${r.closingQty},${r.minLevel},${r.reorderLevel},${r.maxLevel},"${stLabel}",${r.stockValue}\n`;
+        csv += `"${r.status}","${r.category}","${r.code}","${r.name}","${r.grade}","${r.supplier}",${r.price},${r.opening},${r.inward},${r.prodRet},${r.outward},${r.closingQty},"${stLabel}",${r.stockValue}\n`;
       });
       triggerDownload(csv, `${currentComp.id}_Closing_Stock.csv`);
     }
