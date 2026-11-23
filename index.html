@@ -4,398 +4,510 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ICSBAB Inventory Control | AB SOFTWARE SOLUTION</title>
-  <meta name="description" content="ICSBAB Inventory Control by AB SOFTWARE SOLUTION - Enterprise Store & Warehouse Management System for RM, BOP, PACKING & CONSUMABLE items with strict FIFO Lot & GRN automation, Production Returns, and live Low-Stock alerts." />
+  <meta name="description" content="ICSBAB Inventory Control by AB SOFTWARE SOLUTION - Store and Warehouse Management System for RM, BOP, PACKING and CONSUMABLE items with FIFO Lot and GRN automation, Production Returns, and live Low-Stock alerts." />
   <style>
     :root {
-      --bg-dark: #0f172a;
-      --bg-card: #1e293b;
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --slate-50: #f8fafc;
-      --slate-100: #f1f5f9;
-      --slate-200: #e2e8f0;
-      --slate-300: #cbd5e1;
-      --slate-600: #475569;
-      --slate-800: #1e293b;
-      --slate-900: #0f172a;
-      --danger: #dc2626;
-      --warning: #d97706;
-      --success: #16a34a;
+      --bg-canvas: #091124;
+      --bg-slate: #101c38;
+      --indigo-hero: linear-gradient(120deg, #162454 0%, #1d3278 52%, #15224d 100%);
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --amber: #f59e0b;
+      --amber-hover: #d97706;
+      --rose: #e11d48;
+      --rose-hover: #be123c;
+      --emerald: #10b981;
+      --card-bg: #f8fafc;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-soft: #e2e8f0;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-    body { background: var(--slate-100); color: var(--slate-800); min-height: 100vh; }
 
-    /* Login Screen with Isometric Warehouse Grid */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-canvas);
+      background-image:
+        linear-gradient(30deg, rgba(59, 130, 246, 0.06) 12%, transparent 12.5%, transparent 87%, rgba(59, 130, 246, 0.06) 87.5%, rgba(59, 130, 246, 0.06)),
+        linear-gradient(150deg, rgba(59, 130, 246, 0.06) 12%, transparent 12.5%, transparent 87%, rgba(59, 130, 246, 0.06) 87.5%, rgba(59, 130, 246, 0.06)),
+        linear-gradient(60deg, rgba(99, 102, 241, 0.04) 25%, transparent 25.5%, transparent 75%, rgba(99, 102, 241, 0.04) 75%, rgba(99, 102, 241, 0.04));
+      background-size: 84px 145px;
+      color: var(--text-dark);
+    }
+
+    /* LOGIN SCREEN */
     .login-wrapper {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background-color: #0b132b;
-      background-image:
-        linear-gradient(30deg, rgba(79, 70, 229, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(79, 70, 229, 0.08) 87.5%, rgba(79, 70, 229, 0.08)),
-        linear-gradient(150deg, rgba(79, 70, 229, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(79, 70, 229, 0.08) 87.5%, rgba(79, 70, 229, 0.08)),
-        linear-gradient(60deg, rgba(99, 102, 241, 0.05) 25%, transparent 25.5%, transparent 75%, rgba(99, 102, 241, 0.05) 75%, rgba(99, 102, 241, 0.05));
-      background-size: 80px 140px;
     }
-    .login-box {
+    .login-card {
       width: 100%;
-      max-width: 920px;
+      max-width: 940px;
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      border-radius: 16px;
+      grid-template-columns: 1.15fr 1fr;
+      border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
       background: #ffffff;
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
     }
-    .login-brand {
-      background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
+    .login-showcase {
+      background: var(--indigo-hero);
       color: #ffffff;
-      padding: 40px 36px;
+      padding: 36px 32px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
     }
-    .brand-badge {
+    .showcase-pill {
       display: inline-block;
-      background: rgba(99, 102, 241, 0.25);
-      border: 1px solid rgba(129, 140, 248, 0.4);
-      color: #a5b4fc;
-      font-size: 11px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(191, 219, 254, 0.35);
+      color: #e0f2fe;
+      font-size: 10.5px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.9px;
       padding: 5px 12px;
       border-radius: 999px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       width: fit-content;
     }
-    .login-brand h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
-    .login-brand p { font-size: 13.5px; color: #cbd5e1; line-height: 1.6; margin-bottom: 24px; }
-    .feature-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-    .pill {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #e2e8f0;
+    .login-showcase h1 { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+    .login-showcase p { font-size: 13px; color: #dbeafe; line-height: 1.55; margin-bottom: 18px; }
+    .mini-iso-box {
+      background: rgba(9, 17, 36, 0.45);
+      border: 1px solid rgba(147, 197, 253, 0.25);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.25);
     }
-    .copyright { font-size: 11px; color: #64748b; }
-
-    .login-form-area { padding: 36px 32px; background: #ffffff; }
-    .auth-tabs {
+    .login-form-pane { padding: 36px 32px; background: #ffffff; }
+    .auth-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      background: var(--slate-100);
+      background: #f1f5f9;
       padding: 4px;
       border-radius: 10px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
-    .auth-tab {
+    .auth-btn {
       border: none;
       background: transparent;
       padding: 10px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
-      color: var(--slate-600);
+      color: #475569;
       border-radius: 8px;
       cursor: pointer;
-      transition: 0.2s;
     }
-    .auth-tab.active {
+    .auth-btn.active {
       background: var(--primary);
       color: #ffffff;
-      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
     }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--slate-800); margin-bottom: 6px; }
-    .form-group input, .form-group select {
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+    .field input, .field select {
       width: 100%;
       padding: 10px 12px;
-      border: 1px solid var(--slate-300);
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
-      font-size: 13.5px;
-      outline: none;
-      transition: 0.2s;
+      font-size: 13px;
+      background: #ffffff;
+      color: var(--text-dark);
     }
-    .form-group input:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+
     .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 11px 16px;
-      border-radius: 8px;
-      border: none;
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
+      transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
-    .btn-primary { background: var(--primary); color: #ffffff; width: 100%; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-dark { background: var(--slate-900); color: #ffffff; width: 100%; }
-    .btn-dark:hover { background: #1e293b; }
-    .btn-sm { padding: 7px 12px; font-size: 12px; width: auto; }
-    .btn-danger { background: var(--danger); color: #fff; }
-    .btn-success { background: var(--success); color: #fff; }
-    .error-msg { color: var(--danger); font-size: 12px; font-weight: 600; margin-top: 10px; display: none; }
+    .btn:active { transform: translateY(1px); }
+    .btn-blue { background: var(--primary); color: #ffffff; box-shadow: 0 6px 14px rgba(37, 99, 235, 0.32); }
+    .btn-blue:hover { background: var(--primary-hover); }
+    .btn-amber { background: var(--amber); color: #0f172a; box-shadow: 0 6px 14px rgba(245, 158, 11, 0.32); }
+    .btn-amber:hover { background: var(--amber-hover); }
+    .btn-rose { background: var(--rose); color: #ffffff; box-shadow: 0 6px 14px rgba(225, 29, 72, 0.32); }
+    .btn-rose:hover { background: var(--rose-hover); }
+    .btn-dark { background: #1e293b; color: #ffffff; border: 1px solid #334155; }
+    .btn-dark:hover { background: #334155; }
+    .btn-sm { padding: 7px 12px; font-size: 11.5px; }
+    .full-w { width: 100%; }
+    .err-box { color: var(--rose); font-size: 12px; font-weight: 700; margin-top: 8px; display: none; }
 
-    /* App Layout */
-    .app-container { display: none; min-height: 100vh; flex-direction: column; }
-    .topbar {
-      background: var(--slate-900);
-      color: #ffffff;
-      padding: 12px 24px;
+    /* APP SHELL */
+    .app-shell { display: none; min-height: 100vh; flex-direction: column; }
+    .top-header {
+      background: #0b142c;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      padding: 10px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #334155;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .topbar-left { display: flex; align-items: center; gap: 14px; }
-    .company-logo-box {
+    .brand-cluster { display: flex; align-items: center; gap: 12px; }
+    .logo-badge {
       width: 38px;
       height: 38px;
-      border-radius: 8px;
-      background: var(--primary);
+      border-radius: 9px;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 15px;
       overflow: hidden;
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
     }
-    .company-logo-box img { width: 100%; height: 100%; object-fit: cover; }
-    .topbar-title h2 { font-size: 16px; font-weight: 800; }
-    .topbar-title span { font-size: 11.5px; color: #94a3b8; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .badge-role {
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid #6366f1;
-      color: #c7d2fe;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11.5px;
+    .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
+    .company-head-title { display: flex; align-items: center; gap: 8px; color: #ffffff; font-weight: 800; font-size: 15px; }
+    .code-tag {
+      background: rgba(148, 163, 184, 0.2);
+      color: #e2e8f0;
+      font-size: 10.5px;
+      padding: 2px 7px;
+      border-radius: 5px;
       font-weight: 700;
     }
+    .company-sub { font-size: 11px; color: #94a3b8; }
+    .header-actions { display: flex; align-items: center; gap: 10px; }
 
-    .main-body { display: flex; flex: 1; }
-    .sidebar {
-      width: 240px;
-      background: #1e293b;
-      color: #e2e8f0;
-      padding: 18px 12px;
+    .sub-nav {
+      background: #0d1936;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+      padding: 8px 22px;
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
     }
-    .nav-btn {
-      width: 100%;
-      text-align: left;
-      background: transparent;
-      border: none;
+    .tab-pill {
+      background: rgba(30, 41, 59, 0.65);
       color: #cbd5e1;
-      padding: 11px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 7px 14px;
       border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
-      transition: 0.15s;
+      white-space: nowrap;
     }
-    .nav-btn:hover { background: rgba(255, 255, 255, 0.08); color: #ffffff; }
-    .nav-btn.active { background: var(--primary); color: #ffffff; }
+    .tab-pill:hover { background: rgba(51, 65, 85, 0.85); color: #ffffff; }
+    .tab-pill.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
 
-    .content-area { flex: 1; padding: 24px; max-width: 1320px; margin: 0 auto; width: 100%; }
-    .section-view { display: none; }
-    .section-view.active { display: block; }
+    .workspace { padding: 20px 22px 36px; max-width: 1360px; margin: 0 auto; width: 100%; }
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
 
-    /* Cards & Tables */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 22px; }
-    .stat-card {
-      background: #ffffff;
+    /* HERO BANNER WITH ELEVATED SPATIAL GRAPHICS */
+    .hero-banner {
+      background: var(--indigo-hero);
+      border-radius: 16px;
+      padding: 24px 28px;
+      color: #ffffff;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(147, 197, 253, 0.25);
+      box-shadow: 0 18px 36px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    .hero-kicker {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(191, 219, 254, 0.3);
+      color: #e0f2fe;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.9px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .hero-banner h2 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+    .hero-banner p { font-size: 13px; color: #dbeafe; line-height: 1.5; margin-bottom: 16px; max-width: 560px; }
+    .hero-cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .iso-graphic-card {
+      background: rgba(9, 17, 38, 0.48);
+      border: 1px solid rgba(147, 197, 253, 0.22);
+      border-radius: 14px;
+      padding: 12px 14px 8px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .iso-caption {
+      text-align: center;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      color: #93c5fd;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* ELEVATED STAT CARDS */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
       border-radius: 12px;
-      padding: 18px;
-      border: 1px solid var(--slate-200);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 16px 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 10px 22px rgba(2, 6, 23, 0.28), 0 2px 0 rgba(255, 255, 255, 0.8) inset;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .stat-card h4 { font-size: 12px; color: var(--slate-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .stat-card .val { font-size: 24px; font-weight: 800; color: var(--slate-900); }
-    .stat-card.red { border-left: 4px solid var(--danger); }
-    .stat-card.yellow { border-left: 4px solid var(--warning); }
-    .stat-card.green { border-left: 4px solid var(--success); }
-    .stat-card.indigo { border-left: 4px solid var(--primary); }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 14px 26px rgba(2, 6, 23, 0.35); }
+    .kpi-card h4 { font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+    .kpi-card .kpi-num { font-size: 24px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+    .kpi-card .kpi-sub { font-size: 11px; color: var(--text-muted); }
+    .kpi-dot {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
 
-    .panel {
-      background: #ffffff;
+    /* LOWER ELEVATED CARDS */
+    .surface-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 18px 20px;
+      border: 1px solid var(--border-soft);
+      margin-bottom: 18px;
+      box-shadow: 0 12px 26px rgba(2, 6, 23, 0.3);
+    }
+    .surface-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+    .surface-head h3 { font-size: 15px; font-weight: 800; color: var(--text-dark); }
+    .surface-head span { font-size: 11.5px; color: var(--text-muted); }
+
+    .cat-mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+    .cat-mini-card {
+      background: var(--card-bg);
       border-radius: 12px;
-      padding: 20px;
-      border: 1px solid var(--slate-200);
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      padding: 15px 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.25);
+      cursor: pointer;
     }
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-    .panel-header h3 { font-size: 16px; font-weight: 800; color: var(--slate-900); }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .cat-tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #1e3a8a;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+    .cat-val { font-size: 20px; font-weight: 800; color: var(--text-dark); margin-bottom: 2px; }
+    .cat-cnt { font-size: 11px; color: var(--text-muted); }
 
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--slate-200); }
-    th { background: var(--slate-50); font-weight: 700; color: var(--slate-600); font-size: 12px; }
-    .tag { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
-    .tag-rm { background: #e0e7ff; color: #3730a3; }
-    .tag-bop { background: #fef3c7; color: #92400e; }
-    .tag-packing { background: #dcfce7; color: #166534; }
-    .tag-consumable { background: #f1f5f9; color: #334155; }
-    .tag-low { background: #fee2e2; color: #b91c1c; }
-    .tag-ok { background: #dcfce7; color: #15803d; }
+    .form-row-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { padding: 9px 11px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px; }
 
-    /* Low Stock Alert Modal */
-    .modal-backdrop {
+    /* MODAL POPUP */
+    .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(2, 6, 23, 0.72);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 999;
+      z-index: 1000;
       padding: 16px;
     }
-    .modal-card {
+    .modal-box {
       background: #ffffff;
       border-radius: 14px;
       max-width: 560px;
       width: 100%;
-      padding: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      border-top: 5px solid var(--danger);
+      padding: 22px;
+      border-top: 5px solid var(--rose);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.45);
     }
-    .modal-card h3 { color: var(--danger); font-size: 18px; margin-bottom: 8px; }
-    .modal-card p { font-size: 13px; color: var(--slate-600); margin-bottom: 14px; }
 
-    @media (max-width: 780px) {
-      .login-box { grid-template-columns: 1fr; }
-      .main-body { flex-direction: column; }
-      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+    @media (max-width: 900px) {
+      .login-card, .hero-banner { grid-template-columns: 1fr; }
+      .kpi-grid, .cat-mini-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .kpi-grid, .cat-mini-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- AUTH / LOGIN SCREEN -->
-  <div id="loginScreen" class="login-wrapper">
-    <div class="login-box">
-      <div class="login-brand">
+  <!-- LOGIN & MASTER PORTAL SCREEN -->
+  <div id="authScreen" class="login-wrapper">
+    <div class="login-card">
+      <div class="login-showcase">
         <div>
-          <span class="brand-badge">AB SOFTWARE SOLUTION</span>
+          <span class="showcase-pill">AB SOFTWARE SOLUTION</span>
           <h1>ICSBAB Inventory Control</h1>
-          <p>Enterprise Store &amp; Warehouse Management System for <strong>RM, BOP, PACKING &amp; CONSUMABLE</strong> items with strict FIFO Lot &amp; GRN automation, Production Returns, and live Low-Stock alerts.</p>
-          <div class="feature-pills">
-            <div class="pill">RM / BOP / Packing / Consumable</div>
-            <div class="pill">Auto FIFO Lot &amp; GRN Issue</div>
-            <div class="pill">Production Return Auto-Fetch</div>
-            <div class="pill">Strict Multi-Company Isolation</div>
+          <p>Store and Warehouse Management System for <strong>RM, BOP, PACKING and CONSUMABLE</strong> items with FIFO Lot and GRN automation, Production Returns, and live Low-Stock alerts.</p>
+
+          <div class="mini-iso-box">
+            <svg viewBox="0 0 360 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="180,10 320,55 180,100 40,55" fill="rgba(59,130,246,0.14)" stroke="rgba(147,197,253,0.45)" stroke-width="1.2"/>
+              <g transform="translate(82,36)">
+                <polygon points="28,0 56,14 28,28 0,14" fill="#38bdf8"/>
+                <polygon points="0,14 28,28 28,54 0,40" fill="#0284c7"/>
+                <polygon points="28,28 56,14 56,40 28,54" fill="#0369a1"/>
+                <text x="28" y="21" text-anchor="middle" fill="#082f49" font-size="9" font-weight="800">RM</text>
+              </g>
+              <g transform="translate(152,48)">
+                <polygon points="28,0 56,14 28,28 0,14" fill="#fbbf24"/>
+                <polygon points="0,14 28,28 28,54 0,40" fill="#d97706"/>
+                <polygon points="28,28 56,14 56,40 28,54" fill="#b45309"/>
+                <text x="28" y="21" text-anchor="middle" fill="#451a03" font-size="9" font-weight="800">FIFO</text>
+              </g>
+              <g transform="translate(222,36)">
+                <polygon points="28,0 56,14 28,28 0,14" fill="#818cf8"/>
+                <polygon points="0,14 28,28 28,54 0,40" fill="#4f46e5"/>
+                <polygon points="28,28 56,14 56,40 28,54" fill="#3730a3"/>
+                <text x="28" y="21" text-anchor="middle" fill="#eef2ff" font-size="9" font-weight="800">BOP</text>
+              </g>
+            </svg>
+            <div class="iso-caption">Spatial Warehouse Flow • RM • BOP • Packing • Consumable</div>
           </div>
         </div>
-        <div class="copyright">&copy; 2026 AB SOFTWARE SOLUTION. All Rights Reserved.</div>
+        <div style="font-size:11px; color:#93c5fd;">&copy; 2026 AB SOFTWARE SOLUTION. All Rights Reserved.</div>
       </div>
 
-      <div class="login-form-area">
-        <div class="auth-tabs">
-          <button type="button" id="tabCompany" class="auth-tab active" onclick="switchAuthTab('company')">Company Login</button>
-          <button type="button" id="tabMaster" class="auth-tab" onclick="switchAuthTab('master')">AB Software Portal</button>
+      <div class="login-form-pane">
+        <div class="auth-switch">
+          <button type="button" id="btnTabCompany" class="auth-btn active" onclick="toggleLoginMode('company')">Company Login</button>
+          <button type="button" id="btnTabMaster" class="auth-btn" onclick="toggleLoginMode('master')">AB Software Portal</button>
         </div>
 
-        <!-- COMPANY LOGIN FORM -->
-        <form id="companyLoginForm" onsubmit="handleCompanyLogin(event)">
-          <div class="form-group">
+        <form id="formCompanyLogin" onsubmit="loginCompany(event)">
+          <div class="field">
             <label>Company ID</label>
-            <input type="text" id="loginCompanyId" placeholder="Enter assigned Company ID" required autocomplete="off" />
+            <input type="text" id="inpCompId" placeholder="Enter Company ID" required autocomplete="off" />
           </div>
-          <div class="form-group">
+          <div class="field">
             <label>Username</label>
-            <input type="text" id="loginUsername" placeholder="Enter Username" required autocomplete="off" />
+            <input type="text" id="inpCompUser" placeholder="Enter Username" required autocomplete="off" />
           </div>
-          <div class="form-group">
+          <div class="field">
             <label>Password</label>
-            <input type="password" id="loginPassword" placeholder="Enter Password" required />
+            <input type="password" id="inpCompPass" placeholder="Enter Password" required />
           </div>
-          <button type="submit" class="btn btn-primary">Login to Company Dashboard</button>
-          <div id="companyLoginError" class="error-msg"></div>
+          <button type="submit" class="btn btn-blue full-w">Login to Workspace</button>
+          <div id="compErr" class="err-box"></div>
         </form>
 
-        <!-- AB SOFTWARE MASTER PORTAL LOGIN FORM -->
-        <form id="masterLoginForm" style="display:none;" onsubmit="handleMasterLogin(event)">
-          <div class="form-group">
-            <label>Master Portal ID</label>
-            <input type="text" id="masterPortalId" placeholder="Enter Portal ID" required autocomplete="off" />
+        <form id="formMasterLogin" style="display:none;" onsubmit="loginMaster(event)">
+          <div class="field">
+            <label>Portal ID</label>
+            <input type="text" id="inpMasterId" placeholder="Enter Portal ID" required autocomplete="off" />
           </div>
-          <div class="form-group">
-            <label>Master Username</label>
-            <input type="text" id="masterUsername" placeholder="Enter Master Username" required autocomplete="off" />
+          <div class="field">
+            <label>Admin Username</label>
+            <input type="text" id="inpMasterUser" placeholder="Enter Admin Username" required autocomplete="off" />
           </div>
-          <div class="form-group">
-            <label>Master Password</label>
-            <input type="password" id="masterPassword" placeholder="Enter Master Password" required />
+          <div class="field">
+            <label>Admin Password</label>
+            <input type="password" id="inpMasterPass" placeholder="Enter Admin Password" required />
           </div>
-          <button type="submit" class="btn btn-dark">Login to AB Software Portal</button>
-          <div id="masterLoginError" class="error-msg"></div>
+          <button type="submit" class="btn btn-dark full-w">Open AB Software Portal</button>
+          <div id="masterErr" class="err-box"></div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- MASTER PORTAL VIEW (ONLY FOR AB SOFTWARE SOLUTION OWNER) -->
-  <div id="masterPortalApp" class="app-container">
-    <header class="topbar">
-      <div class="topbar-left">
-        <div class="company-logo-box">AB</div>
-        <div class="topbar-title">
-          <h2>AB SOFTWARE SOLUTION — Master Admin Portal</h2>
-          <span>Create &amp; Manage Isolated Client Companies</span>
+  <!-- AB SOFTWARE MASTER PORTAL VIEW -->
+  <div id="masterView" class="app-shell">
+    <header class="top-header">
+      <div class="brand-cluster">
+        <div class="logo-badge">AB</div>
+        <div>
+          <div class="company-head-title">AB SOFTWARE SOLUTION <span class="code-tag">PORTAL</span></div>
+          <div class="company-sub">Create and manage isolated client companies</div>
         </div>
       </div>
-      <div class="topbar-right">
-        <span class="badge-role">MASTER OWNER</span>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+      <div class="header-actions">
+        <button class="btn btn-rose btn-sm" onclick="logoutSession()">Logout</button>
       </div>
     </header>
 
-    <div class="content-area">
-      <div class="panel">
-        <div class="panel-header">
-          <h3>Add New Company (Isolated Workspace)</h3>
+    <div class="workspace">
+      <div class="surface-card">
+        <div class="surface-head">
+          <h3>Add Isolated Company</h3>
+          <span>Each company gets its own separate database with zero shared data</span>
         </div>
-        <form onsubmit="createNewCompany(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Unique Company ID *</label>
-              <input type="text" id="newCompId" placeholder="Create unique Company ID" required />
+        <form onsubmit="addCompanyAccount(event)">
+          <div class="form-row-grid">
+            <div class="field">
+              <label>Company ID *</label>
+              <input type="text" id="addCompId" placeholder="Enter unique Company ID" required />
             </div>
-            <div class="form-group">
+            <div class="field">
               <label>Company Name *</label>
-              <input type="text" id="newCompName" placeholder="Enter Company Name" required />
+              <input type="text" id="addCompName" placeholder="Enter Company Name" required />
             </div>
-            <div class="form-group">
-              <label>Company Admin Username *</label>
-              <input type="text" id="newCompUser" placeholder="Create Admin Username" required />
+            <div class="field">
+              <label>Username *</label>
+              <input type="text" id="addCompUser" placeholder="Enter login Username" required />
             </div>
-            <div class="form-group">
-              <label>Company Admin Password *</label>
-              <input type="text" id="newCompPass" placeholder="Create Admin Password" required />
+            <div class="field">
+              <label>Password *</label>
+              <input type="text" id="addCompPass" placeholder="Enter login Password" required />
             </div>
-            <div class="form-group">
+            <div class="field">
               <label>Company Logo (Optional)</label>
-              <input type="file" id="newCompLogo" accept="image/*" />
+              <input type="file" id="addCompLogo" accept="image/*" />
             </div>
           </div>
-          <button type="submit" class="btn btn-primary" style="max-width:260px;">+ Create Isolated Company</button>
+          <button type="submit" class="btn btn-blue">+ Add Company</button>
         </form>
       </div>
 
-      <div class="panel">
-        <div class="panel-header">
-          <h3>Registered Companies (Visible Only in AB Software Portal)</h3>
+      <div class="surface-card">
+        <div class="surface-head">
+          <h3>Added Companies List</h3>
+          <span>Visible only inside AB Software Portal</span>
         </div>
         <div style="overflow-x:auto;">
           <table>
@@ -403,801 +515,864 @@
               <tr>
                 <th>Company ID</th>
                 <th>Company Name</th>
-                <th>Admin Username</th>
+                <th>Username</th>
                 <th>Password</th>
-                <th>Created On</th>
+                <th>Created</th>
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody id="masterCompaniesTable"></tbody>
+            <tbody id="masterCompanyRows"></tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- COMPANY ISOLATED ERP DASHBOARD -->
-  <div id="companyApp" class="app-container">
-    <header class="topbar">
-      <div class="topbar-left">
-        <div class="company-logo-box" id="headerCompanyLogo">CO</div>
-        <div class="topbar-title">
-          <h2 id="headerCompanyName">Company Workspace</h2>
-          <span id="headerCompanyMeta">ICSBAB Inventory Control • Powered by AB SOFTWARE SOLUTION</span>
+  <!-- ISOLATED COMPANY DASHBOARD VIEW -->
+  <div id="companyView" class="app-shell">
+    <header class="top-header">
+      <div class="brand-cluster">
+        <div class="logo-badge" id="hdrLogo">CO</div>
+        <div>
+          <div class="company-head-title">
+            <span id="hdrCompName">Company</span>
+            <span class="code-tag" id="hdrCompId">ID</span>
+          </div>
+          <div class="company-sub" id="hdrSubInfo">ICSBAB Inventory Control • AB SOFTWARE SOLUTION</div>
         </div>
       </div>
-      <div class="topbar-right">
-        <span class="badge-role" id="headerUserBadge">ADMIN</span>
-        <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+      <div class="header-actions">
+        <button class="btn btn-rose btn-sm" onclick="openLowStockModal()">Low Stock Alerts <span id="hdrAlertCount">0</span></button>
+        <button class="btn btn-dark btn-sm" onclick="logoutSession()">Logout</button>
       </div>
     </header>
 
-    <div class="main-body">
-      <aside class="sidebar">
-        <button class="nav-btn active" onclick="showSection('secDashboard', this)">Dashboard &amp; Stock Status</button>
-        <button class="nav-btn" onclick="showSection('secItemMaster', this)">Item Master (RM/BOP/Pkg/Cons)</button>
-        <button class="nav-btn" onclick="showSection('secInward', this)">Inward Entry (GRN &amp; Lot)</button>
-        <button class="nav-btn" onclick="showSection('secOutward', this)">Outward Issue (Strict FIFO)</button>
-        <button class="nav-btn" onclick="showSection('secReturn', this)">Return from Production</button>
-        <button class="nav-btn" onclick="showSection('secLedger', this)">Stock Ledger &amp; Export</button>
-      </aside>
+    <nav class="sub-nav">
+      <button class="tab-pill active" onclick="switchTab('tabDash', this)">Dashboard</button>
+      <button class="tab-pill" onclick="switchTab('tabMaster', this)">Item Master (RM / BOP / Packing / Consumable)</button>
+      <button class="tab-pill" onclick="switchTab('tabInward', this)">Inward GRN</button>
+      <button class="tab-pill" onclick="switchTab('tabOutward', this)">Outward (FIFO)</button>
+      <button class="tab-pill" onclick="switchTab('tabReturn', this)">Return from Prod</button>
+      <button class="tab-pill" onclick="switchTab('tabLedger', this)">GRN &amp; Lot Ledger</button>
+    </nav>
 
-      <main class="content-area">
-        <!-- DASHBOARD -->
-        <section id="secDashboard" class="section-view active">
-          <div class="stats-grid">
-            <div class="stat-card indigo">
-              <h4>Total Active Items</h4>
-              <div class="val" id="statTotalItems">0</div>
-            </div>
-            <div class="stat-card green">
-              <h4>Healthy Stock Items</h4>
-              <div class="val" id="statGreenItems">0</div>
-            </div>
-            <div class="stat-card yellow">
-              <h4>Total Stock Valuation</h4>
-              <div class="val" id="statTotalValue">₹0.00</div>
-            </div>
-            <div class="stat-card red">
-              <h4>Low Stock Alerts</h4>
-              <div class="val" id="statLowItems">0</div>
+    <div class="workspace">
+      <!-- DASHBOARD TAB -->
+      <div id="tabDash" class="view-panel active">
+        <div class="hero-banner">
+          <div>
+            <span class="hero-kicker">INTERACTIVE ISOMETRIC WAREHOUSE &amp; FIFO TELEMETRY</span>
+            <h2 id="heroWelcome">Welcome</h2>
+            <p>Spatial store visibility across <strong>RM, BOP, PACKING, and CONSUMABLE</strong> warehouses with automated GRN and FIFO lot tracking.</p>
+            <div class="hero-cta-row">
+              <button class="btn btn-blue" onclick="jumpToTab('tabMaster')">+ Add Store Item</button>
+              <button class="btn btn-amber" onclick="jumpToTab('tabOutward')">Issue Material (FIFO)</button>
+              <button class="btn btn-rose" onclick="openLowStockModal()">View Low Stock Popup</button>
             </div>
           </div>
 
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Live Closing Stock Summary</h3>
-              <button class="btn btn-success btn-sm" onclick="exportClosingStockCSV()">Export Closing Stock (CSV)</button>
-            </div>
-            <div style="overflow-x:auto;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th>Item Code</th>
-                    <th>Item Name</th>
-                    <th>Grade</th>
-                    <th>Supplier</th>
-                    <th>Unit Price</th>
-                    <th>Closing Qty</th>
-                    <th>Min Level</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="dashboardStockTable"></tbody>
-              </table>
-            </div>
+          <div class="iso-graphic-card">
+            <svg viewBox="0 0 380 132" width="100%" height="118" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="190,14 352,66 190,118 28,66" fill="rgba(37,99,235,0.16)" stroke="rgba(147,197,253,0.5)" stroke-width="1.4"/>
+              <line x1="110" y1="40" x2="270" y2="92" stroke="rgba(125,211,252,0.35)" stroke-dasharray="4 4"/>
+              <line x1="270" y1="40" x2="110" y2="92" stroke="rgba(125,211,252,0.35)" stroke-dasharray="4 4"/>
+              <!-- Left Rack Block -->
+              <g transform="translate(84,38)">
+                <polygon points="32,0 64,16 32,32 0,16" fill="#38bdf8"/>
+                <polygon points="0,16 32,32 32,62 0,46" fill="#0284c7"/>
+                <polygon points="32,32 64,16 64,46 32,62" fill="#0369a1"/>
+                <text x="32" y="20" text-anchor="middle" fill="#082f49" font-size="10" font-weight="800">RM</text>
+              </g>
+              <!-- Center FIFO Block -->
+              <g transform="translate(158,50)">
+                <polygon points="32,0 64,16 32,32 0,16" fill="#fbbf24"/>
+                <polygon points="0,16 32,32 32,62 0,46" fill="#d97706"/>
+                <polygon points="32,32 64,16 64,46 32,62" fill="#b45309"/>
+                <text x="32" y="20" text-anchor="middle" fill="#451a03" font-size="9.5" font-weight="800">FIFO</text>
+              </g>
+              <!-- Right Rack Block -->
+              <g transform="translate(232,38)">
+                <polygon points="32,0 64,16 32,32 0,16" fill="#818cf8"/>
+                <polygon points="0,16 32,32 32,62 0,46" fill="#4f46e5"/>
+                <polygon points="32,32 64,16 64,46 32,62" fill="#3730a3"/>
+                <text x="32" y="20" text-anchor="middle" fill="#eef2ff" font-size="10" font-weight="800">BOP</text>
+              </g>
+            </svg>
+            <div class="iso-caption">Spatial Warehouse Flow • RM • BOP • Packing • Consumable</div>
           </div>
-        </section>
+        </div>
 
-        <!-- ITEM MASTER -->
-        <section id="secItemMaster" class="section-view">
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Add Item Master (RM / BOP / PACKING / CONSUMABLE)</h3>
-            </div>
-            <form onsubmit="addItemMaster(event)">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Category *</label>
-                  <select id="imCategory" required>
-                    <option value="RM">RM (Raw Material)</option>
-                    <option value="BOP">BOP (Bought Out Part)</option>
-                    <option value="PACKING">PACKING</option>
-                    <option value="CONSUMABLE">CONSUMABLE</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Item Code *</label>
-                  <input type="text" id="imCode" placeholder="Enter Item Code" required />
-                </div>
-                <div class="form-group">
-                  <label>Item Name *</label>
-                  <input type="text" id="imName" placeholder="Enter Item Name" required />
-                </div>
-                <div class="form-group">
-                  <label>Grade / Spec *</label>
-                  <input type="text" id="imGrade" placeholder="Enter Material Grade" required />
-                </div>
-                <div class="form-group">
-                  <label>Supplier Name *</label>
-                  <input type="text" id="imSupplier" placeholder="Enter Supplier Name" required />
-                </div>
-                <div class="form-group">
-                  <label>Unit Price (₹) *</label>
-                  <input type="number" step="0.01" id="imPrice" placeholder="0.00" required />
-                </div>
-                <div class="form-group">
-                  <label>Opening Stock Qty *</label>
-                  <input type="number" step="0.01" id="imOpening" placeholder="0" required />
-                </div>
-                <div class="form-group">
-                  <label>Minimum Alert Level *</label>
-                  <input type="number" step="0.01" id="imMinLevel" placeholder="0" required />
-                </div>
+        <!-- 4 KPI CARDS -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-dot" style="background:#dbeafe;color:#1d4ed8;">₹</div>
+            <h4>Total Stock Valuation</h4>
+            <div class="kpi-num" id="kpiTotalVal">₹0.00</div>
+            <div class="kpi-sub" id="kpiItemCount">Across 0 store items</div>
+          </div>
+          <div class="kpi-card" onclick="openLowStockModal()">
+            <div class="kpi-dot" style="background:#ffe4e6;color:#e11d48;">●</div>
+            <h4>Critical / Out of Stock</h4>
+            <div class="kpi-num" id="kpiCritCount">0 Items</div>
+            <div class="kpi-sub">Click to view alert details →</div>
+          </div>
+          <div class="kpi-card" onclick="openLowStockModal()">
+            <div class="kpi-dot" style="background:#fef3c7;color:#d97706;">●</div>
+            <h4>Low / Reorder Stock</h4>
+            <div class="kpi-num" id="kpiLowCount">0 Items</div>
+            <div class="kpi-sub">Click to view reorder items →</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-dot" style="background:#d1fae5;color:#059669;">●</div>
+            <h4>Healthy Stock</h4>
+            <div class="kpi-num" id="kpiHealthyCount">0 Items</div>
+            <div class="kpi-sub">Above minimum stock level</div>
+          </div>
+        </div>
+
+        <!-- CATEGORY BREAKDOWN -->
+        <div class="cat-mini-grid">
+          <div class="cat-mini-card">
+            <span class="cat-tag">RM • RAW MATERIAL</span>
+            <div class="cat-val" id="catValRM">₹0.00</div>
+            <div class="cat-cnt" id="catCntRM">0 items in store</div>
+          </div>
+          <div class="cat-mini-card">
+            <span class="cat-tag">BOP • BOUGHT OUT PART</span>
+            <div class="cat-val" id="catValBOP">₹0.00</div>
+            <div class="cat-cnt" id="catCntBOP">0 items in store</div>
+          </div>
+          <div class="cat-mini-card">
+            <span class="cat-tag">PACKING</span>
+            <div class="cat-val" id="catValPACKING">₹0.00</div>
+            <div class="cat-cnt" id="catCntPACKING">0 items in store</div>
+          </div>
+          <div class="cat-mini-card">
+            <span class="cat-tag">CONSUMABLE</span>
+            <div class="cat-val" id="catValCONSUMABLE">₹0.00</div>
+            <div class="cat-cnt" id="catCntCONSUMABLE">0 items in store</div>
+          </div>
+        </div>
+
+        <!-- CLOSING STOCK TABLE -->
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>Closing Stock Summary</h3>
+            <button class="btn btn-blue btn-sm" onclick="downloadStockCSV()">Export Stock CSV</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Code</th>
+                  <th>Item Name</th>
+                  <th>Grade</th>
+                  <th>Supplier</th>
+                  <th>Unit Price</th>
+                  <th>Closing Qty</th>
+                  <th>Min Level</th>
+                  <th>Valuation</th>
+                </tr>
+              </thead>
+              <tbody id="dashStockRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ITEM MASTER TAB -->
+      <div id="tabMaster" class="view-panel">
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>Add Item Master</h3>
+            <span>Categories: RM, BOP, PACKING, CONSUMABLE</span>
+          </div>
+          <form onsubmit="saveMasterItem(event)">
+            <div class="form-row-grid">
+              <div class="field">
+                <label>Category *</label>
+                <select id="mCat" required>
+                  <option value="RM">RM</option>
+                  <option value="BOP">BOP</option>
+                  <option value="PACKING">PACKING</option>
+                  <option value="CONSUMABLE">CONSUMABLE</option>
+                </select>
               </div>
-              <button type="submit" class="btn btn-primary" style="max-width:220px;">Save Item to Master</button>
-            </form>
-          </div>
-        </section>
-
-        <!-- INWARD ENTRY -->
-        <section id="secInward" class="section-view">
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Inward Material Entry (Creates FIFO Lot)</h3>
-            </div>
-            <form onsubmit="recordInward(event)">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Select Item *</label>
-                  <select id="inItemSelect" onchange="autoFillInwardDetails()" required></select>
-                </div>
-                <div class="form-group">
-                  <label>GRN Number *</label>
-                  <input type="text" id="inGrn" placeholder="Enter GRN Number" required />
-                </div>
-                <div class="form-group">
-                  <label>Lot Number *</label>
-                  <input type="text" id="inLot" placeholder="Enter Lot Number" required />
-                </div>
-                <div class="form-group">
-                  <label>Supplier (Auto-Fetched)</label>
-                  <input type="text" id="inSupplier" readonly />
-                </div>
-                <div class="form-group">
-                  <label>Unit Price ₹ (Auto-Fetched)</label>
-                  <input type="number" step="0.01" id="inPrice" required />
-                </div>
-                <div class="form-group">
-                  <label>Received Qty *</label>
-                  <input type="number" step="0.01" id="inQty" placeholder="Enter Qty" required />
-                </div>
+              <div class="field">
+                <label>Item Code *</label>
+                <input type="text" id="mCode" placeholder="Enter Item Code" required />
               </div>
-              <button type="submit" class="btn btn-primary" style="max-width:220px;">Post Inward GRN</button>
-            </form>
-          </div>
-        </section>
-
-        <!-- OUTWARD FIFO -->
-        <section id="secOutward" class="section-view">
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Outward Production Issue (Strict Oldest-Lot FIFO)</h3>
-            </div>
-            <form onsubmit="recordOutward(event)">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Select Item *</label>
-                  <select id="outItemSelect" onchange="previewFifoLot()" required></select>
-                </div>
-                <div class="form-group">
-                  <label>Next FIFO Lot &amp; GRN (Auto-Selected)</label>
-                  <input type="text" id="outFifoPreview" readonly placeholder="Select item first" />
-                </div>
-                <div class="form-group">
-                  <label>Issue Slip / Line *</label>
-                  <input type="text" id="outSlip" placeholder="Enter Slip or Line Ref" required />
-                </div>
-                <div class="form-group">
-                  <label>Issue Quantity *</label>
-                  <input type="number" step="0.01" id="outQty" placeholder="Enter Issue Qty" required />
-                </div>
+              <div class="field">
+                <label>Item Name *</label>
+                <input type="text" id="mName" placeholder="Enter Item Name" required />
               </div>
-              <button type="submit" class="btn btn-primary" style="max-width:220px;">Issue Stock (FIFO)</button>
-            </form>
-          </div>
-        </section>
-
-        <!-- RETURN FROM PRODUCTION -->
-        <section id="secReturn" class="section-view">
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Return from Production (Auto-Fetches Last Issued Lot &amp; GRN)</h3>
-            </div>
-            <form onsubmit="recordProductionReturn(event)">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Select Item *</label>
-                  <select id="retItemSelect" onchange="autoFetchLastIssue()" required></select>
-                </div>
-                <div class="form-group">
-                  <label>Last Issued Lot No (Auto-Fetched)</label>
-                  <input type="text" id="retLot" readonly required />
-                </div>
-                <div class="form-group">
-                  <label>Last Issued GRN No (Auto-Fetched)</label>
-                  <input type="text" id="retGrn" readonly required />
-                </div>
-                <div class="form-group">
-                  <label>Unit Price ₹ (Auto-Fetched)</label>
-                  <input type="number" step="0.01" id="retPrice" readonly required />
-                </div>
-                <div class="form-group">
-                  <label>Return Quantity *</label>
-                  <input type="number" step="0.01" id="retQty" placeholder="Enter Return Qty" required />
-                </div>
+              <div class="field">
+                <label>Grade *</label>
+                <input type="text" id="mGrade" placeholder="Enter Grade" required />
               </div>
-              <button type="submit" class="btn btn-primary" style="max-width:240px;">Post Return to Stock</button>
-            </form>
-          </div>
-        </section>
+              <div class="field">
+                <label>Supplier Name *</label>
+                <input type="text" id="mSupplier" placeholder="Enter Supplier Name" required />
+              </div>
+              <div class="field">
+                <label>Unit Price (₹) *</label>
+                <input type="number" step="0.01" id="mPrice" placeholder="0.00" required />
+              </div>
+              <div class="field">
+                <label>Opening Stock *</label>
+                <input type="number" step="0.01" id="mOpening" placeholder="0" required />
+              </div>
+              <div class="field">
+                <label>Min Alert Level *</label>
+                <input type="number" step="0.01" id="mMin" placeholder="0" required />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-blue">Save Item</button>
+          </form>
+        </div>
+      </div>
 
-        <!-- LEDGER -->
-        <section id="secLedger" class="section-view">
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Transaction &amp; Lot Movement Ledger</h3>
-              <button class="btn btn-success btn-sm" onclick="exportLedgerCSV()">Export Ledger (CSV)</button>
-            </div>
-            <div style="overflow-x:auto;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date &amp; Time</th>
-                    <th>Type</th>
-                    <th>Item Code</th>
-                    <th>Item Name</th>
-                    <th>GRN No</th>
-                    <th>Lot No</th>
-                    <th>Qty</th>
-                    <th>Rate (₹)</th>
-                    <th>Value (₹)</th>
-                  </tr>
-                </thead>
-                <tbody id="ledgerTableBody"></tbody>
-              </table>
-            </div>
+      <!-- INWARD GRN TAB -->
+      <div id="tabInward" class="view-panel">
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>Inward GRN Entry</h3>
+            <span>Adds new stock lot for FIFO issue</span>
           </div>
-        </section>
-      </main>
+          <form onsubmit="saveInwardEntry(event)">
+            <div class="form-row-grid">
+              <div class="field">
+                <label>Item *</label>
+                <select id="inSelItem" onchange="fillInwardAuto()" required></select>
+              </div>
+              <div class="field">
+                <label>GRN Number *</label>
+                <input type="text" id="inSelGrn" placeholder="Enter GRN No" required />
+              </div>
+              <div class="field">
+                <label>Lot Number *</label>
+                <input type="text" id="inSelLot" placeholder="Enter Lot No" required />
+              </div>
+              <div class="field">
+                <label>Supplier</label>
+                <input type="text" id="inSelSupp" readonly />
+              </div>
+              <div class="field">
+                <label>Unit Price (₹) *</label>
+                <input type="number" step="0.01" id="inSelPrice" required />
+              </div>
+              <div class="field">
+                <label>Qty *</label>
+                <input type="number" step="0.01" id="inSelQty" placeholder="Enter Qty" required />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-blue">Post Inward</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- OUTWARD FIFO TAB -->
+      <div id="tabOutward" class="view-panel">
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>Outward Issue (FIFO)</h3>
+            <span>Automatically picks oldest available lot first</span>
+          </div>
+          <form onsubmit="saveOutwardEntry(event)">
+            <div class="form-row-grid">
+              <div class="field">
+                <label>Item *</label>
+                <select id="outSelItem" onchange="showFifoNext()" required></select>
+              </div>
+              <div class="field">
+                <label>Next FIFO Lot &amp; GRN</label>
+                <input type="text" id="outFifoInfo" readonly />
+              </div>
+              <div class="field">
+                <label>Slip / Reference *</label>
+                <input type="text" id="outSlipRef" placeholder="Enter Slip / Ref" required />
+              </div>
+              <div class="field">
+                <label>Issue Qty *</label>
+                <input type="number" step="0.01" id="outIssueQty" placeholder="Enter Qty" required />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-amber">Issue Stock</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- RETURN FROM PRODUCTION TAB -->
+      <div id="tabReturn" class="view-panel">
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>Return from Production</h3>
+            <span>Auto-fetches last issued Lot No, GRN No, and Price</span>
+          </div>
+          <form onsubmit="saveProdReturn(event)">
+            <div class="form-row-grid">
+              <div class="field">
+                <label>Item *</label>
+                <select id="retSelItem" onchange="fetchLastOutward()" required></select>
+              </div>
+              <div class="field">
+                <label>Lot No (Auto-Fetched)</label>
+                <input type="text" id="retAutoLot" readonly required />
+              </div>
+              <div class="field">
+                <label>GRN No (Auto-Fetched)</label>
+                <input type="text" id="retAutoGrn" readonly required />
+              </div>
+              <div class="field">
+                <label>Unit Price ₹ (Auto-Fetched)</label>
+                <input type="number" step="0.01" id="retAutoPrice" readonly required />
+              </div>
+              <div class="field">
+                <label>Return Qty *</label>
+                <input type="number" step="0.01" id="retQtyVal" placeholder="Enter Return Qty" required />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-blue">Post Return</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- LEDGER TAB -->
+      <div id="tabLedger" class="view-panel">
+        <div class="surface-card">
+          <div class="surface-head">
+            <h3>GRN &amp; Lot Movement Ledger</h3>
+            <button class="btn btn-blue btn-sm" onclick="downloadLedgerCSV()">Export Ledger CSV</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date/Time</th>
+                  <th>Type</th>
+                  <th>Code</th>
+                  <th>Item Name</th>
+                  <th>GRN No</th>
+                  <th>Lot No</th>
+                  <th>Qty</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="ledgerRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- LOW INVENTORY POPUP MODAL -->
-  <div id="lowStockModal" class="modal-backdrop">
-    <div class="modal-card">
-      <h3>Low Inventory Alert</h3>
-      <p>The following items in your company store are at or below minimum stock levels:</p>
-      <div style="max-height:240px; overflow-y:auto; margin-bottom:16px;">
+  <!-- LOW STOCK ALERT POPUP -->
+  <div id="lowStockModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 style="color:#e11d48;font-size:17px;margin-bottom:6px;">Low Inventory Alert</h3>
+      <p style="font-size:12.5px;color:#475569;margin-bottom:12px;">Items at or below minimum stock level in this company:</p>
+      <div style="max-height:220px;overflow-y:auto;margin-bottom:14px;">
         <table>
           <thead>
             <tr>
               <th>Category</th>
-              <th>Item Name</th>
-              <th>Current Qty</th>
+              <th>Item</th>
+              <th>Closing Qty</th>
               <th>Min Level</th>
             </tr>
           </thead>
-          <tbody id="lowStockModalBody"></tbody>
+          <tbody id="lowStockPopupRows"></tbody>
         </table>
       </div>
-      <button class="btn btn-primary" onclick="document.getElementById('lowStockModal').style.display='none'">Acknowledge &amp; Continue</button>
+      <button class="btn btn-rose full-w" onclick="document.getElementById('lowStockModal').style.display='none'">Close Alert</button>
     </div>
   </div>
 
   <script>
-    // AB SOFTWARE SOLUTION MASTER CREDENTIALS
-    const MASTER_CONFIG = {
+    const MASTER_AUTH = {
       portalId: "AB-MASTER",
       username: "abadmin",
       password: "abs@2026"
     };
+    const REGISTRY_KEY = "icsbab_abs_companies_v2";
+    let currentComp = null;
 
-    const COMPANIES_KEY = "abs_icsbab_companies_registry_v1";
-    let activeCompany = null;
-
-    function getCompanies() {
-      try {
-        return JSON.parse(localStorage.getItem(COMPANIES_KEY)) || [];
-      } catch {
-        return [];
-      }
+    function loadRegistry() {
+      try { return JSON.parse(localStorage.getItem(REGISTRY_KEY)) || []; }
+      catch { return []; }
+    }
+    function saveRegistry(arr) {
+      localStorage.setItem(REGISTRY_KEY, JSON.stringify(arr));
+    }
+    function storeKeyFor(compId) {
+      return "icsbab_abs_comp_store_" + compId.trim().toUpperCase();
+    }
+    function loadCompStore(compId) {
+      const raw = localStorage.getItem(storeKeyFor(compId));
+      return raw ? JSON.parse(raw) : { items: [], lots: [], ledger: [] };
+    }
+    function saveCompStore(compId, store) {
+      localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
     }
 
-    function saveCompanies(list) {
-      localStorage.setItem(COMPANIES_KEY, JSON.stringify(list));
-    }
-
-    // Strict Per-Company Isolated Data Store
-    function getCompanyDataKey(companyId) {
-      return "abs_icsbab_isolated_data_" + companyId.trim().toUpperCase();
-    }
-
-    function getCompanyData(companyId) {
-      const raw = localStorage.getItem(getCompanyDataKey(companyId));
-      if (raw) return JSON.parse(raw);
-      return { items: [], lots: [], ledger: [] };
-    }
-
-    function saveCompanyData(companyId, data) {
-      localStorage.setItem(getCompanyDataKey(companyId), JSON.stringify(data));
-    }
-
-    function switchAuthTab(tab) {
-      document.getElementById("companyLoginError").style.display = "none";
-      document.getElementById("masterLoginError").style.display = "none";
-      if (tab === "company") {
-        document.getElementById("tabCompany").classList.add("active");
-        document.getElementById("tabMaster").classList.remove("active");
-        document.getElementById("companyLoginForm").style.display = "block";
-        document.getElementById("masterLoginForm").style.display = "none";
+    function toggleLoginMode(mode) {
+      document.getElementById("compErr").style.display = "none";
+      document.getElementById("masterErr").style.display = "none";
+      if (mode === "company") {
+        document.getElementById("btnTabCompany").classList.add("active");
+        document.getElementById("btnTabMaster").classList.remove("active");
+        document.getElementById("formCompanyLogin").style.display = "block";
+        document.getElementById("formMasterLogin").style.display = "none";
       } else {
-        document.getElementById("tabMaster").classList.add("active");
-        document.getElementById("tabCompany").classList.remove("active");
-        document.getElementById("masterLoginForm").style.display = "block";
-        document.getElementById("companyLoginForm").style.display = "none";
+        document.getElementById("btnTabMaster").classList.add("active");
+        document.getElementById("btnTabCompany").classList.remove("active");
+        document.getElementById("formMasterLogin").style.display = "block";
+        document.getElementById("formCompanyLogin").style.display = "none";
       }
     }
 
-    function handleMasterLogin(e) {
+    function loginMaster(e) {
       e.preventDefault();
-      const pid = document.getElementById("masterPortalId").value.trim();
-      const user = document.getElementById("masterUsername").value.trim();
-      const pass = document.getElementById("masterPassword").value;
-      const err = document.getElementById("masterLoginError");
+      const pid = document.getElementById("inpMasterId").value.trim();
+      const usr = document.getElementById("inpMasterUser").value.trim();
+      const pwd = document.getElementById("inpMasterPass").value;
+      const err = document.getElementById("masterErr");
 
-      if (pid === MASTER_CONFIG.portalId && user === MASTER_CONFIG.username && pass === MASTER_CONFIG.password) {
+      if (pid === MASTER_AUTH.portalId && usr === MASTER_AUTH.username && pwd === MASTER_AUTH.password) {
         err.style.display = "none";
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("masterPortalApp").style.display = "flex";
-        renderMasterCompanies();
+        document.getElementById("authScreen").style.display = "none";
+        document.getElementById("masterView").style.display = "flex";
+        renderMasterRegistry();
       } else {
-        err.textContent = "Invalid AB Software Master Portal credentials.";
+        err.textContent = "Invalid Portal ID, Username, or Password.";
         err.style.display = "block";
       }
     }
 
-    function createNewCompany(e) {
+    function addCompanyAccount(e) {
       e.preventDefault();
-      const id = document.getElementById("newCompId").value.trim().toUpperCase();
-      const name = document.getElementById("newCompName").value.trim();
-      const username = document.getElementById("newCompUser").value.trim();
-      const password = document.getElementById("newCompPass").value;
-      const logoInput = document.getElementById("newCompLogo");
+      const id = document.getElementById("addCompId").value.trim().toUpperCase();
+      const name = document.getElementById("addCompName").value.trim();
+      const username = document.getElementById("addCompUser").value.trim();
+      const password = document.getElementById("addCompPass").value;
+      const logoFile = document.getElementById("addCompLogo").files[0];
 
-      const companies = getCompanies();
-      if (companies.some(c => c.id === id)) {
-        alert("This Company ID already exists. Please use a unique ID.");
+      const list = loadRegistry();
+      if (list.some(x => x.id === id)) {
+        alert("Company ID already exists.");
         return;
       }
 
-      const finalizeSave = (logoDataUrl) => {
-        companies.push({
+      const commitComp = (logoUrl) => {
+        list.push({
           id,
           name,
           username,
           password,
-          logo: logoDataUrl || "",
-          createdAt: new Date().toLocaleDateString("en-IN")
+          logo: logoUrl || "",
+          created: new Date().toLocaleDateString("en-IN")
         });
-        saveCompanies(companies);
-        // Initialize completely empty isolated workspace
-        saveCompanyData(id, { items: [], lots: [], ledger: [] });
+        saveRegistry(list);
+        saveCompStore(id, { items: [], lots: [], ledger: [] });
         e.target.reset();
-        renderMasterCompanies();
-        alert("Company created successfully with 100% isolated blank database.");
+        renderMasterRegistry();
+        alert("Company added with separate isolated store.");
       };
 
-      if (logoInput.files && logoInput.files[0]) {
+      if (logoFile) {
         const reader = new FileReader();
-        reader.onload = (ev) => finalizeSave(ev.target.result);
-        reader.readAsDataURL(logoInput.files[0]);
+        reader.onload = ev => commitComp(ev.target.result);
+        reader.readAsDataURL(logoFile);
       } else {
-        finalizeSave("");
+        commitComp("");
       }
     }
 
-    function renderMasterCompanies() {
-      const tbody = document.getElementById("masterCompaniesTable");
-      const companies = getCompanies();
-      if (companies.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#64748b;">No companies added yet. Use the form above to add your first company.</td></tr>`;
+    function renderMasterRegistry() {
+      const tbody = document.getElementById("masterCompanyRows");
+      const list = loadRegistry();
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#64748b;">No companies added yet.</td></tr>`;
         return;
       }
-      tbody.innerHTML = companies.map(c => `
+      tbody.innerHTML = list.map(c => `
         <tr>
           <td><strong>${c.id}</strong></td>
           <td>${c.name}</td>
           <td>${c.username}</td>
           <td>${c.password}</td>
-          <td>${c.createdAt}</td>
-          <td><button class="btn btn-danger btn-sm" onclick="deleteCompany('${c.id}')">Delete</button></td>
+          <td>${c.created}</td>
+          <td><button class="btn btn-rose btn-sm" onclick="removeCompanyAccount('${c.id}')">Remove</button></td>
         </tr>
       `).join("");
     }
 
-    function deleteCompany(id) {
-      if (!confirm("Delete this company and all its isolated inventory data?")) return;
-      const updated = getCompanies().filter(c => c.id !== id);
-      saveCompanies(updated);
-      localStorage.removeItem(getCompanyDataKey(id));
-      renderMasterCompanies();
+    function removeCompanyAccount(id) {
+      if (!confirm("Remove this company and its isolated records?")) return;
+      saveRegistry(loadRegistry().filter(x => x.id !== id));
+      localStorage.removeItem(storeKeyFor(id));
+      renderMasterRegistry();
     }
 
-    function handleCompanyLogin(e) {
+    function loginCompany(e) {
       e.preventDefault();
-      const cid = document.getElementById("loginCompanyId").value.trim().toUpperCase();
-      const user = document.getElementById("loginUsername").value.trim();
-      const pass = document.getElementById("loginPassword").value;
-      const err = document.getElementById("companyLoginError");
+      const id = document.getElementById("inpCompId").value.trim().toUpperCase();
+      const usr = document.getElementById("inpCompUser").value.trim();
+      const pwd = document.getElementById("inpCompPass").value;
+      const err = document.getElementById("compErr");
 
-      const comp = getCompanies().find(c => c.id === cid && c.username === user && c.password === pass);
-      if (!comp) {
+      const found = loadRegistry().find(x => x.id === id && x.username === usr && x.password === pwd);
+      if (!found) {
         err.textContent = "Invalid Company ID, Username, or Password.";
         err.style.display = "block";
         return;
       }
 
       err.style.display = "none";
-      activeCompany = comp;
-      document.getElementById("loginScreen").style.display = "none";
-      document.getElementById("companyApp").style.display = "flex";
+      currentComp = found;
+      document.getElementById("authScreen").style.display = "none";
+      document.getElementById("companyView").style.display = "flex";
 
-      document.getElementById("headerCompanyName").textContent = comp.name;
-      document.getElementById("headerCompanyMeta").textContent = `Company ID: ${comp.id} • ICSBAB Inventory Control`;
-      document.getElementById("headerUserBadge").textContent = comp.username.toUpperCase();
+      document.getElementById("hdrCompName").textContent = found.name;
+      document.getElementById("hdrCompId").textContent = found.id;
+      document.getElementById("hdrSubInfo").textContent = `ICSBAB Inventory Control • AB SOFTWARE SOLUTION • User: ${found.username}`;
+      document.getElementById("heroWelcome").textContent = `Welcome back, ${found.name}`;
 
-      const logoBox = document.getElementById("headerCompanyLogo");
-      if (comp.logo) {
-        logoBox.innerHTML = `<img src="${comp.logo}" alt="Logo" />`;
+      const logoEl = document.getElementById("hdrLogo");
+      if (found.logo) {
+        logoEl.innerHTML = `<img src="${found.logo}" alt="Logo" />`;
       } else {
-        logoBox.textContent = comp.name.substring(0, 2).toUpperCase();
+        logoEl.textContent = found.name.slice(0, 2).toUpperCase();
       }
 
-      refreshCompanyUI(true);
+      refreshWorkspace(true);
     }
 
-    function logout() {
-      activeCompany = null;
-      document.getElementById("companyApp").style.display = "none";
-      document.getElementById("masterPortalApp").style.display = "none";
-      document.getElementById("loginScreen").style.display = "flex";
-      document.getElementById("companyLoginForm").reset();
-      document.getElementById("masterLoginForm").reset();
+    function logoutSession() {
+      currentComp = null;
+      document.getElementById("companyView").style.display = "none";
+      document.getElementById("masterView").style.display = "none";
+      document.getElementById("authScreen").style.display = "flex";
+      document.getElementById("formCompanyLogin").reset();
+      document.getElementById("formMasterLogin").reset();
     }
 
-    function showSection(sectionId, btn) {
-      document.querySelectorAll(".section-view").forEach(s => s.classList.remove("active"));
-      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-      document.getElementById(sectionId).classList.add("active");
-      btn.classList.add("active");
+    function switchTab(panelId, btnEl) {
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-pill").forEach(b => b.classList.remove("active"));
+      document.getElementById(panelId).classList.add("active");
+      if (btnEl) btnEl.classList.add("active");
     }
 
-    function addItemMaster(e) {
+    function jumpToTab(panelId) {
+      const targetBtn = Array.from(document.querySelectorAll(".tab-pill")).find(b => b.getAttribute("onclick").includes(panelId));
+      switchTab(panelId, targetBtn);
+    }
+
+    function saveMasterItem(e) {
       e.preventDefault();
-      const data = getCompanyData(activeCompany.id);
-      const code = document.getElementById("imCode").value.trim().toUpperCase();
-      if (data.items.some(i => i.code === code)) {
-        alert("Item Code already exists in your company.");
+      const store = loadCompStore(currentComp.id);
+      const code = document.getElementById("mCode").value.trim().toUpperCase();
+      if (store.items.some(i => i.code === code)) {
+        alert("Item Code already exists.");
         return;
       }
+      const category = document.getElementById("mCat").value;
+      const name = document.getElementById("mName").value.trim();
+      const grade = document.getElementById("mGrade").value.trim();
+      const supplier = document.getElementById("mSupplier").value.trim();
+      const price = parseFloat(document.getElementById("mPrice").value) || 0;
+      const opening = parseFloat(document.getElementById("mOpening").value) || 0;
+      const min = parseFloat(document.getElementById("mMin").value) || 0;
 
-      const category = document.getElementById("imCategory").value;
-      const name = document.getElementById("imName").value.trim();
-      const grade = document.getElementById("imGrade").value.trim();
-      const supplier = document.getElementById("imSupplier").value.trim();
-      const price = parseFloat(document.getElementById("imPrice").value) || 0;
-      const opening = parseFloat(document.getElementById("imOpening").value) || 0;
-      const minLevel = parseFloat(document.getElementById("imMinLevel").value) || 0;
-
-      data.items.push({ code, category, name, grade, supplier, price, minLevel });
-
+      store.items.push({ code, category, name, grade, supplier, price, min });
       if (opening > 0) {
-        data.lots.push({
-          lotId: "LOT-" + Date.now(),
-          itemCode: code,
-          grnNo: "OPENING",
-          lotNo: "OP-01",
-          price,
-          qty: opening,
-          createdAt: Date.now()
-        });
-        data.ledger.unshift({
-          date: new Date().toLocaleString("en-IN"),
+        store.lots.push({ code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now() });
+        store.ledger.unshift({
+          dt: new Date().toLocaleString("en-IN"),
           type: "OPENING",
-          itemCode: code,
-          itemName: name,
-          grnNo: "OPENING",
-          lotNo: "OP-01",
+          code,
+          name,
+          grn: "OPENING",
+          lot: "OP-1",
           qty: opening,
-          price,
-          value: opening * price
+          rate: price,
+          amt: opening * price
         });
       }
-
-      saveCompanyData(activeCompany.id, data);
+      saveCompStore(currentComp.id, store);
       e.target.reset();
-      refreshCompanyUI(false);
-      alert("Item added to Master.");
+      refreshWorkspace(false);
+      alert("Item saved.");
     }
 
-    function autoFillInwardDetails() {
-      const code = document.getElementById("inItemSelect").value;
-      const data = getCompanyData(activeCompany.id);
-      const item = data.items.find(i => i.code === code);
+    function fillInwardAuto() {
+      const code = document.getElementById("inSelItem").value;
+      const item = loadCompStore(currentComp.id).items.find(i => i.code === code);
       if (item) {
-        document.getElementById("inSupplier").value = item.supplier;
-        document.getElementById("inPrice").value = item.price;
+        document.getElementById("inSelSupp").value = item.supplier;
+        document.getElementById("inSelPrice").value = item.price;
       }
     }
 
-    function recordInward(e) {
+    function saveInwardEntry(e) {
       e.preventDefault();
-      const data = getCompanyData(activeCompany.id);
-      const code = document.getElementById("inItemSelect").value;
-      const item = data.items.find(i => i.code === code);
+      const store = loadCompStore(currentComp.id);
+      const code = document.getElementById("inSelItem").value;
+      const item = store.items.find(i => i.code === code);
       if (!item) return;
 
-      const grnNo = document.getElementById("inGrn").value.trim();
-      const lotNo = document.getElementById("inLot").value.trim();
-      const price = parseFloat(document.getElementById("inPrice").value) || item.price;
-      const qty = parseFloat(document.getElementById("inQty").value) || 0;
+      const grn = document.getElementById("inSelGrn").value.trim();
+      const lot = document.getElementById("inSelLot").value.trim();
+      const rate = parseFloat(document.getElementById("inSelPrice").value) || item.price;
+      const qty = parseFloat(document.getElementById("inSelQty").value) || 0;
 
-      item.price = price;
-      data.lots.push({
-        lotId: "LOT-" + Date.now(),
-        itemCode: code,
-        grnNo,
-        lotNo,
-        price,
-        qty,
-        createdAt: Date.now()
-      });
-
-      data.ledger.unshift({
-        date: new Date().toLocaleString("en-IN"),
+      item.price = rate;
+      store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now() });
+      store.ledger.unshift({
+        dt: new Date().toLocaleString("en-IN"),
         type: "INWARD",
-        itemCode: code,
-        itemName: item.name,
-        grnNo,
-        lotNo,
+        code,
+        name: item.name,
+        grn,
+        lot,
         qty,
-        price,
-        value: qty * price
+        rate,
+        amt: qty * rate
       });
-
-      saveCompanyData(activeCompany.id, data);
+      saveCompStore(currentComp.id, store);
       e.target.reset();
-      refreshCompanyUI(false);
-      alert("Inward GRN recorded & FIFO Lot created.");
+      refreshWorkspace(false);
+      alert("Inward GRN posted.");
     }
 
-    function previewFifoLot() {
-      const code = document.getElementById("outItemSelect").value;
-      const data = getCompanyData(activeCompany.id);
-      const activeLots = data.lots.filter(l => l.itemCode === code && l.qty > 0).sort((a, b) => a.createdAt - b.createdAt);
-      const preview = document.getElementById("outFifoPreview");
-      if (activeLots.length === 0) {
-        preview.value = "No available stock lots";
-      } else {
-        preview.value = `Lot: ${activeLots[0].lotNo} | GRN: ${activeLots[0].grnNo} (Avail: ${activeLots[0].qty})`;
-      }
+    function showFifoNext() {
+      const code = document.getElementById("outSelItem").value;
+      const lots = loadCompStore(currentComp.id).lots.filter(l => l.code === code && l.qty > 0).sort((a, b) => a.ts - b.ts);
+      document.getElementById("outFifoInfo").value = lots.length
+        ? `Lot: ${lots[0].lot} | GRN: ${lots[0].grn} | Qty: ${lots[0].qty}`
+        : "No stock available";
     }
 
-    function recordOutward(e) {
+    function saveOutwardEntry(e) {
       e.preventDefault();
-      const data = getCompanyData(activeCompany.id);
-      const code = document.getElementById("outItemSelect").value;
-      const item = data.items.find(i => i.code === code);
-      let reqQty = parseFloat(document.getElementById("outQty").value) || 0;
-      const slip = document.getElementById("outSlip").value.trim();
+      const store = loadCompStore(currentComp.id);
+      const code = document.getElementById("outSelItem").value;
+      const item = store.items.find(i => i.code === code);
+      const ref = document.getElementById("outSlipRef").value.trim();
+      let need = parseFloat(document.getElementById("outIssueQty").value) || 0;
 
-      const activeLots = data.lots.filter(l => l.itemCode === code && l.qty > 0).sort((a, b) => a.createdAt - b.createdAt);
-      const totalAvail = activeLots.reduce((sum, l) => sum + l.qty, 0);
-
-      if (reqQty <= 0 || reqQty > totalAvail) {
-        alert(`Insufficient stock. Available FIFO stock: ${totalAvail}`);
+      const lots = store.lots.filter(l => l.code === code && l.qty > 0).sort((a, b) => a.ts - b.ts);
+      const avail = lots.reduce((s, l) => s + l.qty, 0);
+      if (need <= 0 || need > avail) {
+        alert(`Available FIFO stock is ${avail}.`);
         return;
       }
 
-      for (const lot of activeLots) {
-        if (reqQty <= 0) break;
-        const deduct = Math.min(lot.qty, reqQty);
-        lot.qty -= deduct;
-        reqQty -= deduct;
-
-        data.ledger.unshift({
-          date: new Date().toLocaleString("en-IN"),
-          type: `OUTWARD (${slip})`,
-          itemCode: code,
-          itemName: item.name,
-          grnNo: lot.grnNo,
-          lotNo: lot.lotNo,
-          qty: -deduct,
-          price: lot.price,
-          value: deduct * lot.price
+      for (const l of lots) {
+        if (need <= 0) break;
+        const take = Math.min(l.qty, need);
+        l.qty -= take;
+        need -= take;
+        store.ledger.unshift({
+          dt: new Date().toLocaleString("en-IN"),
+          type: `OUTWARD (${ref})`,
+          code,
+          name: item.name,
+          grn: l.grn,
+          lot: l.lot,
+          qty: -take,
+          rate: l.price,
+          amt: take * l.price
         });
       }
-
-      saveCompanyData(activeCompany.id, data);
+      saveCompStore(currentComp.id, store);
       e.target.reset();
-      refreshCompanyUI(true);
-      alert("Stock issued using strict FIFO order.");
+      refreshWorkspace(true);
+      alert("FIFO outward issued.");
     }
 
-    function autoFetchLastIssue() {
-      const code = document.getElementById("retItemSelect").value;
-      const data = getCompanyData(activeCompany.id);
-      const lastIssue = data.ledger.find(entry => entry.itemCode === code && entry.type.startsWith("OUTWARD"));
-      if (lastIssue) {
-        document.getElementById("retLot").value = lastIssue.lotNo;
-        document.getElementById("retGrn").value = lastIssue.grnNo;
-        document.getElementById("retPrice").value = lastIssue.price;
+    function fetchLastOutward() {
+      const code = document.getElementById("retSelItem").value;
+      const last = loadCompStore(currentComp.id).ledger.find(x => x.code === code && x.type.startsWith("OUTWARD"));
+      if (last) {
+        document.getElementById("retAutoLot").value = last.lot;
+        document.getElementById("retAutoGrn").value = last.grn;
+        document.getElementById("retAutoPrice").value = last.rate;
       } else {
-        document.getElementById("retLot").value = "";
-        document.getElementById("retGrn").value = "";
-        document.getElementById("retPrice").value = "";
-        alert("No prior production outward issue found for this item.");
+        document.getElementById("retAutoLot").value = "";
+        document.getElementById("retAutoGrn").value = "";
+        document.getElementById("retAutoPrice").value = "";
+        alert("No outward issue record found for this item.");
       }
     }
 
-    function recordProductionReturn(e) {
+    function saveProdReturn(e) {
       e.preventDefault();
-      const data = getCompanyData(activeCompany.id);
-      const code = document.getElementById("retItemSelect").value;
-      const item = data.items.find(i => i.code === code);
-      const lotNo = document.getElementById("retLot").value;
-      const grnNo = document.getElementById("retGrn").value;
-      const price = parseFloat(document.getElementById("retPrice").value) || 0;
-      const qty = parseFloat(document.getElementById("retQty").value) || 0;
+      const store = loadCompStore(currentComp.id);
+      const code = document.getElementById("retSelItem").value;
+      const item = store.items.find(i => i.code === code);
+      const lot = document.getElementById("retAutoLot").value;
+      const grn = document.getElementById("retAutoGrn").value;
+      const rate = parseFloat(document.getElementById("retAutoPrice").value) || 0;
+      const qty = parseFloat(document.getElementById("retQtyVal").value) || 0;
 
-      if (!lotNo || !grnNo || qty <= 0) return;
+      if (!lot || !grn || qty <= 0) return;
 
-      const existingLot = data.lots.find(l => l.itemCode === code && l.lotNo === lotNo && l.grnNo === grnNo);
-      if (existingLot) {
-        existingLot.qty += qty;
-      } else {
-        data.lots.push({
-          lotId: "LOT-" + Date.now(),
-          itemCode: code,
-          grnNo,
-          lotNo,
-          price,
-          qty,
-          createdAt: Date.now()
-        });
-      }
+      const existing = store.lots.find(l => l.code === code && l.lot === lot && l.grn === grn);
+      if (existing) existing.qty += qty;
+      else store.lots.push({ code, grn, lot, price: rate, qty, ts: Date.now() });
 
-      data.ledger.unshift({
-        date: new Date().toLocaleString("en-IN"),
+      store.ledger.unshift({
+        dt: new Date().toLocaleString("en-IN"),
         type: "PROD-RETURN",
-        itemCode: code,
-        itemName: item.name,
-        grnNo,
-        lotNo,
+        code,
+        name: item.name,
+        grn,
+        lot,
         qty,
-        price,
-        value: qty * price
+        rate,
+        amt: qty * rate
       });
-
-      saveCompanyData(activeCompany.id, data);
+      saveCompStore(currentComp.id, store);
       e.target.reset();
-      refreshCompanyUI(false);
-      alert("Production return added back to closing stock.");
+      refreshWorkspace(false);
+      alert("Return posted to stock.");
     }
 
-    function refreshCompanyUI(checkLowStockPopup) {
-      const data = getCompanyData(activeCompany.id);
+    let cachedLowList = [];
 
-      // Populate Item Dropdowns
-      const optionsHtml = `<option value="">-- Select Item --</option>` +
-        data.items.map(i => `<option value="${i.code}">[${i.category}] ${i.code} - ${i.name}</option>`).join("");
-      document.getElementById("inItemSelect").innerHTML = optionsHtml;
-      document.getElementById("outItemSelect").innerHTML = optionsHtml;
-      document.getElementById("retItemSelect").innerHTML = optionsHtml;
+    function refreshWorkspace(showPopup) {
+      const store = loadCompStore(currentComp.id);
+      const opts = `<option value="">-- Select Item --</option>` +
+        store.items.map(i => `<option value="${i.code}">[${i.category}] ${i.code} - ${i.name}</option>`).join("");
+
+      document.getElementById("inSelItem").innerHTML = opts;
+      document.getElementById("outSelItem").innerHTML = opts;
+      document.getElementById("retSelItem").innerHTML = opts;
 
       let totalVal = 0;
-      let lowItems = [];
-      let greenCount = 0;
+      let crit = 0;
+      let low = 0;
+      let ok = 0;
+      cachedLowList = [];
 
-      const stockRows = data.items.map(item => {
-        const closingQty = data.lots
-          .filter(l => l.itemCode === item.code)
-          .reduce((sum, l) => sum + l.qty, 0);
-        totalVal += closingQty * item.price;
+      const catTotals = {
+        RM: { val: 0, cnt: 0 },
+        BOP: { val: 0, cnt: 0 },
+        PACKING: { val: 0, cnt: 0 },
+        CONSUMABLE: { val: 0, cnt: 0 }
+      };
 
-        const isLow = closingQty <= item.minLevel;
-        if (isLow) lowItems.push({ ...item, closingQty });
-        else greenCount++;
+      const rowsHtml = store.items.map(item => {
+        const qty = store.lots.filter(l => l.code === item.code).reduce((s, l) => s + l.qty, 0);
+        const val = qty * item.price;
+        totalVal += val;
+        if (catTotals[item.category]) {
+          catTotals[item.category].val += val;
+          catTotals[item.category].cnt += 1;
+        }
 
-        const catClass = "tag-" + item.category.toLowerCase();
+        if (qty <= 0) {
+          crit++;
+          cachedLowList.push({ ...item, qty });
+        } else if (qty <= item.min) {
+          low++;
+          cachedLowList.push({ ...item, qty });
+        } else {
+          ok++;
+        }
+
         return `
           <tr>
-            <td><span class="tag ${catClass}">${item.category}</span></td>
-            <td><strong>${item.code}</strong></td>
+            <td><strong>${item.category}</strong></td>
+            <td>${item.code}</td>
             <td>${item.name}</td>
             <td>${item.grade}</td>
             <td>${item.supplier}</td>
             <td>₹${item.price.toFixed(2)}</td>
-            <td><strong>${closingQty}</strong></td>
-            <td>${item.minLevel}</td>
-            <td>${isLow ? '<span class="tag tag-low">LOW STOCK</span>' : '<span class="tag tag-ok">OK</span>'}</td>
+            <td><strong>${qty}</strong></td>
+            <td>${item.min}</td>
+            <td>₹${val.toFixed(2)}</td>
           </tr>
         `;
       }).join("");
 
-      document.getElementById("dashboardStockTable").innerHTML = stockRows ||
-        `<tr><td colspan="9" style="text-align:center;color:#64748b;">No items added yet. Go to Item Master to add your company items.</td></tr>`;
+      document.getElementById("dashStockRows").innerHTML = rowsHtml ||
+        `<tr><td colspan="9" style="text-align:center;color:#64748b;">No store items added yet.</td></tr>`;
 
-      document.getElementById("statTotalItems").textContent = data.items.length;
-      document.getElementById("statGreenItems").textContent = greenCount;
-      document.getElementById("statTotalValue").textContent = "₹" + totalVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById("statLowItems").textContent = lowItems.length;
+      document.getElementById("kpiTotalVal").textContent = "₹" + totalVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("kpiItemCount").textContent = `Across ${store.items.length} store items`;
+      document.getElementById("kpiCritCount").textContent = `${crit} Items`;
+      document.getElementById("kpiLowCount").textContent = `${low} Items`;
+      document.getElementById("kpiHealthyCount").textContent = `${ok} Items`;
+      document.getElementById("hdrAlertCount").textContent = cachedLowList.length;
 
-      // Render Ledger
-      document.getElementById("ledgerTableBody").innerHTML = data.ledger.map(l => `
+      ["RM", "BOP", "PACKING", "CONSUMABLE"].forEach(c => {
+        document.getElementById("catVal" + c).textContent = "₹" + catTotals[c].val.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById("catCnt" + c).textContent = `${catTotals[c].cnt} items in store`;
+      });
+
+      document.getElementById("ledgerRows").innerHTML = store.ledger.map(l => `
         <tr>
-          <td>${l.date}</td>
+          <td>${l.dt}</td>
           <td><strong>${l.type}</strong></td>
-          <td>${l.itemCode}</td>
-          <td>${l.itemName}</td>
-          <td>${l.grnNo}</td>
-          <td>${l.lotNo}</td>
+          <td>${l.code}</td>
+          <td>${l.name}</td>
+          <td>${l.grn}</td>
+          <td>${l.lot}</td>
           <td><strong>${l.qty}</strong></td>
-          <td>₹${l.price.toFixed(2)}</td>
-          <td>₹${l.value.toFixed(2)}</td>
+          <td>₹${l.rate.toFixed(2)}</td>
+          <td>₹${l.amt.toFixed(2)}</td>
         </tr>
-      `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No stock transactions yet.</td></tr>`;
+      `).join("") || `<tr><td colspan="9" style="text-align:center;color:#64748b;">No ledger entries yet.</td></tr>`;
 
-      if (checkLowStockPopup && lowItems.length > 0) {
-        document.getElementById("lowStockModalBody").innerHTML = lowItems.map(li => `
-          <tr>
-            <td>${li.category}</td>
-            <td>${li.name} (${li.code})</td>
-            <td style="color:#dc2626;font-weight:700;">${li.closingQty}</td>
-            <td>${li.minLevel}</td>
-          </tr>
-        `).join("");
-        document.getElementById("lowStockModal").style.display = "flex";
+      if (showPopup && cachedLowList.length > 0) {
+        openLowStockModal();
       }
     }
 
-    function exportClosingStockCSV() {
-      const data = getCompanyData(activeCompany.id);
-      let csv = "Category,Item Code,Item Name,Grade,Supplier,Unit Price,Closing Qty,Min Level\n";
-      data.items.forEach(item => {
-        const qty = data.lots.filter(l => l.itemCode === item.code).reduce((s, l) => s + l.qty, 0);
-        csv += `"${item.category}","${item.code}","${item.name}","${item.grade}","${item.supplier}",${item.price},${qty},${item.minLevel}\n`;
-      });
-      downloadCSV(csv, `${activeCompany.id}_Closing_Stock.csv`);
+    function openLowStockModal() {
+      document.getElementById("lowStockPopupRows").innerHTML = cachedLowList.length
+        ? cachedLowList.map(x => `
+            <tr>
+              <td>${x.category}</td>
+              <td>${x.name} (${x.code})</td>
+              <td style="color:#e11d48;font-weight:700;">${x.qty}</td>
+              <td>${x.min}</td>
+            </tr>
+          `).join("")
+        : `<tr><td colspan="4" style="text-align:center;color:#64748b;">No low-stock alerts right now.</td></tr>`;
+      document.getElementById("lowStockModal").style.display = "flex";
     }
 
-    function exportLedgerCSV() {
-      const data = getCompanyData(activeCompany.id);
-      let csv = "Date,Type,Item Code,Item Name,GRN No,Lot No,Qty,Rate,Value\n";
-      data.ledger.forEach(l => {
-        csv += `"${l.date}","${l.type}","${l.itemCode}","${l.itemName}","${l.grnNo}","${l.lotNo}",${l.qty},${l.price},${l.value}\n`;
+    function downloadStockCSV() {
+      const store = loadCompStore(currentComp.id);
+      let csv = "Category,Code,Name,Grade,Supplier,Price,Qty,Min\n";
+      store.items.forEach(i => {
+        const qty = store.lots.filter(l => l.code === i.code).reduce((s, l) => s + l.qty, 0);
+        csv += `"${i.category}","${i.code}","${i.name}","${i.grade}","${i.supplier}",${i.price},${qty},${i.min}\n`;
       });
-      downloadCSV(csv, `${activeCompany.id}_Stock_Ledger.csv`);
+      triggerDownload(csv, `${currentComp.id}_Stock.csv`);
     }
 
-    function downloadCSV(content, filename) {
-      const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
+    function downloadLedgerCSV() {
+      const store = loadCompStore(currentComp.id);
+      let csv = "Date,Type,Code,Name,GRN,Lot,Qty,Rate,Amount\n";
+      store.ledger.forEach(l => {
+        csv += `"${l.dt}","${l.type}","${l.code}","${l.name}","${l.grn}","${l.lot}",${l.qty},${l.rate},${l.amt}\n`;
+      });
+      triggerDownload(csv, `${currentComp.id}_Ledger.csv`);
+    }
+
+    function triggerDownload(csvText, fileName) {
+      const blob = new Blob([csvText], { type: "text/csv;charset=utf-8;" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName;
+      a.click();
     }
   </script>
 </body>
