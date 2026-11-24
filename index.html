@@ -235,7 +235,14 @@
       box-shadow: 0 5px 14px rgba(37, 99, 235, 0.4);
     }
 
-    .workspace { padding: 20px 22px 36px; max-width: 1360px; margin: 0 auto; width: 100%; }
+    .workspace { padding: 20px 22px 24px; max-width: 1360px; margin: 0 auto; width: 100%; flex: 1; }
+    .app-footer {
+      text-align: center;
+      padding: 12px 20px 18px;
+      font-size: 11.5px;
+      color: #94a3b8;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+    }
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
@@ -450,6 +457,28 @@
     }
     .inward-line-row .field { margin-bottom: 0; }
 
+    .lvl-input {
+      width: 110px;
+      padding: 7px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+      background: #ffffff;
+    }
+    .lvl-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .level-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .level-toolbar input[type="month"] {
+      padding: 8px 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
     .three-col-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -559,7 +588,7 @@
 </head>
 <body>
 
-  <!-- LOGIN & MASTER PORTAL SCREEN (UNCHANGED) -->
+  <!-- LOGIN & MASTER PORTAL SCREEN -->
   <div id="authScreen" class="login-wrapper">
     <div class="login-card">
       <div class="login-showcase">
@@ -593,7 +622,7 @@
             <div class="iso-caption">Spatial Warehouse Flow • RM • BOP • Packing • Consumable</div>
           </div>
         </div>
-        <div style="font-size:11px; color:#93c5fd;">&copy; 2026 AB SOFTWARE SOLUTION. All Rights Reserved.</div>
+        <div style="font-size:11px; color:#93c5fd;">&copy; 2026 AB SOFTWARE SOLUTION | Asish Bahalia. All Rights Reserved.</div>
       </div>
 
       <div class="login-form-pane">
@@ -639,7 +668,7 @@
     </div>
   </div>
 
-  <!-- AB SOFTWARE MASTER PORTAL & COMPANY CREATE VIEW (UNCHANGED) -->
+  <!-- AB SOFTWARE MASTER PORTAL & COMPANY CREATE VIEW -->
   <div id="masterView" class="app-shell">
     <header class="top-header">
       <div class="brand-cluster">
@@ -709,6 +738,8 @@
         </div>
       </div>
     </div>
+
+    <footer class="app-footer">&copy; 2026 AB SOFTWARE SOLUTION | Asish Bahalia. All Rights Reserved.</footer>
   </div>
 
   <!-- POST-CREATE / POST-LOGIN COMPANY DASHBOARD -->
@@ -733,6 +764,7 @@
     <nav class="sub-nav">
       <button class="tab-pill active" onclick="switchTab('tabDash', this)">Dashboard</button>
       <button class="tab-pill" onclick="switchTab('tabMaster', this)">Item Master (RM / BOP / Packing / Consumable)</button>
+      <button class="tab-pill" onclick="switchTab('tabLevels', this)">Min / Reorder / Max Levels</button>
       <button class="tab-pill" onclick="switchTab('tabInward', this)">Inward GRN</button>
       <button class="tab-pill" onclick="switchTab('tabOutward', this)">Outward (FIFO)</button>
       <button class="tab-pill" onclick="switchTab('tabReturn', this)">Return from Prod</button>
@@ -934,7 +966,7 @@
         </div>
       </div>
 
-      <!-- ITEM MASTER TAB (AUTO ITEM CODE + EDIT & DELETE) -->
+      <!-- ITEM MASTER TAB -->
       <div id="tabMaster" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1014,7 +1046,45 @@
         </div>
       </div>
 
-      <!-- INWARD GRN TAB (AUTO GRN NUMBER) -->
+      <!-- MINIMUM / REORDER / MAXIMUM BY MONTH TAB -->
+      <div id="tabLevels" class="view-panel">
+        <div class="surface-card">
+          <div class="surface-head">
+            <div>
+              <h3>Minimum / reorder / maximum by month</h3>
+              <span>Levels set for a month apply to that month and the months after it, until you set new ones. Status colours use the selected/current month: red = at or below minimum, yellow = at or below reorder level, green = above reorder level.</span>
+            </div>
+            <div class="level-toolbar">
+              <select id="lvlCatFilter" onchange="renderMonthLevelsTable()">
+                <option value="ALL">All Materials</option>
+                <option value="RM">RM</option>
+                <option value="BOP">BOP</option>
+                <option value="PACKING">PACKING</option>
+                <option value="CONSUMABLE">CONSUMABLE</option>
+              </select>
+              <input type="month" id="lvlMonthPicker" onchange="renderMonthLevelsTable()" />
+              <button type="button" class="btn btn-blue btn-sm" onclick="saveMonthLevels()">Save levels</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Type</th>
+                  <th>Minimum</th>
+                  <th>Reorder</th>
+                  <th>Maximum</th>
+                </tr>
+              </thead>
+              <tbody id="monthLevelsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- INWARD GRN TAB -->
       <div id="tabInward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1066,7 +1136,7 @@
         </div>
       </div>
 
-      <!-- OUTWARD FIFO TAB (AUTO ISSUE SLIP NUMBER) -->
+      <!-- OUTWARD FIFO TAB -->
       <div id="tabOutward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
@@ -1313,6 +1383,8 @@
         </div>
       </div>
     </div>
+
+    <footer class="app-footer">&copy; 2026 AB SOFTWARE SOLUTION | Asish Bahalia. All Rights Reserved.</footer>
   </div>
 
   <!-- STATUS ITEMS / LOW STOCK ALERT POPUP -->
@@ -1348,6 +1420,7 @@
       password: "abs@2026"
     };
     const REGISTRY_KEY = "icsbab_abs_companies_v2";
+    const COPYRIGHT_TEXT = "&copy; 2026 AB SOFTWARE SOLUTION | Asish Bahalia. All Rights Reserved.";
     let currentComp = null;
     let currentSessionUser = null;
     let cachedLowList = [];
@@ -1358,8 +1431,13 @@
       return new Date().toISOString().slice(0, 10);
     }
 
+    function currentMonthYM() {
+      return new Date().toISOString().slice(0, 7);
+    }
+
     function initDefaultDates() {
       const t = todayISO();
+      const ym = currentMonthYM();
       if (document.getElementById("closingStockDate") && !document.getElementById("closingStockDate").value) {
         document.getElementById("closingStockDate").value = t;
       }
@@ -1368,6 +1446,9 @@
       }
       if (document.getElementById("ioToDate") && !document.getElementById("ioToDate").value) {
         document.getElementById("ioToDate").value = t;
+      }
+      if (document.getElementById("lvlMonthPicker") && !document.getElementById("lvlMonthPicker").value) {
+        document.getElementById("lvlMonthPicker").value = ym;
       }
       ["inBatchDate", "outSelDate", "retSelDate"].forEach(id => {
         const el = document.getElementById(id);
@@ -1392,14 +1473,97 @@
         items: parsed.items || [],
         lots: parsed.lots || [],
         ledger: parsed.ledger || [],
-        subUsers: parsed.subUsers || []
+        subUsers: parsed.subUsers || [],
+        monthLevels: parsed.monthLevels || {}
       };
     }
     function saveCompStore(compId, store) {
       localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
     }
 
-    /* AUTO GENERATORS FOR ITEM CODE, GRN NUMBER & ISSUE SLIP NUMBER */
+    function resolveEffectiveLevels(store, item, targetYM) {
+      const baseMin = parseFloat(item.min) || 0;
+      const baseReorder = item.reorder !== undefined ? (parseFloat(item.reorder) || 0) : baseMin;
+      const baseMax = item.max !== undefined ? (parseFloat(item.max) || 0) : 0;
+
+      let effMin = baseMin;
+      let effReorder = baseReorder;
+      let effMax = baseMax;
+
+      const monthMap = store.monthLevels || {};
+      const sortedMonths = Object.keys(monthMap).sort();
+      for (const mKey of sortedMonths) {
+        if (mKey <= targetYM) {
+          const itemCfg = monthMap[mKey] && monthMap[mKey][item.code];
+          if (itemCfg) {
+            if (itemCfg.min !== undefined && itemCfg.min !== "") effMin = parseFloat(itemCfg.min) || 0;
+            if (itemCfg.reorder !== undefined && itemCfg.reorder !== "") effReorder = parseFloat(itemCfg.reorder) || 0;
+            if (itemCfg.max !== undefined && itemCfg.max !== "") effMax = parseFloat(itemCfg.max) || 0;
+          }
+        }
+      }
+      return { min: effMin, reorder: effReorder, max: effMax };
+    }
+
+    function renderMonthLevelsTable() {
+      if (!currentComp) return;
+      const store = loadCompStore(currentComp.id);
+      const ym = document.getElementById("lvlMonthPicker").value || currentMonthYM();
+      const catFlt = document.getElementById("lvlCatFilter").value || "ALL";
+      const tbody = document.getElementById("monthLevelsTableBody");
+
+      const list = store.items.filter(i => catFlt === "ALL" || i.category === catFlt);
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#64748b;padding:16px;">No items added yet. Add items in Item Master first.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        const eff = resolveEffectiveLevels(store, item, ym);
+        return `
+          <tr data-item-code="${item.code}">
+            <td><strong>${item.name} (${item.code})</strong></td>
+            <td><strong>${item.category}</strong></td>
+            <td><input type="number" step="0.01" class="lvl-input lvl-min" value="${eff.min}" /></td>
+            <td><input type="number" step="0.01" class="lvl-input lvl-reorder" value="${eff.reorder}" /></td>
+            <td><input type="number" step="0.01" class="lvl-input lvl-max" value="${eff.max}" /></td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function saveMonthLevels() {
+      if (!currentComp) return;
+      const store = loadCompStore(currentComp.id);
+      const ym = document.getElementById("lvlMonthPicker").value || currentMonthYM();
+      if (!store.monthLevels) store.monthLevels = {};
+      if (!store.monthLevels[ym]) store.monthLevels[ym] = {};
+
+      document.querySelectorAll("#monthLevelsTableBody tr[data-item-code]").forEach(tr => {
+        const code = tr.getAttribute("data-item-code");
+        const minVal = parseFloat(tr.querySelector(".lvl-min").value) || 0;
+        const reorderVal = parseFloat(tr.querySelector(".lvl-reorder").value) || 0;
+        const maxVal = parseFloat(tr.querySelector(".lvl-max").value) || 0;
+
+        store.monthLevels[ym][code] = {
+          min: minVal,
+          reorder: reorderVal,
+          max: maxVal
+        };
+
+        const masterItem = store.items.find(i => i.code === code);
+        if (masterItem) {
+          masterItem.min = minVal;
+          masterItem.reorder = reorderVal;
+          masterItem.max = maxVal;
+        }
+      });
+
+      saveCompStore(currentComp.id, store);
+      refreshWorkspace(false);
+      alert(`Levels saved for ${ym} and following months.`);
+    }
+
     function generateNextItemCode(store, category) {
       const prefixMap = {
         RM: "RM",
@@ -1535,7 +1699,7 @@
           created: new Date().toLocaleDateString("en-IN")
         });
         saveRegistry(list);
-        saveCompStore(id, { items: [], lots: [], ledger: [], subUsers: [] });
+        saveCompStore(id, { items: [], lots: [], ledger: [], subUsers: [], monthLevels: {} });
         e.target.reset();
         renderMasterRegistry();
         alert("Company added with separate isolated store.");
@@ -1653,6 +1817,7 @@
       document.getElementById(panelId).classList.add("active");
       if (btnEl) btnEl.classList.add("active");
       refreshAutoDocNumbers();
+      if (panelId === "tabLevels") renderMonthLevelsTable();
     }
 
     function jumpToTab(panelId) {
@@ -1733,7 +1898,7 @@
         return;
       }
 
-      store.items.push({ code, category, name, grade, supplier, price, opening, min, createdDate: dtISO });
+      store.items.push({ code, category, name, grade, supplier, price, opening, min, reorder: min, max: 0, createdDate: dtISO });
       if (opening > 0) {
         const lid = "LOT-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6);
         store.lots.push({ lotId: lid, code, grn: "OPENING", lot: "OP-1", price, qty: opening, ts: Date.now(), dateISO: dtISO });
@@ -2250,7 +2415,8 @@
             items: restoredStore.items || [],
             lots: restoredStore.lots || [],
             ledger: restoredStore.ledger || [],
-            subUsers: restoredStore.subUsers || []
+            subUsers: restoredStore.subUsers || [],
+            monthLevels: restoredStore.monthLevels || {}
           });
           refreshWorkspace(false);
           alert("Company JSON backup restored.");
@@ -2301,6 +2467,8 @@
     }
 
     function computeStockAsOnDate(store, targetDateISO) {
+      const targetYM = (targetDateISO || todayISO()).slice(0, 7);
+
       return store.items.map(item => {
         const created = item.createdDate || "0000-00-00";
         const opening = created <= targetDateISO ? (parseFloat(item.opening) || 0) : 0;
@@ -2320,9 +2488,14 @@
 
         const closingQty = opening + inward + prodRet - outward;
         const stockValue = closingQty * item.price;
+
+        const levels = resolveEffectiveLevels(store, item, targetYM);
         let status = "HEALTHY";
-        if (closingQty <= 0) status = "CRITICAL";
-        else if (closingQty <= item.min) status = "LOW";
+        if (closingQty <= levels.min) {
+          status = "CRITICAL";
+        } else if (closingQty <= levels.reorder) {
+          status = "LOW";
+        }
 
         return {
           ...item,
@@ -2332,6 +2505,9 @@
           outward,
           closingQty,
           stockValue,
+          minLevel: levels.min,
+          reorderLevel: levels.reorder,
+          maxLevel: levels.max,
           status
         };
       });
@@ -2352,7 +2528,8 @@
       refreshAutoDocNumbers();
       renderMasterItemsTable(store);
 
-      computedStockRows = computeStockAsOnDate(store, "9999-12-31");
+      const activeDateVal = (document.getElementById("closingStockDate") && document.getElementById("closingStockDate").value) || todayISO();
+      computedStockRows = computeStockAsOnDate(store, activeDateVal);
 
       let totalVal = 0;
       let crit = 0;
@@ -2401,6 +2578,7 @@
       });
 
       renderDashboardTable();
+      renderMonthLevelsTable();
       renderWorkflowDeleteTables(store);
 
       document.getElementById("ledgerRows").innerHTML = store.ledger.map(l => `
@@ -2538,13 +2716,13 @@
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.code}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.name}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.grade}</td>
-            <td style="border:1px solid #cbd5e1;padding:6px;">${r.supplier}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.price.toFixed(2)}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.opening}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.inward}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.prodRet}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">${r.outward}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;"><strong>${r.closingQty}</strong></td>
+            <td style="border:1px solid #cbd5e1;padding:6px;">${r.minLevel} / ${r.reorderLevel} / ${r.maxLevel}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;background:${badgeBg};color:${badgeColor};font-weight:800;">${statusLabel}</td>
             <td style="border:1px solid #cbd5e1;padding:6px;">₹${r.stockValue.toFixed(2)}</td>
           </tr>
@@ -2554,8 +2732,8 @@
       const sheet = document.getElementById("pdfPrintSheet");
       sheet.innerHTML = `
         <h2 style="margin-bottom:4px;">${currentComp.name} (${currentComp.id}) — Day Wise Closing Stock Report</h2>
-        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Stock Status: RED / YELLOW / GREEN • Formula: Opening + Inward + Prod Ret - Outward</p>
-        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <p style="font-size:12px;color:#475569;margin-bottom:14px;">Closing Stock As On Date: <strong>${dateVal}</strong> • Stock Status: RED / YELLOW / GREEN</p>
+        <table style="width:100%;border-collapse:collapse;font-size:10.5px;">
           <thead>
             <tr>
               <th style="border:1px solid #cbd5e1;padding:6px;">Status</th>
@@ -2563,13 +2741,13 @@
               <th style="border:1px solid #cbd5e1;padding:6px;">Code</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Item Name</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Grade</th>
-              <th style="border:1px solid #cbd5e1;padding:6px;">Supplier</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Rate</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Opening</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Inward</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Prod Ret</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Outward</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Closing</th>
+              <th style="border:1px solid #cbd5e1;padding:6px;">Min/Re/Max</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Stock Status</th>
               <th style="border:1px solid #cbd5e1;padding:6px;">Value</th>
             </tr>
@@ -2579,6 +2757,7 @@
           </tbody>
         </table>
         <p style="margin-top:12px;font-weight:800;font-size:13px;">Total Closing Stock Valuation As On ${dateVal}: ₹${grandVal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+        <p style="margin-top:16px;font-size:11px;color:#64748b;">${COPYRIGHT_TEXT}</p>
       `;
       window.print();
     }
@@ -2630,6 +2809,7 @@
             ${bodyHtml || `<tr><td colspan="9" style="text-align:center;padding:12px;border:1px solid #cbd5e1;">No Inward or Outward entries between ${fromD} and ${toD}.</td></tr>`}
           </tbody>
         </table>
+        <p style="margin-top:16px;font-size:11px;color:#64748b;">${COPYRIGHT_TEXT}</p>
       `;
       window.print();
     }
@@ -2644,17 +2824,17 @@
         box.style.borderTopColor = "#dc2626";
         title.style.color = "#b91c1c";
         title.textContent = "Critical / Out of Stock Items (Red)";
-        desc.textContent = "Items with 0 or negative closing stock:";
+        desc.textContent = "Items at or below Minimum level:";
       } else if (statusFilter === "LOW") {
         box.style.borderTopColor = "#d97706";
         title.style.color = "#b45309";
         title.textContent = "Low / Reorder Stock Items (Yellow)";
-        desc.textContent = "Items at or below minimum reorder level:";
+        desc.textContent = "Items at or below Reorder level:";
       } else {
         box.style.borderTopColor = "#16a34a";
         title.style.color = "#15803d";
         title.textContent = "Healthy Stock Items (Green)";
-        desc.textContent = "Items above minimum reorder level:";
+        desc.textContent = "Items above Reorder level:";
       }
 
       document.getElementById("lowStockPopupRows").innerHTML = list.length
@@ -2664,7 +2844,7 @@
               <td>${x.category}</td>
               <td>${x.name} (${x.code})</td>
               <td><strong>${x.closingQty}</strong></td>
-              <td>${x.min}</td>
+              <td>${x.minLevel}</td>
             </tr>
           `).join("")
         : `<tr><td colspan="5" style="text-align:center;color:#64748b;">No items in this status category.</td></tr>`;
@@ -2679,7 +2859,7 @@
       box.style.borderTopColor = "#dc2626";
       title.style.color = "#b91c1c";
       title.textContent = "Low & Critical Stock Alert";
-      desc.textContent = "Items at or below minimum stock level in this company:";
+      desc.textContent = "Items at or below Minimum / Reorder level in this company:";
 
       document.getElementById("lowStockPopupRows").innerHTML = cachedLowList.length
         ? cachedLowList.map(x => `
@@ -2688,7 +2868,7 @@
               <td>${x.category}</td>
               <td>${x.name} (${x.code})</td>
               <td><strong>${x.closingQty}</strong></td>
-              <td>${x.min}</td>
+              <td>${x.minLevel}</td>
             </tr>
           `).join("")
         : `<tr><td colspan="5" style="text-align:center;color:#64748b;">No low-stock alerts right now.</td></tr>`;
