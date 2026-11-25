@@ -556,6 +556,56 @@
       animation: floatSpatial 3.5s ease-in-out infinite;
     }
 
+    /* GRN TAG MODAL & LABEL STYLING */
+    .grn-tag-modal-box {
+      background: #ffffff;
+      border-radius: 14px;
+      max-width: 540px;
+      width: 100%;
+      padding: 22px;
+      border-top: 5px solid var(--primary);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    }
+    .grn-tag-preview-card {
+      background: #ffffff;
+      border: 2px solid #0f172a;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      color: #0f172a;
+    }
+    .grn-tag-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px dashed #334155;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .grn-tag-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 14px;
+      font-size: 12.5px;
+      margin-bottom: 12px;
+    }
+    .grn-tag-meta-item strong { color: #334155; font-size: 11px; text-transform: uppercase; display: block; }
+    .grn-tag-meta-item span { font-size: 13.5px; font-weight: 800; color: #0f172a; }
+    .grn-barcode-box {
+      text-align: center;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 10px;
+      background: #ffffff;
+    }
+    .grn-barcode-text {
+      font-family: monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      margin-top: 4px;
+      color: #0f172a;
+    }
+
     #pdfPrintSheet {
       display: none;
       background: #ffffff;
@@ -1084,12 +1134,12 @@
         </div>
       </div>
 
-      <!-- INWARD GRN TAB -->
+      <!-- INWARD GRN TAB (WITH BARCODE GRN TAG GENERATION & DOWNLOAD) -->
       <div id="tabInward" class="view-panel">
         <div class="surface-card">
           <div class="surface-head">
             <h3>Inward GRN Entry (Multiple Lots &amp; Items Allowed Per GRN)</h3>
-            <span>GRN Number auto-generates • Same GRN + Lot cannot be posted twice</span>
+            <span>Post hone ke baad automatic Barcode GRN Tag generate hoga</span>
           </div>
           <form onsubmit="saveMultiInwardGRN(event)">
             <div class="form-row-grid">
@@ -1107,15 +1157,15 @@
 
             <div style="display:flex;flex-wrap:wrap;gap:10px;">
               <button type="button" class="btn btn-dark btn-sm" onclick="addInwardLineRow()">+ Add Item / Lot Row</button>
-              <button type="submit" class="btn btn-blue">Post Inward GRN</button>
+              <button type="submit" class="btn btn-blue">Post Inward GRN &amp; Generate Tag</button>
             </div>
           </form>
         </div>
 
         <div class="surface-card">
           <div class="surface-head">
-            <h3>Posted Inward Entries (Delete Wrong Entry)</h3>
-            <span>Deleting reverses lot stock and removes inward ledger entry</span>
+            <h3>Posted Inward Entries (GRN Tag Download &amp; Delete)</h3>
+            <span>Kisi bhi entry ka Barcode GRN Tag download karein ya galat entry delete karein</span>
           </div>
           <div style="overflow-x:auto;">
             <table>
@@ -1410,6 +1460,58 @@
     </div>
   </div>
 
+  <!-- GRN BARCODE TAG POPUP MODAL -->
+  <div id="grnTagModal" class="modal-overlay">
+    <div class="grn-tag-modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="font-size:17px;font-weight:800;color:#0f172a;">GRN Barcode Tag Ready</h3>
+        <button type="button" class="btn btn-dark btn-sm" onclick="closeGrnTagModal()">Close</button>
+      </div>
+
+      <div id="grnTagCardArea" class="grn-tag-preview-card">
+        <div class="grn-tag-header-row">
+          <div>
+            <div id="tagCompanyLabel" style="font-size:12.5px;font-weight:800;color:#0f172a;">COMPANY</div>
+            <div style="font-size:10px;color:#475569;font-weight:700;">ICSBAB INWARD GRN TAG</div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:10px;color:#475569;font-weight:800;display:block;">DATE</span>
+            <strong id="tagDateVal" style="font-size:12.5px;">-</strong>
+          </div>
+        </div>
+
+        <div class="grn-tag-meta-grid">
+          <div class="grn-tag-meta-item" style="grid-column:span 2;">
+            <strong>MATERIAL NAME</strong>
+            <span id="tagMaterialName">-</span>
+          </div>
+          <div class="grn-tag-meta-item">
+            <strong>GRN NUMBER</strong>
+            <span id="tagGrnNo">-</span>
+          </div>
+          <div class="grn-tag-meta-item">
+            <strong>LOT NUMBER</strong>
+            <span id="tagLotNo">-</span>
+          </div>
+          <div class="grn-tag-meta-item" style="grid-column:span 2;">
+            <strong>QUANTITY</strong>
+            <span id="tagQtyVal">-</span>
+          </div>
+        </div>
+
+        <div class="grn-barcode-box">
+          <canvas id="grnBarcodeCanvas" width="380" height="76"></canvas>
+          <div id="grnBarcodeCaption" class="grn-barcode-text">-</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <button type="button" class="btn btn-blue" style="flex:1;" onclick="downloadGrnTagPNG()">↓ Download GRN Tag (PNG)</button>
+        <button type="button" class="btn btn-emerald" style="flex:1;" onclick="downloadGrnTagPDF()">↓ Download / Print PDF</button>
+      </div>
+    </div>
+  </div>
+
   <!-- DEDICATED PRINTABLE PDF REPORT SHEET -->
   <div id="pdfPrintSheet"></div>
 
@@ -1426,6 +1528,7 @@
     let cachedLowList = [];
     let computedStockRows = [];
     let editingItemOriginalCode = null;
+    let activeGrnTagData = null;
 
     function todayISO() {
       return new Date().toISOString().slice(0, 10);
@@ -1479,6 +1582,190 @@
     }
     function saveCompStore(compId, store) {
       localStorage.setItem(storeKeyFor(compId), JSON.stringify(store));
+    }
+
+    /* CODE-128 BARCODE GENERATOR ON CANVAS (OFFLINE / SINGLE-FILE) */
+    const CODE128_PATTERNS = [
+      "212222","222122","222221","121223","121322","131222","122213","122312","132212","221213",
+      "221312","231212","112232","122132","122231","113222","123122","123221","223211","221132",
+      "221231","213212","223112","312131","311222","321122","321221","312212","322112","322211",
+      "212123","212321","232121","111323","131123","131321","112313","132113","132311","211313",
+      "231113","231311","112133","112331","132131","113123","113321","133121","313121","211331",
+      "231131","213113","213311","213131","311123","311321","331121","312113","312311","332111",
+      "314111","221411","431111","111224","111422","121124","121421","141122","141221","112214",
+      "112412","122114","122411","142112","142211","241211","221114","413111","241112","134111",
+      "111242","121142","121241","114212","124112","124211","411212","421112","421211","212141",
+      "214121","412121","111143","111341","131141","114113","114311","411113","411311","113141",
+      "114131","311141","411131","211412","211214","211412","2331112"
+    ];
+
+    function drawCode128Barcode(canvas, textValue) {
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+
+      const clean = String(textValue || "GRN").replace(/[^\x20-\x7E]/g, "").toUpperCase();
+      const codes = [104]; // Start Code B
+      for (let i = 0; i < clean.length; i++) {
+        const val = clean.charCodeAt(i) - 32;
+        if (val >= 0 && val <= 94) codes.push(val);
+      }
+      let checksum = codes[0];
+      for (let i = 1; i < codes.length; i++) {
+        checksum += codes[i] * i;
+      }
+      codes.push(checksum % 103);
+      codes.push(106); // Stop
+
+      let barsStr = "";
+      for (const c of codes) {
+        barsStr += CODE128_PATTERNS[c] || CODE128_PATTERNS[0];
+      }
+
+      let totalUnits = 0;
+      for (let i = 0; i < barsStr.length; i++) {
+        totalUnits += parseInt(barsStr[i], 10);
+      }
+
+      const padX = 16;
+      const unitW = Math.max(1.2, (w - padX * 2) / totalUnits);
+      let cursorX = (w - totalUnits * unitW) / 2;
+
+      for (let i = 0; i < barsStr.length; i++) {
+        const barWidth = parseInt(barsStr[i], 10) * unitW;
+        if (i % 2 === 0) {
+          ctx.fillStyle = "#0f172a";
+          ctx.fillRect(cursorX, 8, barWidth, h - 14);
+        }
+        cursorX += barWidth;
+      }
+    }
+
+    function openGrnTagModal(entry) {
+      if (!entry) return;
+      activeGrnTagData = entry;
+      const barcodeString = `${entry.grn}|${entry.lot}|${entry.code}|${entry.qty}`;
+
+      document.getElementById("tagCompanyLabel").textContent = `${currentComp.name} (${currentComp.id})`;
+      document.getElementById("tagDateVal").textContent = entry.dt || todayISO();
+      document.getElementById("tagMaterialName").textContent = `${entry.code ? entry.code + " — " : ""}${entry.name}`;
+      document.getElementById("tagGrnNo").textContent = entry.grn;
+      document.getElementById("tagLotNo").textContent = entry.lot;
+      document.getElementById("tagQtyVal").textContent = `${entry.qty}`;
+      document.getElementById("grnBarcodeCaption").textContent = barcodeString;
+
+      const canvas = document.getElementById("grnBarcodeCanvas");
+      drawCode128Barcode(canvas, barcodeString);
+
+      document.getElementById("grnTagModal").style.display = "flex";
+    }
+
+    function closeGrnTagModal() {
+      document.getElementById("grnTagModal").style.display = "none";
+    }
+
+    function downloadGrnTagPNG() {
+      if (!activeGrnTagData) return;
+      const e = activeGrnTagData;
+      const barcodeString = `${e.grn}|${e.lot}|${e.code}|${e.qty}`;
+
+      const outCanvas = document.createElement("canvas");
+      outCanvas.width = 640;
+      outCanvas.height = 380;
+      const ctx = outCanvas.getContext("2d");
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, outCanvas.width, outCanvas.height);
+
+      ctx.strokeStyle = "#0f172a";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(12, 12, outCanvas.width - 24, outCanvas.height - 24);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 20px Segoe UI, sans-serif";
+      ctx.fillText(`${currentComp.name} (${currentComp.id})`, 30, 48);
+
+      ctx.fillStyle = "#475569";
+      ctx.font = "bold 12px Segoe UI, sans-serif";
+      ctx.fillText("INWARD GRN BARCODE TAG", 30, 68);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 14px Segoe UI, sans-serif";
+      ctx.fillText(`Date: ${e.dt || todayISO()}`, 440, 48);
+
+      ctx.beginPath();
+      ctx.setLineDash([6, 5]);
+      ctx.strokeStyle = "#64748b";
+      ctx.moveTo(28, 82);
+      ctx.lineTo(outCanvas.width - 28, 82);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 16px Segoe UI, sans-serif";
+      ctx.fillText(`Material: ${e.code ? e.code + " - " : ""}${e.name}`, 30, 114);
+
+      ctx.font = "bold 15px Segoe UI, sans-serif";
+      ctx.fillText(`GRN No: ${e.grn}`, 30, 146);
+      ctx.fillText(`Lot No: ${e.lot}`, 340, 146);
+      ctx.fillText(`Qty: ${e.qty}`, 30, 178);
+
+      const tempBarCanvas = document.createElement("canvas");
+      tempBarCanvas.width = 560;
+      tempBarCanvas.height = 95;
+      drawCode128Barcode(tempBarCanvas, barcodeString);
+      ctx.drawImage(tempBarCanvas, 40, 198);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 14px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(barcodeString, outCanvas.width / 2, 318);
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "11px Segoe UI, sans-serif";
+      ctx.fillText("AB SOFTWARE SOLUTION | Asish Bahalia", outCanvas.width / 2, 348);
+
+      const link = document.createElement("a");
+      link.download = `${e.grn}_${e.lot}_GRN_Tag.png`;
+      link.href = outCanvas.toDataURL("image/png");
+      link.click();
+    }
+
+    function downloadGrnTagPDF() {
+      if (!activeGrnTagData) return;
+      const e = activeGrnTagData;
+      const barcodeString = `${e.grn}|${e.lot}|${e.code}|${e.qty}`;
+      const tempBarCanvas = document.createElement("canvas");
+      tempBarCanvas.width = 440;
+      tempBarCanvas.height = 84;
+      drawCode128Barcode(tempBarCanvas, barcodeString);
+      const barDataUrl = tempBarCanvas.toDataURL("image/png");
+
+      const sheet = document.getElementById("pdfPrintSheet");
+      sheet.innerHTML = `
+        <div style="max-width:480px;margin:20px auto;border:2px solid #0f172a;border-radius:10px;padding:18px;font-family:'Segoe UI',sans-serif;">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px dashed #334155;padding-bottom:10px;margin-bottom:12px;">
+            <div>
+              <div style="font-size:15px;font-weight:800;">${currentComp.name} (${currentComp.id})</div>
+              <div style="font-size:11px;color:#475569;font-weight:700;">INWARD GRN TAG</div>
+            </div>
+            <div style="text-align:right;font-size:12px;"><strong>Date:</strong> ${e.dt || todayISO()}</div>
+          </div>
+          <div style="font-size:13.5px;margin-bottom:8px;"><strong>Material Name:</strong> ${e.code ? e.code + " — " : ""}${e.name}</div>
+          <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:8px;">
+            <span><strong>GRN Number:</strong> ${e.grn}</span>
+            <span><strong>Lot Number:</strong> ${e.lot}</span>
+          </div>
+          <div style="font-size:13.5px;margin-bottom:14px;"><strong>Qty:</strong> ${e.qty}</div>
+          <div style="text-align:center;border-top:1px solid #cbd5e1;padding-top:12px;">
+            <img src="${barDataUrl}" alt="Barcode" style="max-width:100%;height:auto;" />
+            <div style="font-family:monospace;font-size:12px;font-weight:800;margin-top:4px;">${barcodeString}</div>
+          </div>
+        </div>
+      `;
+      window.print();
     }
 
     function resolveEffectiveLevels(store, item, targetYM) {
@@ -2103,6 +2390,7 @@
         parsedLines.push({ item, code, lotNo, rate, qty });
       }
 
+      const createdEntries = [];
       parsedLines.forEach((line, idx) => {
         const lid = "LOT-" + Date.now() + "-" + idx + "-" + Math.random().toString(36).slice(2, 5);
         const eid = "LED-" + Date.now() + "-" + idx + "-" + Math.random().toString(36).slice(2, 5);
@@ -2119,7 +2407,7 @@
           dateISO: dtISO
         });
 
-        store.ledger.unshift({
+        const ledgerObj = {
           entryId: eid,
           lotId: lid,
           dt: dtISO,
@@ -2133,14 +2421,25 @@
           qty: line.qty,
           rate: line.rate,
           amt: line.qty * line.rate
-        });
+        };
+        store.ledger.unshift(ledgerObj);
+        createdEntries.push(ledgerObj);
       });
 
       saveCompStore(currentComp.id, store);
       resetInwardLines();
       initDefaultDates();
       refreshWorkspace(false);
-      alert(`Inward GRN "${grnNo}" posted with ${parsedLines.length} lot entry(s).`);
+
+      if (createdEntries.length > 0) {
+        openGrnTagModal(createdEntries[0]);
+      }
+    }
+
+    function openGrnTagById(entryId) {
+      const store = loadCompStore(currentComp.id);
+      const found = store.ledger.find(x => x.entryId === entryId);
+      if (found) openGrnTagModal(found);
     }
 
     function deleteInwardEntry(entryId) {
@@ -2626,7 +2925,10 @@
               <td>${x.code} — ${x.name}</td>
               <td>₹${Number(x.rate).toFixed(2)}</td>
               <td><strong>${x.qty}</strong></td>
-              <td><button type="button" class="btn btn-rose btn-sm" onclick="deleteInwardEntry('${x.entryId}')">Delete</button></td>
+              <td style="display:flex;gap:6px;">
+                <button type="button" class="btn btn-blue btn-sm" onclick="openGrnTagById('${x.entryId}')">GRN Tag</button>
+                <button type="button" class="btn btn-rose btn-sm" onclick="deleteInwardEntry('${x.entryId}')">Delete</button>
+              </td>
             </tr>
           `).join("")
         : `<tr><td colspan="7" style="text-align:center;color:#64748b;">No inward entries posted yet.</td></tr>`;
